@@ -1,5 +1,10 @@
 import React from "react";
 
-export default function page() {
-  return <div>Monitoring</div>;
-}
+const monitoring = () => {
+  return (
+    <div className="bg-[#030637] h-screen w-screen pt-10">
+    </div>
+  );
+};
+
+export default monitoring;
