@@ -1,14 +1,16 @@
 // pages/index.js
-import React from "react";
 import Header from "./_components/Header";
+import Sidebar from "./_components/Sidebar";
 
 const Home = ({ children }) => {
-  return (
-    <div>
-      <Header />
 
-      {children}
-    </div>
+  return (
+    <>
+      <Sidebar />
+      <div className="pl-64">
+        {children}
+      </div>
+    </>
   );
 };
 

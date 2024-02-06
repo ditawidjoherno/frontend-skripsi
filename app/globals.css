@@ -31,3 +31,7 @@ body {
     text-wrap: balance;
   }
 }
+
+.sidebar-transition {
+  transition: all .9s ease-in-out;
+}

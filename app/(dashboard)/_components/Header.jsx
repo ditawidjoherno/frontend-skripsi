@@ -4,11 +4,11 @@ import { IoMenu } from "react-icons/io5";
 import { IoExitOutline } from "react-icons/io5";
 import ProfileButton from "./ProfileButton";
 
-const Header = () => {
+const Header = ({ setIsCollapse, isCollapse }) => {
   return (
-    <header className="bg-white py-2 shadow ">
+    <header className={`bg-white ${isCollapse ? "pl-12" : "pl-56"} transition-all duration-700 py-2 shadow`} >
       <div className="flex items-center justify-between px-5">
-        <button>
+        <button onClick={() => setIsCollapse(!isCollapse)}>
           <IoMenu size={37} className="sm:ml-7" />
         </button>
         <div className="flex">
