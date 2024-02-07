@@ -6,10 +6,10 @@ import ProfileButton from "./ProfileButton";
 
 const Header = ({ setIsCollapse, isCollapse }) => {
   return (
-    <header className={`bg-white ${isCollapse ? "pl-12" : "pl-56"} transition-all duration-700 py-2 shadow`} >
+    <header className={`bg-white md:px-6 w-full fixed top-0 z-10 shadow-md transition-all duration-700 md:py-2`} >
       <div className="flex items-center justify-between px-5">
         <button onClick={() => setIsCollapse(!isCollapse)}>
-          <IoMenu size={37} className="sm:ml-7" />
+          <IoMenu className={`${isCollapse ? "md:ml-12 ml-44" : "md:ml-56 ml-6"} md:text-4xl text-2xl transition-all duration-500`} />
         </button>
         <div className="flex">
           <ProfileButton />
