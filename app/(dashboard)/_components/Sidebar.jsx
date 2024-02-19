@@ -3,11 +3,10 @@ import { IoCreate, IoDesktop, IoDocument, IoHome } from "react-icons/io5"
 import { BiBullseye } from "react-icons/bi"
 import Header from "./Header"
 import { useState } from "react"
-import useSidebarCollapse from "@/hooks/useSidebarCollapse"
 import Content from "./Content"
 import { IoIosArrowDropleftCircle } from "react-icons/io"
 
-const Sidebar = ({isCollapse, setIsCollapse}) => {
+const Sidebar = ({ isCollapse, setIsCollapse }) => {
 
     const sidebarItems = [
         {

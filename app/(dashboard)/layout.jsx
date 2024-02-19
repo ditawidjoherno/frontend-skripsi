@@ -12,7 +12,7 @@ const Home = ({ children }) => {
   return (
     <div>
       <Sidebar isCollapse={isCollapse} setIsCollapse={setIsCollapse} />
-      <div className={`${isCollapse ? "pl-5" : "pl-48"} transition-all duration-700`}>
+      <div className={`${isCollapse ? "pl-0" : "sm:pl-44"} transition-all duration-700`}>
         {children}
       </div>
     </div>

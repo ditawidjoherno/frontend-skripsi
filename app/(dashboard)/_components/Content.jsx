@@ -4,7 +4,6 @@ import Box from "../beranda/_components/Box"
 import Calendar from "../beranda/_components/Calendar"
 import RecentData from "../beranda/_components/RecentData"
 import TodoList from "../beranda/_components/ToDoList"
-import useSidebarCollapse from "@/hooks/useSidebarCollapse"
 
 const Content = () => {
 
