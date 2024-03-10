@@ -3,6 +3,7 @@ import React from "react";
 import { IoMenu } from "react-icons/io5";
 import { IoExitOutline } from "react-icons/io5";
 import ProfileButton from "./ProfileButton";
+import Link from "next/link";
 
 const Header = ({ setIsCollapse, isCollapse }) => {
   return (
@@ -13,9 +14,9 @@ const Header = ({ setIsCollapse, isCollapse }) => {
         </button>
         <div className="flex">
           <ProfileButton />
-          <button>
+          <Link href="/">
             <IoExitOutline size={32} className="sm:ml-6 ml-4 my-2" />
-          </button>
+          </Link>
         </div>
       </div>
     </header>

@@ -3,6 +3,8 @@ import React, { useState } from "react";
 import Header from "./_components/Header";
 import Sidebar from "./_components/Sidebar";
 import useSidebarCollapse from "@/hooks/useSidebarCollapse";
+import withAuth from "@/hoc/auth";
+import { FaSpinner } from "react-icons/fa";
 
 const Home = ({ children }) => {
 
@@ -19,4 +21,10 @@ const Home = ({ children }) => {
   );
 };
 
-export default Home;
+const loadingPage = () => {
+  <div className="w-screen h-screen flex justify-center items-center">
+    <FaSpinner size={32} className="animate-spin" />
+  </div>
+}
+
+export default withAuth(Home, loadingPage);

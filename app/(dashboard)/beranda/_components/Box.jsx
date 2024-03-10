@@ -1,12 +1,9 @@
-"use client";
 import { IoTimeSharp } from "react-icons/io5";
 
-const Box = ({ bgColor, icon, text, number }) => {
-
-
+const Box = ({ bgColor, hoverColor, icon, text, number }) => {
   return (
     <div
-      className={`${bgColor} sm:h-[180px] sm:w-[400px] h-[120px] w-full flex rounded-lg`}
+      className={`${bgColor} sm:h-[180px] sm:w-[400px] h-[120px] w-full flex rounded-lg transition duration-300 ease-in-out hover:${hoverColor}`}
     >
       <div className="w-full h-full flex-col sm:py-4 py-1 sm:pb-8 pb-4">
         <p className="text-white sm:text-3xl text-2xl flex justify-start sm:px-10 px-5 pt-2 font-semibold h-1/4">

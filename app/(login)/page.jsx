@@ -1,10 +1,18 @@
-import React from "react";
-import Input from "./_components/Input";
-import { VscAccount } from "react-icons/vsc";
-import { LuKeyRound } from "react-icons/lu";
+"use client"
+import React, { useState } from 'react';
+import Input from './_components/Input';
+import { VscAccount } from 'react-icons/vsc';
+import { LuKeyRound } from 'react-icons/lu';
+import LoginForm from './_components/LoginForm';
 
+const LoginPage = () => {
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
 
-const login = () => {
+  const handleLogin = () => {
+
+  };
+
   return (
     <div className="bg-[#030637] h-screen w-screen pt-10">
       <img
@@ -24,17 +32,11 @@ const login = () => {
             alt="logo1"
             className="w-full px-[25px] mr-1 pt-1 "
           />
-          <div>
-            <Input Icon={<VscAccount size={25} />} placeholder={"NIP"} />
-            <Input Icon={<LuKeyRound size={25} />} placeholder={"Password"} />
-          </div>
-          <button className="bg-[#3468C0] transition-all transform hover:bg-[#FFE500]  w-full h-[35px] rounded-2xl px-10 pt-30 mt-[25px] font-semibold">
-            Login
-          </button>
+          <LoginForm />
         </div>
       </div>
     </div>
   );
 };
 
-export default login;
+export default LoginPage;

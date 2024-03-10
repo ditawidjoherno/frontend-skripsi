@@ -1,35 +1,53 @@
 "use client"
+
 import { IoCreate, IoDesktop, IoDocument, IoHome } from "react-icons/io5"
+import { IoIosPeople } from "react-icons/io";
 import { BiBullseye } from "react-icons/bi"
 import Header from "./Header"
 import { useState } from "react"
 import Content from "./Content"
 import { IoIosArrowDropleftCircle } from "react-icons/io"
+import Link from 'next/link';
 
 const Sidebar = ({ isCollapse, setIsCollapse }) => {
+    const [activePage, setActivePage] = useState("Beranda");
 
     const sidebarItems = [
         {
             icon: <IoHome />,
-            text: "Beranda"
+            text: "Beranda",
+            route: "/beranda"
         },
         {
             icon: <IoDesktop />,
-            text: "Monitoring"
+            text: "Monitoring",
+            route: "/monitoring"
         },
         {
             icon: <IoCreate />,
-            text: "Input Data"
+            text: "Input Data",
+            route: "/data-aktivitas"
+        },
+        {
+            icon: <IoIosPeople />,
+            text: "Data Nasabah",
+            route: "/data-nasabah"
         },
         {
             icon: <BiBullseye />,
-            text: "Target Tahunan"
+            text: "Target Tahunan",
+            route: "/target-tahunan"
         },
         {
             icon: <IoDocument />,
-            text: "Informasi Menu"
+            text: "Informasi Menu",
+            route: "/informasi-menu"
         },
-    ]
+    ];
+
+    const handleItemClick = (text) => {
+        setActivePage(text);
+    };
 
     return (
         <>
@@ -41,17 +59,22 @@ const Sidebar = ({ isCollapse, setIsCollapse }) => {
                 </div>
                 <div className="w-full flex flex-col md:px-4 sidebar-transition">
                     {sidebarItems.map((item, index) => (
-                        <button key={index} className={`bg-[#00000] flex ${isCollapse ? "md:justify-center justify-start" : "md:justify-start justify-center"} items-center sidebar-transition hover:bg-[#FFE500]  w-full h-[35px] rounded-xl px-5`}>
-                            <div className="flex h-full gap-4 sidebar-transition items-center">
-                                {item.icon}
-                                <p className={`${isCollapse ? "md:hidden block" : "hidden md:block"} md:text-base text-xs sidebar-transition `}>{item.text}</p>
-                            </div>
-                        </button>
+                        <Link href={item.route} key={index}>
+                            <button
+                                className={`bg-[#00000] flex ${isCollapse ? "md:justify-center justify-start" : "md:justify-start justify-center"} items-center sidebar-transition hover:bg-[#FFE500]  w-full h-[35px] rounded-xl px-5 ${activePage === item.text ? "bg-[#FFE500]" : ""}`}
+                                onClick={() => handleItemClick(item.text)}
+                            >
+                                <div className="flex h-full gap-4 sidebar-transition items-center">
+                                    {item.icon}
+                                    <p className={`${isCollapse ? "md:hidden block" : "hidden md:block"} md:text-base text-xs sidebar-transition `}>{item.text}</p>
+                                </div>
+                            </button>
+                        </Link>
                     ))}
                 </div>
             </div>
         </>
-    )
-}
+    );
+};
 
 export default Sidebar
