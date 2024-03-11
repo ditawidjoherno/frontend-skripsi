@@ -1,17 +1,46 @@
 "use client";
 import { IoIosArrowDropleftCircle } from "react-icons/io";
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Search from "./_components/search";
-import Button from "./_components/button";
+// import Button from "./_components/button";
+import Link from "next/link";
+import useAktivitasHarian from "@/hooks/use-aktivitas-harian";
 
 const page = () => {
 
   const [searchResults, setSearchResults] = useState([]);
+  const { loading, error, data, getUserData } = useAktivitasHarian();
 
-  const handleSearch = (query) => {
-    // Lakukan pencarian dengan query dan atur hasil pencarian ke state searchResults
-    console.log('Searching for:', query);
+  const handleGetDataUser = async () => {
+    await getUserData();
+  }
+
+  useEffect(() => {
+    handleGetDataUser();
+  }, [])
+
+  const handleSearch = (event) => {
+    const { value } = event.target;
+    setSearchTerm(value);
+    setIsSearchActive(true);
   };
+
+  useEffect(() => {
+    getUserData();
+  }, []);
+
+
+  if (loading) {
+    return (
+      <div>Loading</div>
+    );
+  }
+  
+  if (error) {
+    return (
+      <div>Error: {error.message}</div>
+    );
+  }
 
   return (
     <div className={`bg-[#EAEAEA] h-full pb-4 flex flex-col items-center sm:pt-[75px] pt-[60px] sm:pr-5 pr-3 sm:ml-20 ml-10`}>
@@ -42,10 +71,11 @@ const page = () => {
               <tr>
                 <th className="px-5 sm:py-4 py-2">No</th>
                 <th className="px-14 sm:py-4 py-2">Tanggal Prospek</th>
+                <th className="px-14 sm:py-4 py-2">Nama Staff</th>
                 <th className="px-14 sm:py-4 py-2">Aktivitas</th>
                 <th className="px-14 sm:py-4 py-2 ">Nama Nasabah</th>
-                <th className="px-14 sm:py-4 py-2">No HP</th>
-                <th className="px-14 sm:py-4 py-2">Alamat</th>
+                {/* <th className="px-14 sm:py-4 py-2">No HP</th>
+                <th className="px-14 sm:py-4 py-2">Alamat</th> */}
                 <th className="px-14 sm:py-4 py-2">Tipe Nasabah</th>
                 <th className="px-14 sm:py-4 py-2">prospek</th>
                 <th className="px-14 sm:py-4 py-2">Nominal Prospek</th>
@@ -56,198 +86,31 @@ const page = () => {
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td>1</td>
-                <td>Lorem Ipsum</td>
-                <td>Lorem Ipsum</td>
-                <td className="text-[#4530ff]">Lorem Ipsum</td>
-                <td>tes</td>
-                <td>Lorem Ipsum</td>
-                <td>Lorem Ipsum</td>
-                <td>Lorem Ipsum</td>
-                <td>Lorem Ipsum</td>
-                <td>Lorem Ipsum</td>
-                <td>Lorem Ipsum</td>
-                <td>Lorem Ipsum</td>
-                <td>
-                  <div className="w-full justify-center flex flex-col items-center">
-                    <Button
-                      text={"Lihat Dokumentasi"}
-                    />
-                    <Button
-                      text={"Lihat Detail"}
-                    />
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td>1</td>
-                <td>Lorem Ipsum</td>
-                <td>Lorem Ipsum</td>
-                <td className="text-[#4530ff]">Lorem Ipsum</td>
-                <td>Lorem Ipsum</td>
-                <td>Lorem Ipsum</td>
-                <td>Lorem Ipsum</td>
-                <td>Lorem Ipsum</td>
-                <td>Lorem Ipsum</td>
-                <td>Lorem Ipsum</td>
-                <td>Lorem Ipsum</td>
-                <td>Lorem Ipsum</td>
-                <td>
-                  <div className="w-full justify-center flex flex-col items-center">
-                    <Button
-                      text={"Lihat Dokumentasi"}
-                    />
-                    <Button
-                      text={"Lihat Detail"}
-                    />
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td>1</td>
-                <td>Lorem Ipsum</td>
-                <td>Lorem Ipsum</td>
-                <td className="text-[#4530ff]">Lorem Ipsum</td>
-                <td>Lorem Ipsum</td>
-                <td>Lorem Ipsum</td>
-                <td>Lorem Ipsum</td>
-                <td>Lorem Ipsum</td>
-                <td>Lorem Ipsum</td>
-                <td>Lorem Ipsum</td>
-                <td>Lorem Ipsum</td>
-                <td>Lorem Ipsum</td>
-                <td>
-                  <div className="w-full justify-center flex flex-col items-center">
-                    <Button
-                      text={"Lihat Dokumentasi"}
-                    />
-                    <Button
-                      text={"Lihat Detail"}
-                    />
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td>1</td>
-                <td>Lorem Ipsum</td>
-                <td>Lorem Ipsum</td>
-                <td className="text-[#4530ff]">Lorem Ipsum</td>
-                <td>Lorem Ipsum</td>
-                <td>Lorem Ipsum</td>
-                <td>Lorem Ipsum</td>
-                <td>Lorem Ipsum</td>
-                <td>Lorem Ipsum</td>
-                <td>Lorem Ipsum</td>
-                <td>Lorem Ipsum</td>
-                <td>Lorem Ipsum</td>
-                <td>
-                  <div className="w-full justify-center flex flex-col items-center">
-                    <Button
-                      text={"Lihat Dokumentasi"}
-                    />
-                    <Button
-                      text={"Lihat Detail"}
-                    />
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td>1</td>
-                <td>Lorem Ipsum</td>
-                <td>Lorem Ipsum</td>
-                <td className="text-[#4530ff]">Lorem Ipsum</td>
-                <td>Lorem Ipsum</td>
-                <td>Lorem Ipsum</td>
-                <td>Lorem Ipsum</td>
-                <td>Lorem Ipsum</td>
-                <td>Lorem Ipsum</td>
-                <td>Lorem Ipsum</td>
-                <td>Lorem Ipsum</td>
-                <td>Lorem Ipsum</td>
-                <td>
-                  <div className="w-full justify-center flex flex-col items-center">
-                    <Button
-                      text={"Lihat Dokumentasi"}
-                    />
-                    <Button
-                      text={"Lihat Detail"}
-                    />
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td>1</td>
-                <td>Lorem Ipsum</td>
-                <td>Lorem Ipsum</td>
-                <td className="text-[#4530ff]">Lorem Ipsum</td>
-                <td>Lorem Ipsum</td>
-                <td>Lorem Ipsum</td>
-                <td>Lorem Ipsum</td>
-                <td>Lorem Ipsum</td>
-                <td>Lorem Ipsum</td>
-                <td>Lorem Ipsum</td>
-                <td>Lorem Ipsum</td>
-                <td>Lorem Ipsum</td>
-                <td>
-                  <div className="w-full justify-center flex flex-col items-center">
-                    <Button
-                      text={"Lihat Dokumentasi"}
-                    />
-                    <Button
-                      text={"Lihat Detail"}
-                    />
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td>1</td>
-                <td>Lorem Ipsum</td>
-                <td>Lorem Ipsum</td>
-                <td className="text-[#4530ff]">Lorem Ipsum</td>
-                <td>Lorem Ipsum</td>
-                <td>Lorem Ipsum</td>
-                <td>Lorem Ipsum</td>
-                <td>Lorem Ipsum</td>
-                <td>Lorem Ipsum</td>
-                <td>Lorem Ipsum</td>
-                <td>Lorem Ipsum</td>
-                <td>Lorem Ipsum</td>
-                <td>
-                  <div className="w-full justify-center flex flex-col items-center">
-                    <Button
-                      text={"Lihat Dokumentasi"}
-                    />
-                    <Button
-                      text={"Lihat Detail"}
-                    />
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td>1</td>
-                <td>Lorem Ipsum</td>
-                <td>Lorem Ipsum</td>
-                <td className="text-[#4530ff]">Lorem Ipsum</td>
-                <td>Lorem Ipsum</td>
-                <td>Lorem Ipsum</td>
-                <td>Lorem Ipsum</td>
-                <td>Lorem Ipsum</td>
-                <td>Lorem Ipsum</td>
-                <td>Lorem Ipsum</td>
-                <td>Lorem Ipsum</td>
-                <td>Lorem Ipsum</td>
-                <td>
-                  <div className="w-full justify-center flex flex-col items-center">
-                    <Button
-                      text={"Lihat Dokumentasi"}
-                    />
-                    <Button
-                      text={"Lihat Detail"}
-                    />
-                  </div>
-                </td>
-              </tr>
+              {data && data.length > 0 ? (
+                data.map((item, index) => (
+                  <tr key={index}>
+                    <td>{index + 1}</td>
+                    <td>{item.tanggal}</td>
+                    <td>{item.nama}</td>
+                    <td>{item.aktivitas}</td>
+                    <td><Link href={`/profil_nasabah`}>
+                      <div className="text-black hover:text-blue-700 cursor-pointer">{item.nama_nasabah}</div>
+                    </Link>
+                    </td>
+                    <td>{item.tipe_nasabah}</td>
+                    <td>{item.prospek}</td>
+                    <td>{item.nominal_prospek}</td>
+                    <td>{item.aktivitas_sales}</td>
+                    <td>{item.closing}</td>
+                    <td>{item.key_person}</td>
+                    <td>{item.dokumentasi}</td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan="7">Belum ada data yang ditambahkan</td>
+                </tr>
+              )}
             </tbody>
           </table>
         </div>
