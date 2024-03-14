@@ -31,18 +31,7 @@ const Page = () => {
   }, []);
 
 
-  if (loading) {
-    return (
-      <div>Loading</div>
-    );
-  }
-  
-  if (error) {
-    return (
-      <div>Error: {error.message}</div>
-    );
-  }
-  
+
   return (
     <div className={`bg-[#EAEAEA] h-full flex flex-col items-center sm:pt-[75px] pt-[60px] sm:pr-4 pr-3 sm:ml-20 ml-10`}>
       <div className="flex items-center w-full">

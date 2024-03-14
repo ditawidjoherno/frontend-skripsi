@@ -4,9 +4,42 @@ import { IoPodiumSharp } from "react-icons/io5";
 import Box from './_components/Box';
 import BoxProfil from './_components/BoxProfil';
 import Link from 'next/link';
+import { useEffect, useState } from 'react';
 import { IoIosArrowDropleftCircle } from "react-icons/io";
+import useAktivitasHarian from "@/hooks/use-aktivitas-harian";
+import useAktivitasBulanan from '@/hooks/use-aktivitas-bulanan';
+import useStaff from '@/hooks/use-staff';
+import { useParams, useRouter } from 'next/navigation';
+
 
 const page = () => {
+
+  const [jumlahHarianData, setJumlahHarianData] = useState(0);
+  const { data: HarianData, getUserData: getHarianData } = useAktivitasHarian();
+  const [jumlahBulananData, setJumlahBulananData] = useState(0);
+  const { data: BulananData, getUserData: getBulananData } = useAktivitasBulanan();
+  const { data: Staff, getUserData: getStaff } = useStaff();
+  const router = useRouter()
+
+
+  useEffect(() => {
+    getHarianData();
+    getBulananData();
+    getStaff();
+  }, []);
+
+  useEffect(() => {
+    if (HarianData) {
+      setJumlahHarianData(HarianData.length);
+    }
+  }, [HarianData]);
+
+  useEffect(() => {
+    if (BulananData) {
+      setJumlahBulananData(BulananData.length);
+    }
+  }, [BulananData]);
+
 
   const handleHarianClick = () => {
     window.location.href = '/data-harian';
@@ -20,11 +53,9 @@ const page = () => {
     window.location.href = '/monitoring-bulanan';
   };
 
-  const handeSalesClick = () => {
+  const handleSalesClick = () => {
     window.location.href = '/monitoring-sales';
   };
-
-
 
   return (
     <div className={`bg-[#EAEAEA] h-auto flex flex-col items-center sm:pt-[75px] pt-[60px] sm:pr-4 pr-3 sm:ml-20 ml-10`}>
@@ -41,7 +72,7 @@ const page = () => {
           bgColor={"bg-[#059BC7]"}
           icon={<IoPodiumSharp className="text-[#FFCD27] ml-9 mt-7" />}
           text={"Harian"}
-          number={50}
+          number={jumlahHarianData}
           onClick={handleHarianClick}
         />
         <Box
@@ -55,55 +86,42 @@ const page = () => {
           bgColor={"bg-[#1D2B53]"}
           icon={<IoPodiumSharp className="text-[#FFCD27] ml-9 mt-7" />}
           text={"Bulanan"}
-          number={"1.200"}
+          number={jumlahBulananData}
           onClick={handleBulananClick}
         />
 
       </div>
       <div className="h-50 flex sm:w-full w-4/4 sm:mx-7 mx-6 flex-wrap justify-start sm:gap-5 gap-3 lg:items-start sm:pl-9 pl-1 pr-1 sm:mt-7 mt-5 px-4 sm:pt-0">
         <div className='w-full flex gap-3'>
-          <div className='w-1/2 '>
-            <BoxProfil
-              bgColor={"bg-[#ffffff]"}
-              image={"img/profil.png"}
-              text={"Lorem ipsum"}
-              onClick={handeSalesClick}
-            />
-            <BoxProfil
-              bgColor={"bg-[#ffffff]"}
-              image={"img/profil.png"}
-              text={"Lorem ipsum"}
-            />
-            <BoxProfil
-              bgColor={"bg-[#ffffff]"}
-              image={"img/profil.png"}
-              text={"Lorem ipsum"}
-            />
-            <BoxProfil
-              bgColor={"bg-[#ffffff]"}
-              image={"img/profil.png"}
-              text={"Lorem ipsum"}
-            />
-          </div>
-          <div className='sm:w-1/2 w-full sm:ml-0 ml-9'>
-            <BoxProfil
-              bgColor={"bg-[#ffffff]"}
-              image={"img/profil.png"}
-              text={"Lorem ipsum"}
-            />
-            <BoxProfil
-              bgColor={"bg-[#ffffff]"}
-              image={"img/profil.png"}
-              text={"Lorem ipsum"}
-            />
-            <BoxProfil
-              bgColor={"bg-[#ffffff]"}
-              image={"img/profil.png"}
-              text={"Lorem ipsum"}
-            />
-          </div>
-        </div>
+          <div className='w-full flex gap-3 justify-center'>
+            <div className='w-1/2 flex flex-col gap-2'>
+              {Staff && Staff.slice(0, Math.ceil(Staff.length / 2)).map((item, index) => (
+                <BoxProfil
+                  key={index}
+                  bgColor={"bg-[#ffffff]"}
+                  image={"img/profil.png"}
+                  nama={item.nama}
+                  nip={item.nip}
+                  onClick={() => router.push(`/monitoring-sales/${item.nip}`)}
 
+                />
+              ))}
+            </div>
+            <div className='w-1/2 flex flex-col'>
+              {Staff && Staff.slice(Math.ceil(Staff.length / 2)).map((item, index) => (
+                <BoxProfil
+                  key={index}
+                  bgColor={"bg-[#ffffff]"}
+                  image={"img/profil.png"}
+                  nama={item.nama}
+                  nip={item.nip}
+                  onClick={() => router.push(`/monitoring-sales/${item.nip}`)}
+                />
+              ))}
+            </div>
+          </div>
+
+        </div>
       </div>
     </div>
   );

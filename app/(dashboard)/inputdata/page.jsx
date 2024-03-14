@@ -6,6 +6,7 @@ import Button from './_components/Button';
 import Dropdown from './_components/Dropdown';
 // import DocumentationButton from './_components/DocumentationButton';
 import AddAktivitas from '@/hooks/add-aktivitas';
+import useNamaNasabah from '@/hooks/use-nama-nasabah';
 
 const Page = () => {
     const [aktivitas, setAktivitas] = useState('');
@@ -21,6 +22,15 @@ const Page = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const [success, setSuccess] = useState(false);
+    const { data, getNamaNasabah } = useNamaNasabah();
+
+    useEffect(() => {
+        const fetchNamaNasabah = async () => {
+            await getNamaNasabah();
+        }
+        fetchNamaNasabah()
+    }, []);
+
 
     const fileInputRef = useRef(null);
 
@@ -35,6 +45,7 @@ const Page = () => {
     const { updateData } = AddAktivitas();
 
     const handleSubmit = async () => {
+        console.log("test");
         setLoading(true);
         setError(null);
         setSuccess(false);
@@ -47,13 +58,14 @@ const Page = () => {
                 prospek: prospek,
                 nominal_prospek: nominalProspek,
                 aktivitas_sales: aktivitasSales,
-                closing: closing,
+                closing: parseInt(closing),
                 status_aktivitas: statusAktivitas,
                 keterangan_aktivitas: keteranganAktivitas,
                 dokumentasi: dokumentasi
             };
-
-            await updateData(body);
+            console.log(body)
+            const response = await updateData(body);
+            console.log(response)
             setSuccess(true);
         } catch (error) {
             setError(error.message || "Terjadi kesalahan saat mengirim data.");
@@ -61,6 +73,18 @@ const Page = () => {
             setLoading(false);
         }
     };
+
+    const test = () => {
+        console.log("test")
+    }
+
+    const [selectedNasabah, setSelectedNasabah] = useState("");
+    if (data) {
+        const dropdownOptions = data.map((nasabah, index) => ({
+            value: index, // Index digunakan sebagai value pada dropdown
+            label: nasabah // Nama nasabah digunakan sebagai label pada dropdown
+        }));
+    }
 
     return (
         <div className={`bg-[#EAEAEA] h-full flex flex-col items-center sm:pt-[75px] pt-[60px] sm:pr-4 pr-3 sm:ml-20 ml-10`}>
@@ -73,10 +97,10 @@ const Page = () => {
             <div className="bg-white rounded-2xl h-auto mb-6 sm:ml-5 ml-3 w-full sm:pt-5 pt-4">
                 <div className='sm:flex sm:ml-0 ml-1 sm:mr-0 mr-2'>
                     <div className='sm:w-1/2 w-full'>
-                    <label htmlFor="dropdown" className="text-black  text-[20px] font-medium mb-1 sm:px-10 pt-3 sm:gap-0 gap-6">
+                        <label htmlFor="dropdown" className="text-black  text-[20px] font-medium mb-1 sm:px-10 pt-3 sm:gap-0 gap-6">
                             Nama Nasabah
                         </label>
-                        <Dropdown
+                        {/* <Dropdown
                             value={namaNasabah}
                             onChange={setNamaNasabah}
                             options={[
@@ -88,19 +112,31 @@ const Page = () => {
                                 { value: 'option6', label: 'Lorem Ipsum' }
                             ]}
                             placeholder={"Pilih Nama Nasabah"}
-                        />
+                        /> */}
+                        {data && (
+                            <Dropdown
+                                value={selectedNasabah}
+                                onChange={(e) => setNamaNasabah(e.label)}
+                                options={data.map((nasabah, index) => ({
+                                    value: index,
+                                    label: nasabah
+                                }))}
+                                placeholder={"Pilih Nama Nasabah"}
+                            />
+                        )}
+
                         <label htmlFor="dropdown" className="text-black  text-[20px] font-medium mb-1 sm:px-10 pt-3 sm:gap-0 gap-6">
                             Aktivitas Sales
                         </label>
                         <Dropdown
                             value={aktivitasSales}
-                            onChange={setAktivitasSales}
+                            onChange={(e) => setAktivitas(e.value)}
                             options={[
-                                { value: 'option1', label: 'TABUNGAN' },
-                                { value: 'option2', label: 'DEPO RITEL' },
-                                { value: 'option3', label: 'NTB - PBO' },
-                                { value: 'option4', label: 'NOA BTN MOVE' },
-                                { value: 'option5', label: 'TRANSAKSI TELLER' },
+                                { value: 'tabungan', label: 'TABUNGAN' },
+                                { value: 'depo-ritel', label: 'DEPO RITEL' },
+                                { value: 'ntb-pbo', label: 'NTB - PBO' },
+                                { value: 'noa btn move', label: 'NOA BTN MOVE' },
+                                { value: 'transaksi teller', label: 'TRANSAKSI TELLER' },
                                 { value: 'option6', label: 'TRANSAKSI CRM' },
                                 { value: 'option7', label: 'OPERASIONAL MKK' },
                                 { value: 'option8', label: 'QRIS' },
@@ -125,13 +161,14 @@ const Page = () => {
                         </label>
                         <Dropdown
                             value={tipeNasabah}
-                            onChange={setTipeNasabah}
+                            onChange={(newValue) => setTipeNasabah(newValue.value)}
                             options={[
                                 { value: 'existing', label: 'Nasabah Eksisting' },
                                 { value: 'new', label: 'Nasabah Baru' }
                             ]}
                             placeholder="Tipe Nasabah"
                         />
+
                         <Input text={"Prospek"} value={prospek} onChange={e => setProspek(e.target.value)} />
                         <Input text={"Nominal Prospek"} value={nominalProspek} onChange={e => setNominalProspek(e.target.value)} />
                     </div>
@@ -140,26 +177,33 @@ const Page = () => {
                         <Input text={"Status Aktivitas"} value={statusAktivitas} onChange={e => setStatusAktivitas(e.target.value)} />
                         <Input text={"Keterangan Aktivitas"} value={keteranganAktivitas} onChange={e => setKeteranganAktivitas(e.target.value)} />
                         <>
-            <input
-                type="file"
-                accept="image/*"
-                onChange={handleFileUpload}
-                style={{ display: 'none' }}
-                ref={fileInputRef}
-            />
-            <button onClick={handleClick}>Unggah Foto</button>
-        </>
+                            <input
+                                type="file"
+                                accept="image/*"
+                                onChange={handleFileUpload}
+                                style={{ display: 'none' }}
+                                ref={fileInputRef}
+                            />
+                            <button onClick={handleClick}>Unggah Foto</button>
+                        </>
                     </div>
                 </div>
                 <div className='flex gap-3 sm:justify-end justify-center mt-8 sm:mr-5'>
-                    <Button
+                    {/* <button
                         text={loading ? "Loading..." : "Tambah"}
                         onClick={handleSubmit}
                         disabled={loading}
-                    />
+                    /> */}
+                    <button onClick={handleSubmit} disabled={loading}>
+                        <div className="sm:mt-10 mt-1 mb-6 flex justify-center">
+                            <div className="cursor-pointer sm:bg-[#5293CE] bg-[#5293CE] items-center justify-center w-[170px] h-[40px] flex rounded-lg">
+                                <p className="font-medium text-white text-semibold">{loading ? "Loading..." : "Tambah"}</p>
+                            </div>
+                        </div>
+                    </button>
                 </div>
-                {success && <div className="text-green-500">Data berhasil ditambahkan.</div>}
-                {error && <div className="text-red-500">{error}</div>}
+                {/* {success && <div className="text-green-500">Data berhasil ditambahkan.</div>}
+                {error && <div className="text-red-500">{error}</div>} */}
             </div>
         </div>
     );

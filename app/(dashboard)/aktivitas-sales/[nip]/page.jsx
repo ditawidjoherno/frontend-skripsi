@@ -4,53 +4,31 @@ import { IoIosArrowDropleftCircle } from "react-icons/io";
 import { IoTime } from "react-icons/io5";
 import { IoFilterSharp } from "react-icons/io5";
 import { IoSearchOutline } from "react-icons/io5";
+import { IoPersonSharp } from "react-icons/io5";
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
 import { IoCheckmarkDoneCircleOutline } from "react-icons/io5";
-import useAktivitasSelesai from '@/hooks/use-aktivitas-selesai';
+import useDataAktivitas from '@/hooks/use-data-aktivitas';
+import { useParams } from 'next/navigation';
+
+
 
 const page = () => {
+    const { nip } = useParams();
 
     const [searchTerm, setSearchTerm] = useState('');
     const [isSearchActive, setIsSearchActive] = useState(false);
-    const { loading, error, data, getUserData } = useAktivitasSelesai();
-
-
-    // const DataNasabah = [
-    //     {
-    //         image: "/img/profil-header.png",
-    //         nama: "Data 1",
-    //         tanggal: "Date Data 1",
-    //         namaNasabah: "John Doe",
-    //         aktivitas: "Tabungan",
-    //         alamat: "Lorem Ipsum",
-    //         prospek: "Lorem Ipsum",
-    //         aktivitasSales: "Lorem Ipsum",
-    //         statusprospek: "Diterima"
-
-    //     },
-    //     {
-    //         image: "/img/profil-header.png",
-    //         nama: "Data 3",
-    //         tanggal: "Date Data 1",
-    //         namaNasabah: "John Doe",
-    //         aktivitas: "Tabungan",
-    //         alamat: "Lorem Ipsum",
-    //         prospek: "Lorem Ipsum",
-    //         aktivitasSales: "Lorem Ipsum",
-    //         statusprospek: "Ditolak"
-
-    //     },
-    // ];
+    const { loading, error, data, getUserData } = useDataAktivitas(nip);
 
 
     const handleGetDataUser = async () => {
         await getUserData();
     }
+    console.log(nip)
 
-    useEffect(() => {
-        handleGetDataUser();
-    }, [])
+    // useEffect(() => {
+    //     handleGetDataUser();
+    // }, [])
 
     const handleSearch = (event) => {
         const { value } = event.target;
@@ -75,15 +53,47 @@ const page = () => {
         );
     }
 
+    // const DataNasabah = [
+    //     {
+    //         image: "/img/profil-header.png",
+    //         nama: "Data 1",
+    //         tanggal: "Date Data 1",
+    //         namaNasabah: "John Doe",
+    //         aktivitas: "Tabungan",
+    //         alamat: "Lorem Ipsum",
+    //         prospek: "Lorem Ipsum",
+    //         aktivitasSales: "Lorem Ipsum",
+    //     },
+    //     {
+    //         image: "/img/profil-header.png",
+    //         nama: "Data 3",
+    //         tanggal: "Date Data 1",
+    //         namaNasabah: "John Doe",
+    //         aktivitas: "Tabungan",
+    //         alamat: "Lorem Ipsum",
+    //         prospek: "Lorem Ipsum",
+    //         aktivitasSales: "Lorem Ipsum",
+    //     },
+
+
+
+    // ];
+
+    // const handleSearch = (event) => {
+    //     const { value } = event.target;
+    //     setSearchTerm(value);
+    //     setIsSearchActive(true);
+    // };
+
+
     // const filteredData = DataNasabah.filter(data =>
     //     data.nama.toLowerCase().includes(searchTerm.toLowerCase()) ||
     //     data.aktivitas.toLowerCase().includes(searchTerm.toLowerCase()) ||
     //     data.namaNasabah.toLowerCase().includes(searchTerm.toLowerCase()) ||
     //     data.prospek.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    //     data.aktivitasSales.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    //     data.statusprospek.toLowerCase().includes(searchTerm.toLowerCase()) ,
-
+    //     data.aktivitasSales.toLowerCase().includes(searchTerm.toLowerCase()),
     // );
+
 
     return (
         <div className={`bg-[#EAEAEA] h-full flex flex-col items-center sm:pt-[75px] pt-[60px] sm:pr-4 pr-3 sm:ml-20 ml-10`}>
@@ -99,8 +109,15 @@ const page = () => {
                 <div className="bg-white rounded-t-2xl h-[80px] pt-3">
                     <div className='flex justify-between'>
                         <div className='flex items-center gap-2 ml-5'>
-                            <IoCheckmarkDoneCircleOutline className="w-10 h-10" />
-                            <h2 className='font-semibold text-[28px]'>Aktivitas Selesai</h2>
+                            <IoPersonSharp className="w-10 h-10" />
+                            <div>
+                                {data && (
+                                    <>
+                                        <h2 className='font-semibold text-[20px]'>{data.nama}</h2>
+                                        <h2 className='font-semibold text-[16px]'>{data.nip}</h2>
+                                    </>
+                                )}
+                            </div>
                         </div>
                         <div className='flex gap-1 sm:mr-5'>
                             <div className="flex sm:mr-5 mr-3">
@@ -118,18 +135,19 @@ const page = () => {
                             {/* <IoFilterSharp className="sm:text-4xl text-2xl" /> */}
                         </div>
                     </div>
+
                     <hr className="border-t-2 border-black my-3 mx-6 " />
                 </div>
                 <div className="bg-white rounded-b-2xl h-[500px] overflow-x-scroll">
                     <table className="table-auto border-collapse w-full text-center overflow-x-auto">
                         <thead>
                             <tr>
-                            <th className="sm:px-14 px-7 sm:py-4 py-0">No</th>
+                                <th className="sm:px-14 px-7 sm:py-4 py-0">No</th>
                                 <th className="sm:px-14 px-7 sm:py-4 py-0">Nama</th>
                                 <th className="sm:px-14 px-7 sm:py-4 py-0">Tanggal Prospek</th>
                                 <th className="sm:px-14 px-7 sm:py-4 py-0">Aktivitas</th>
                                 <th className="sm:px-14 px-7 sm:py-4 py-0">Nama Nasabah</th>
-                                
+
                                 <th className="sm:px-14 px-7 sm:py-4 py-0">Prospek</th>
                                 <th className="sm:px-14 px-7 sm:py-4 py-0">Aktivitas Sales</th>
                                 <th className="sm:px-14 px-7 sm:py-4 py-0">Keterangan Aktivitas</th>
@@ -143,19 +161,19 @@ const page = () => {
                                         <td>{item.nama}</td>
                                         <td>{item.tanggal}</td>
                                         <td>{item.aktivitas}</td>
-                                        <td><Link href={`/profil-nasabah`}>
+                                        <td><Link href={`/profil_nasabah`}>
                                             <div className="text-black hover:text-blue-700 cursor-pointer">{item.nama_nasabah}</div>
                                         </Link>
                                         </td>
                                         <td>{item.prospek}</td>
-                                        
+
                                         <td>{item.aktivitas_sales}</td>
                                         <td>
-                                    <div className={`py-1 rounded-md mx-6 my-1 text-white font-semibold ${item.keterangan_aktivitas === 'diterima' ? 'bg-green-500 ' : item.keterangan_aktivitas === 'ditolak' ? 'bg-red-500' : ''}`}>
-                                        {item.keterangan_aktivitas}
-                                    </div>
+                                            <div className={`py-1 rounded-md mx-6 my-1 text-white font-semibold ${item.keterangan_aktivitas === 'diterima' ? 'bg-green-500 ' : item.keterangan_aktivitas === 'ditolak' ? 'bg-red-500' : ''}`}>
+                                                {item.keterangan_aktivitas}
+                                            </div>
                                         </td>
-                                        
+
                                     </tr>
                                 ))
                             ) : (
@@ -166,6 +184,7 @@ const page = () => {
                         </tbody>
                     </table>
                 </div>
+
             </div>
         </div>
     )

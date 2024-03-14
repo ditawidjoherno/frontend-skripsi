@@ -1,9 +1,8 @@
-"use client"
 import { getCookie } from "@/lib/cookieFunction";
 import axios from "axios";
 import { useState } from "react";
 
-const AddAktivitas = () => {
+const addAktivitas = () => {
     const [loading, setLoading] = useState(false);
     const [data, setData] = useState(null);
     const [error, setError] = useState(null);
@@ -12,19 +11,18 @@ const AddAktivitas = () => {
 
 
     const bearerToken = `Bearer ${token}`
-    const updateData = async (body) => {
+    const Nasabah = async (body) => {
         setLoading(true);
         setError(null);
         setData(null);
 
-        console.log(body)
         try {
-            const response = await axios.post("https://backend-btn-tracking.vercel.app/add-aktivitas", body, {
+            const response = await axios.post("https://backend-btn-tracking.vercel.app/add-nasabah", {
                 headers: {
                     Authorization: bearerToken
                 }
-            });
-            console.log(response)
+            }, body );
+
             if (response.status !== 200) {
                 throw new Error(response.data.message || "Gagal Menambahkan Aktivitas");
             }
@@ -38,7 +36,7 @@ const AddAktivitas = () => {
         }
     };
 
-    return { loading, error, data, updateData };
+    return { loading, error, data, Nasabah };
 };
 
-export default AddAktivitas;
+export default addAktivitas;

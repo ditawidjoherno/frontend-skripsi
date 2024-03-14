@@ -52,7 +52,7 @@ const TodoList = () => {
   };
 
   return (
-    <div className="bg-white md:flex-row flex-col sm:ml-11 sm:mt-5 mt-4 rounded-2xl sm:h-[250px] h-[220px] sm:w-auto w-[300px] ">
+    <div className="bg-white md:flex-row flex-col sm:ml-11 sm:mt-10 mt-4 rounded-2xl sm:h-[250px] h-[220px] sm:w-auto w-[300px]">
       <div className="flex sm:mx-9 mx-5 pt-4 justify-between">
         <div className="flex gap-2">
           <IoReceipt className="sm:text-4xl text-2xl" />
@@ -68,7 +68,7 @@ const TodoList = () => {
         </div>
       </div>
       <hr className="border-t border-black my-2 mx-6" />
-      <div className="bg-white rounded-b-2xl sm:h-[170px] h-[160px] overflow-y-scroll">
+      <div className="bg-white rounded-b-2xl sm:h-[180px] h-[160px] overflow-y-scroll">
         <ul className="space-y-2 px-8 py-3 sm:text-base text-xs">
           {todos.map((todo) => (
             <li

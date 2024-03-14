@@ -1,54 +1,61 @@
 "use client";
 import { IoIosArrowDropleftCircle } from "react-icons/io";
+import Button from "../_components/button";
 import React, { useState, useEffect } from 'react';
-import Search from "./_components/search";
-// import Button from "./_components/button";
 import Link from "next/link";
-import useAktivitasHarian from "@/hooks/use-aktivitas-harian";
+import Search from "../_components/search";
+import useAktivitasBulanan from "@/hooks/use-aktivitas-bulanan";
+import useDataPerbulan from "@/hooks/use-data-perbulan";
+import { useParams } from "next/navigation";
 
 const page = () => {
 
   const [searchResults, setSearchResults] = useState([]);
-  const [tableData, setTableData] = useState([]);
-  const { loading, error, data, getUserData } = useAktivitasHarian();
-
-  const handleGetDataUser = async () => {
-    await getUserData();
-  }
-
-  useEffect(() => {
-    handleGetDataUser();
-    getUserData();
-  }, [])
+  const {bulan} = useParams()
 
   const handleSearch = (event) => {
     const { value } = event.target;
     setSearchTerm(value);
     setIsSearchActive(true);
   };
-  
+
+  const { loading, error, data, getDataPerbulan } = useDataPerbulan()
 
   useEffect(() => {
-    const jumlahAktivitas = tableData.length;
-  }, [tableData]);
-
-    useEffect(() => {
-    if (data) {
-      setTableData(data);
+    const fetchDataBulan = async () => {
+      await getDataPerbulan(bulan, "2024")
     }
-  }, [data]);
+
+    fetchDataBulan();
+  }, [])
+
+  if (loading) {
+    return (
+      <div>Loading</div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div>Error: {error.message}</div>
+    );
+  }
+
+  if (data) {
+    console.log(data)
+  }
 
   return (
     <div className={`bg-[#EAEAEA] h-full pb-4 flex flex-col items-center sm:pt-[75px] pt-[60px] sm:pr-5 pr-3 sm:ml-20 ml-10`}>
       <div className="sm:flex items-center w-full sm:justify-between">
         <div className="sm:ml-5 ml-3 flex items-center gap-3 ">
-        <h2 className="sm:text-4xl text-[24px] sm:pt-2 pt-7 font-bold sm:mt-0 -mt-9 ">
-            Monitoring Harian
+          <h2 className="sm:text-4xl text-[24px] sm:pt-2 pt-7 font-bold sm:mt-0 -mt-9 ">
+            Monitoring Bulanan
           </h2>
-          <IoIosArrowDropleftCircle className="sm:mt-2 -mt-7 sm:h-9 h-6 sm:w-12 w-9 sm:ml-0 -ml-3 sm:mb-0 -mb-4" />
+          <IoIosArrowDropleftCircle className="sm:mt-0 -mt-7 sm:h-9 h-6 sm:w-12 w-9 sm:ml-0 -ml-3 sm:mb-0 -mb-4" />
         </div>
         <div>
-          <Search onSearch={handleSearch} className="sm:mt-0 -mt-11 sm:h-9 h-6 sm:w-12 w-9" />
+          <Search onSearch={handleSearch} />
           <ul>
             {searchResults.map((result, index) => (
               <li key={index}>{result}</li>
@@ -56,11 +63,12 @@ const page = () => {
           </ul>
         </div>
       </div>
-      <div className="sm:ml-5 ml-3 w-full gap-9 mt-5">
-        <div className="bg-[#059BC7] rounded-t-2xl h-[65px] flex">
-        <h1 className="font-bold text-white sm:text-3xl text-[25px] pl-5 pt-4">Jumlah Aktivitas: {tableData.length} </h1>
+      <div className="sm:ml-5 ml-3 w-full gap-9 mt-5 ">
+        <div className="bg-[#1D2B53] rounded-t-2xl h-[65px] flex">
+          <h1 className="font-bold text-white sm:text-3xl text-[25px] pl-5 pt-3">Februari 2024</h1>
+          <h1 className="font-bold text-white sm:text-3xl text-[25px] pl-5 pt-3">(1.200)</h1>
         </div>
-        <div className="bg-white rounded-b-2xl sm:h-[700px] h-[500px] overflow-x-scroll">
+        <div className="bg-white rounded-b-2xl h-[500px] overflow-x-scroll">
           <table className="table-auto border-collapse w-full text-center overflow-x-acroll">
             <thead>
               <tr>

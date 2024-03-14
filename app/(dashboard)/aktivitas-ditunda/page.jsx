@@ -5,37 +5,48 @@ import { IoTime } from "react-icons/io5";
 import { IoFilterSharp } from "react-icons/io5";
 import { IoSearchOutline } from "react-icons/io5";
 import Link from 'next/link';
-import { useState } from 'react';
+import useAktivitasDitunda from '@/hooks/use-aktivitas-ditunda';
+import { useState, useEffect } from 'react';
 
 const page = () => {
 
     const [searchTerm, setSearchTerm] = useState('');
     const [isSearchActive, setIsSearchActive] = useState(false);
-
-    const DataNasabah = [
-        {
-            image: "/img/profil-header.png",
-            nama: "Data 1",
-            tanggal: "Date Data 1",
-            namaNasabah: "John Doe",
-            aktivitas: "Tabungan",
-            alamat: "Lorem Ipsum",
-            prospek: "Lorem Ipsum",
-            aktivitasSales: "Lorem Ipsum",
-        },
-        {
-            image: "/img/profil-header.png",
-            nama: "Data 3",
-            tanggal: "Date Data 1",
-            namaNasabah: "John Doe",
-            aktivitas: "Tabungan",
-            alamat: "Lorem Ipsum",
-            prospek: "Lorem Ipsum",
-            aktivitasSales: "Lorem Ipsum",
-        },
+    const { loading, error, data, getUserData } = useAktivitasDitunda();
 
 
-    ];
+    // const DataNasabah = [
+    //     {
+    //         image: "/img/profil-header.png",
+    //         nama: "Data 1",
+    //         tanggal: "Date Data 1",
+    //         namaNasabah: "John Doe",
+    //         aktivitas: "Tabungan",
+    //         alamat: "Lorem Ipsum",
+    //         prospek: "Lorem Ipsum",
+    //         aktivitasSales: "Lorem Ipsum",
+    //     },
+    //     {
+    //         image: "/img/profil-header.png",
+    //         nama: "Data 3",
+    //         tanggal: "Date Data 1",
+    //         namaNasabah: "John Doe",
+    //         aktivitas: "Tabungan",
+    //         alamat: "Lorem Ipsum",
+    //         prospek: "Lorem Ipsum",
+    //         aktivitasSales: "Lorem Ipsum",
+    //     },
+
+
+    // ];
+
+    const handleGetDataUser = async () => {
+        await getUserData();
+    }
+
+    useEffect(() => {
+        handleGetDataUser();
+    }, [])
 
     const handleSearch = (event) => {
         const { value } = event.target;
@@ -43,14 +54,32 @@ const page = () => {
         setIsSearchActive(true);
     };
 
+    useEffect(() => {
+        getUserData();
+    }, []);
 
-    const filteredData = DataNasabah.filter(data =>
-        data.nama.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        data.aktivitas.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        data.namaNasabah.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        data.prospek.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        data.aktivitasSales.toLowerCase().includes(searchTerm.toLowerCase()) ,
-    );
+
+    if (loading) {
+        return (
+            <div>Loading</div>
+        );
+    }
+
+    if (error) {
+        return (
+            <div>Error: {error.message}</div>
+        );
+    }
+
+
+
+    // const filteredData = DataNasabah.filter(data =>
+    //     data.nama.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    //     data.aktivitas.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    //     data.namaNasabah.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    //     data.prospek.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    //     data.aktivitasSales.toLowerCase().includes(searchTerm.toLowerCase()) ,
+    // );
 
     return (
         <div className={`bg-[#EAEAEA] h-full flex flex-col items-center sm:pt-[75px] pt-[60px] sm:pr-4 pr-3 sm:ml-20 ml-10`}>
@@ -92,33 +121,36 @@ const page = () => {
                     <table className="table-auto border-collapse w-full text-center overflow-x-auto">
                         <thead>
                             <tr>
+                            <th className="sm:px-14 px-7 sm:py-4 py-0">No</th>
                                 <th className="sm:px-14 px-7 sm:py-4 py-0">Nama</th>
                                 <th className="sm:px-14 px-7 sm:py-4 py-0">Tanggal Prospek</th>
                                 <th className="sm:px-14 px-7 sm:py-4 py-0">Aktivitas</th>
                                 <th className="sm:px-14 px-7 sm:py-4 py-0">Nama Nasabah</th>
-                                <th className="sm:px-14 px-7 sm:py-4 py-0">Alamat</th>
                                 <th className="sm:px-14 px-7 sm:py-4 py-0">Prospek</th>
                                 <th className="sm:px-14 px-7 sm:py-4 py-0">Aktivitas Sales</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {filteredData.map((data, index) => (
-                                <tr key={index}>
-                                    <td className="flex items-center sm:py-2 py-1 sm:px-4 px-1 ml-2">
-                                        <img src={data.image} alt={data.nama} className="sm:w-8 w-6 sm:h-8 h-6 sm:mr-4 mr-2" />
-                                        <span>{data.nama}</span>
-                                    </td>
-                                    <td>{data.tanggal}</td>
-                                    <td>{data.aktivitas}</td>
-                                    <td><Link href={`/profil_nasabah`}>
-                                        <div className="text-black hover:text-blue-700 cursor-pointer">{data.namaNasabah}</div>
-                                    </Link>
-                                    </td>
-                                    <td>{data.alamat}</td>
-                                    <td>{data.prospek}</td>
-                                    <td>{data.aktivitasSales}</td>
+                            {data && data.length > 0 ? (
+                                data.map((item, index) => (
+                                    <tr key={index}>
+                                        <td>{index + 1}</td>
+                                        <td>{item.nama}</td>
+                                        <td>{item.tanggal}</td>
+                                        <td>{item.aktivitas}</td>
+                                        <td><Link href={`/profil-nasabah`}>
+                                            <div className="text-black hover:text-blue-700 cursor-pointer">{item.nama_nasabah}</div>
+                                        </Link>
+                                        </td>
+                                        <td>{item.prospek}</td>
+                                        <td>{item.aktivitas_sales}</td>
+                                    </tr>
+                                ))
+                            ) : (
+                                <tr>
+                                    <td colSpan="7">Belum ada data yang ditambahkan</td>
                                 </tr>
-                            ))}
+                            )}
                         </tbody>
                     </table>
                 </div>

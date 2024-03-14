@@ -1,12 +1,24 @@
 "use client";
 import { IoIosArrowDropleftCircle } from "react-icons/io";
 import Button from "./_components/button";
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Box from "./_components/box";
 import { IoPodiumSharp } from "react-icons/io5";
 import Link from "next/link";
+import useTotalAktivitasBulanan from "@/hooks/use-total-aktivitas-bulanan";
 
 const page = () => {
+
+  const { loading, error, data, getTotalAktivitas } = useTotalAktivitasBulanan()
+
+  useEffect(() => {
+    const fetchTotalAktivitas = async () => {
+      await getTotalAktivitas();
+    }
+
+    fetchTotalAktivitas();
+  }, [])
+
 
   return (
     <div className={`bg-[#EAEAEA] h-full pb-4 flex flex-col items-center sm:pt-[75px] pt-[60px] sm:pr-5 pr-3 sm:ml-20 ml-10`}>
@@ -16,8 +28,8 @@ const page = () => {
             Monitoring
           </h2>
           <Link href="/monitoring">
-                    <IoIosArrowDropleftCircle className="sm:h-10 sm:w-10 h-5 w-5 sm:ml-3 ml-1" />
-                </Link>
+            <IoIosArrowDropleftCircle className="sm:h-10 sm:w-10 h-5 w-5 sm:ml-3 ml-1" />
+          </Link>
         </div>
       </div>
       <div className="sm:ml-5 ml-3 w-full ">
@@ -26,88 +38,19 @@ const page = () => {
         </div>
         <div className="bg-white rounded-b-2xl h-auto">
           <div className="px-5 py-4">
-            <div className="flex gap-5 ">
-              <Box
-                bgColor={"bg-[#1D2B53]"}
-                icon={<IoPodiumSharp className="text-[#FFCD27] ml-9 mt-7" />}
-                text={"Januari"}
-                number={25}
-              />
-              <Box
-                bgColor={"bg-[#1D2B53]"}
-                icon={<IoPodiumSharp className="text-[#FFCD27] ml-9 mt-7" />}
-                text={"Februari"}
-                number={25}
-              />
-              <Box
-                bgColor={"bg-[#1D2B53]"}
-                icon={<IoPodiumSharp className="text-[#FFCD27] ml-9 mt-7" />}
-                text={"Maret"}
-                number={25}
-              />
-            </div>
-            <div className="flex gap-5 mt-5">
-              <Box
-                bgColor={"bg-[#1D2B53]"}
-                icon={<IoPodiumSharp className="text-[#FFCD27] ml-9 mt-7" />}
-                text={"April"}
-                number={25}
-              />
-              <Box
-                bgColor={"bg-[#1D2B53]"}
-                icon={<IoPodiumSharp className="text-[#FFCD27] ml-9 mt-7" />}
-                text={"Mei"}
-                number={25}
-              />
-              <Box
-                bgColor={"bg-[#1D2B53]"}
-                icon={<IoPodiumSharp className="text-[#FFCD27] ml-9 mt-7" />}
-                text={"Juni"}
-                number={25}
-              />
-            </div>
-            <div className="flex gap-5 mt-5">
-              <Box
-                bgColor={"bg-[#1D2B53]"}
-                icon={<IoPodiumSharp className="text-[#FFCD27] ml-9 mt-7" />}
-                text={"Juli"}
-                number={25}
-              />
-              <Box
-                bgColor={"bg-[#1D2B53]"}
-                icon={<IoPodiumSharp className="text-[#FFCD27] ml-9 mt-7" />}
-                text={"Agustus"}
-                number={25}
-              />
-              <Box
-                bgColor={"bg-[#1D2B53]"}
-                icon={<IoPodiumSharp className="text-[#FFCD27] ml-9 mt-7" />}
-                text={"September"}
-                number={25}
-              />
-            </div>
-            <div className="flex gap-5 mt-5">
-              <Box
-                bgColor={"bg-[#1D2B53]"}
-                icon={<IoPodiumSharp className="text-[#FFCD27] ml-9 mt-7" />}
-                text={"Okteber"}
-                number={25}
-              />
-              <Box
-                bgColor={"bg-[#1D2B53]"}
-                icon={<IoPodiumSharp className="text-[#FFCD27] ml-9 mt-7" />}
-                text={"November"}
-                number={25}
-              />
-              <Box
-                bgColor={"bg-[#1D2B53]"}
-                icon={<IoPodiumSharp className="text-[#FFCD27] ml-9 mt-7" />}
-                text={"Desember"}
-                number={25}
-              />
+            <div className="grid grid-cols-3 gap-4">
+              {data && data.map((item, index) => (
+                <Box
+                  key={index}
+                  bgColor={"bg-[#1D2B53]"}
+                  icon={<IoPodiumSharp className="text-[#FFCD27] ml-9 mt-7" />}
+                  text={item.month}
+                  bulan={item.month}
+                  number={item.total}
+                />
+              ))}
             </div>
           </div>
-
         </div>
       </div>
     </div>

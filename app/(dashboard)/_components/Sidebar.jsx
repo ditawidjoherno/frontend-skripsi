@@ -4,13 +4,32 @@ import { IoCreate, IoDesktop, IoDocument, IoHome } from "react-icons/io5"
 import { IoIosPeople } from "react-icons/io";
 import { BiBullseye } from "react-icons/bi"
 import Header from "./Header"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import Content from "./Content"
 import { IoIosArrowDropleftCircle } from "react-icons/io"
 import Link from 'next/link';
+import useUser from "@/hooks/use-user";
 
 const Sidebar = ({ isCollapse, setIsCollapse }) => {
     const [activePage, setActivePage] = useState("Beranda");
+
+    const { loading, error, data: userData, getUserData } = useUser();
+
+    useEffect(() => {
+        getUserData();
+    }, []);
+
+    if (error) {
+        return <div>Error: {error.message}</div>;
+    }
+
+    if (!userData) {
+        return <div>No user data available</div>;
+    }
+
+    const { jabatan } = userData;
+
+
 
     const sidebarItems = [
         {
@@ -21,17 +40,19 @@ const Sidebar = ({ isCollapse, setIsCollapse }) => {
         {
             icon: <IoDesktop />,
             text: "Monitoring",
-            route: "/monitoring"
+            route: "/monitoring",
+            visible: jabatan !== 'staff' && jabatan !== 'unit head'
         },
         {
             icon: <IoCreate />,
             text: "Input Data",
-            route: "/data-aktivitas"
+            route: "/data-aktivitas",
+            visible: jabatan !== 'manager'
         },
         {
             icon: <IoIosPeople />,
             text: "Data Nasabah",
-            route: "/data-nasabah"
+            route: "/data-nasabah/5"
         },
         {
             icon: <BiBullseye />,
@@ -59,18 +80,21 @@ const Sidebar = ({ isCollapse, setIsCollapse }) => {
                 </div>
                 <div className="w-full flex flex-col md:px-4 sidebar-transition">
                     {sidebarItems.map((item, index) => (
-                        <Link href={item.route} key={index}>
-                            <button
-                                className={`bg-[#00000] flex ${isCollapse ? "md:justify-center justify-start" : "md:justify-start justify-center"} items-center sidebar-transition hover:bg-[#FFE500]  w-full h-[35px] rounded-xl px-5 ${activePage === item.text ? "bg-[#FFE500]" : ""}`}
-                                onClick={() => handleItemClick(item.text)}
-                            >
-                                <div className="flex h-full gap-4 sidebar-transition items-center">
-                                    {item.icon}
-                                    <p className={`${isCollapse ? "md:hidden block" : "hidden md:block"} md:text-base text-xs sidebar-transition `}>{item.text}</p>
-                                </div>
-                            </button>
-                        </Link>
+                        (item.visible === undefined || item.visible) && (
+                            <Link href={item.route} key={index}>
+                                <button
+                                    className={`bg-[#00000] flex ${isCollapse ? "md:justify-center justify-start" : "md:justify-start justify-center"} items-center sidebar-transition hover:bg-[#FFE500]  w-full h-[35px] rounded-xl px-5 ${activePage === item.text ? "bg-[#FFE500]" : ""}`}
+                                    onClick={() => handleItemClick(item.text)}
+                                >
+                                    <div className="flex h-full gap-4 sidebar-transition items-center">
+                                        {item.icon}
+                                        <p className={`${isCollapse ? "md:hidden block" : "hidden md:block"} md:text-base text-xs sidebar-transition `}>{item.text}</p>
+                                    </div>
+                                </button>
+                            </Link>
+                        )
                     ))}
+
                 </div>
             </div>
         </>

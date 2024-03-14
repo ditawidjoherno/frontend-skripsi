@@ -1,13 +1,35 @@
-"use client";
-import { useState } from 'react';
+"use client"
+import React, { useEffect, useState } from 'react';
 import { IoIosArrowDropleftCircle } from "react-icons/io";
 import InputPopup from './_components/popup';
 import TableKpi from './_components/tabelnilaikpi';
 import Dropdown from './_components/dropdown';
 import TabelKpiBulan from './_components/tabelkpibulan';
+import useUser from '@/hooks/use-user';
 
 const Page = () => {
+  const { loading, error, data: userData, getUserData } = useUser();
   const [selectedOptions1, setSelectedOptions1] = useState('');
+  const [inputData, setInputData] = useState([]);
+  const [popupVisible, setPopupVisible] = useState(false);
+
+  useEffect(() => {
+    getUserData();
+  }, []);
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>Error: {error.message}</div>;
+  }
+
+  if (!userData) {
+    return <div>No user data available</div>;
+  }
+
+  const { jabatan } = userData;
 
   const NamaStaff = [
     { value: 'option1', label: '== Pilih Nama Staff ==' },
@@ -41,10 +63,6 @@ const Page = () => {
     setSelectedOptions1(selectedOption.value);
   };
 
-  const [popupVisible, setPopupVisible] = useState(false);
-  const [inputData, setInputData] = useState([]);
-  const [newItem, setNewItem] = useState('');
-
   const handleAddNewItem = () => {
     setPopupVisible(true);
   };
@@ -63,6 +81,7 @@ const Page = () => {
         <IoIosArrowDropleftCircle className="sm:h-10 sm:w-10 h-5 w-5 sm:ml-3 ml-1" />
       </div>
       <div className="bg-white rounded-2xl h-auto sm:ml-5 ml-3 w-full sm:pt-10 pt-6 ">
+      {jabatan === 'manager' && (
         <div className='justify-between flex mx-3 ml-9 mt-3 '>
           <Dropdown
             id="dropdown"
@@ -72,12 +91,17 @@ const Page = () => {
             isSearchable={true}
             placeholder={"Pilih Nama Staff"}
           />
-          <button onClick={handleAddNewItem} className='cursor-pointer sm:bg-[#5293CE] items-center justify-center w-[170px] h-[40px] flex rounded-lg font-medium text-white text-semibold'>Tambah</button>
+          {/* <button onClick={handleAddNewItem} className='cursor-pointer sm:bg-[#5293CE] items-center justify-center w-[170px] h-[40px] flex rounded-lg font-medium text-white text-semibold'>Tambah</button> */}
         </div>
+      )}
+      {jabatan === 'manager' && (
         <TableKpi data={inputData} />
-        {popupVisible && (
-          <InputPopup onSave={handleSaveNewItem} onClose={() => setPopupVisible(false)} />
         )}
+        {/* {popupVisible && (
+          <InputPop
+          up onSave={handleSaveNewItem} onClose={() => setPopupVisible(false)} />
+        )} */}
+        {(jabatan === 'manager' || jabatan === 'staff') && (
         <div className='mt-10 ml-9'>
           <Dropdown
             id="dropdown"
@@ -88,7 +112,8 @@ const Page = () => {
             placeholder={"Pilih Nama Bulan"}
           />
         </div>
-        <TabelKpiBulan />
+        )}
+        {(jabatan === 'manager' || jabatan === 'staff') && <TabelKpiBulan />}
       </div>
     </div>
   );

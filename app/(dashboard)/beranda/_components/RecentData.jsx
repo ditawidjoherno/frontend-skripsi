@@ -4,45 +4,22 @@ import { IoNewspaperSharp } from "react-icons/io5";
 import { IoFilterSharp } from "react-icons/io5";
 import { IoSearchOutline } from "react-icons/io5";
 import Link from "next/link";
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import useRecentData from "@/hooks/use-recent-data";
 
 const RecentData = () => {
 
   const [searchTerm, setSearchTerm] = useState('');
   const [isSearchActive, setIsSearchActive] = useState(false);
+  const { loading, error, data, getUserData } = useRecentData();
 
-  const DataNasabah = [
-    {
-      image: "/img/profil-header.png",
-      nama: "Data 1",
-      tanggal: "Date Data 1",
-      namaNasabah: "John Doe",
-      aktivitas: "Tabungan",
-    },
-    {
-      image: "/img/profil-header.png",
-      nama: "Data 2",
-      tanggal: "Date Data 2",
-      namaNasabah: "Jane Doe",
-      aktivitas: "Tabungan",
-    },
-    {
-      image: "/img/profil-header.png",
-      nama: "Data 2",
-      tanggal: "Date Data 2",
-      namaNasabah: "Jane Doe",
-      aktivitas: "Tabungan",
-    },
-    {
-      image: "/img/profil-header.png",
-      nama: "Data 2",
-      tanggal: "Date Data 2",
-      namaNasabah: "Jane Doe",
-      aktivitas: "Tabungan",
-    },
+  const handleGetDataUser = async () => {
+    await getUserData();
+  }
 
-
-  ];
+  useEffect(() => {
+    handleGetDataUser();
+  }, [])
 
   const handleSearch = (event) => {
     const { value } = event.target;
@@ -50,10 +27,10 @@ const RecentData = () => {
     setIsSearchActive(true);
   };
 
+  useEffect(() => {
+    getUserData();
+  }, []);
 
-  const filteredData = DataNasabah.filter(data =>
-    data.nama.toLowerCase().includes(searchTerm.toLowerCase())
-  );
 
   return (
     <div className="bg-white md:flex-row flex-col sm:ml-11 sm:mt-10 mt-4 rounded-2xl sm:h-[350px] h-[220px] sm:w-auto w-[300px] ">
@@ -92,21 +69,27 @@ const RecentData = () => {
             </tr>
           </thead>
           <tbody>
-            {filteredData.map((data, index) => (
-              <tr key={index}>
-                <td className="flex items-center sm:py-2 py-1 sm:px-4 px-1 ml-2">
-                  <img src={data.image} alt={data.nama} className="sm:w-8 w-6 sm:h-8 h-6 sm:mr-4 mr-2" />
-                  <span>{data.nama}</span>
-                </td>
-                <td>{data.tanggal}</td>
-                <td><Link href={`/profil_nasabah`}>
-                  <div className="text-black hover:text-blue-700 cursor-pointer">{data.namaNasabah}</div>
-                </Link>
-                </td>
-                <td>{data.aktivitas}</td>
-              </tr>
-            ))}
-          </tbody>
+              {data && data.length > 0 ? (
+                data.map((item, index) => (
+                  <tr key={index}>
+                    <td className="flex items-center sm:py-2 py-1 sm:px-4 px-1 ml-2">
+                      <img src={item.profil} alt={item?.nama} className="sm:w-8 w-6 sm:h-8 h-6 sm:mr-4 mr-2" />
+                      <span>{item.nama} </span>
+                    </td>
+                    <td>{item.tanggal}</td>
+                    <td><Link href={`/profil_nasabah`}>
+                      <div className="text-black hover:text-blue-700 cursor-pointer">{item.nama_nasabah}</div>
+                    </Link>
+                    </td>
+                    <td>{item.aktivitas}</td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan="7">Belum ada data yang ditambahkan</td>
+                </tr>
+              )}
+            </tbody>
         </table>
       </div>
     </div>

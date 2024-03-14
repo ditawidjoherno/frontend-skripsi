@@ -10,7 +10,7 @@ const useLogin = () => {
     const [data, setData] = useState(null)
     const router = useRouter()
     const cookie = `${process.env.NEXT_PUBLIC_COOKIE_NAME}`
-    console.log(cookie)
+    // console.log(cookie)
 
     const login = async (nip, password) => {
         setLoading(true)

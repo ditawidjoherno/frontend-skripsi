@@ -1,41 +1,61 @@
-"use client"
+"use client";
+
 import { useState } from 'react';
-import Link from 'next/link';
 import { IoIosArrowDropleftCircle } from "react-icons/io";
+import Link from 'next/link';
 
 const Page = () => {
-  const [selectedKPI, setSelectedKPI] = useState(null);
-  const [selectedStaff, setSelectedStaff] = useState(null);
-  const [inputValue, setInputValue] = useState('');
+  const [selectedKpi, setSelectedKpi] = useState('');
+  const [inputTarget, setInputTarget] = useState({});
   const [tableData, setTableData] = useState([]);
-  const [monthlyInputs, setMonthlyInputs] = useState(Array(12).fill(''));
+  const [message, setMessage] = useState('');
 
-  const months = [
-    "Januari", "Februari", "Maret", "April", "Mei", "Juni",
-    "Juli", "Agustus", "September", "Oktober", "November", "Desember"
-  ];
-
-  const handleInputChange = (e) => {
-    setInputValue(e.target.value);
+  const handleChangeKPI = (event) => {
+    const { value } = event.target;
+    setSelectedKpi(value);
+    setInputTarget({});
   };
 
-  const handleMonthlyInputChange = (index, e) => {
-    const newInputs = [...monthlyInputs];
-    newInputs[index] = e.target.value;
-    setMonthlyInputs(newInputs);
+  const handleInputChange = (event) => {
+    const { value } = event.target;
+    setInputTarget((prevInput) => ({ ...prevInput, bobot_penilaian: value }));
+  };
+
+  const handleChangeTarget = (event, month) => {
+    const { value } = event.target;
+    setInputTarget((prevInput) => ({ ...prevInput, [month]: value }));
   };
 
   const handleAddData = () => {
-    if (!inputValue || !selectedKPI) return;
+    if (!selectedKpi || !inputTarget.bobot_penilaian || Object.keys(inputTarget).length - 1 !== 12) {
+      setMessage("Please select KPI, fill in the weight of assessment, and fill in all monthly targets.");
+      return;
+    }
+
     const newData = {
-      kpi: selectedKPI,
-      value: inputValue,
-      monthlyValues: [...monthlyInputs],
+      kpi: selectedKpi,
+      value: inputTarget.bobot_penilaian,
+      monthlyValues: Object.values(inputTarget).slice(1),
     };
-    setTableData([...tableData, newData]);
-    setInputValue('');
-    setMonthlyInputs(Array(12).fill(''));
+
+    setTableData((prevData) => [...prevData, newData]);
+    setInputTarget({});
+    setSelectedKpi('');
+    setMessage('');
   };
+
+  const test = () => {
+    console.log(tableData)
+    console.log(inputTarget)
+  }
+
+  const months = [
+    "januari", "februari", "maret", "april",
+    "mei", "juni", "juli", "agustus",
+    "september", "oktober", "november", "desember"
+  ];
+
+  const monthlyInputs = months.map(month => `${month.charAt(0).toUpperCase()}${month.slice(1)}`);
 
   return (
     <div className={`bg-[#EAEAEA] h-full flex flex-col items-center sm:pt-[75px] pt-[60px] sm:pr-4 pr-3 sm:ml-20 ml-10`}>
@@ -55,8 +75,6 @@ const Page = () => {
               <select
                 id="staffSelect"
                 className="border border-gray-300 sm:w-[200px] w-[100px] p-2 rounded-md"
-                onChange={(e) => setSelectedStaff(e.target.value)}
-                value={selectedStaff}
               >
                 <option value="">Select Nama Staff</option>
                 <option value="Nama Staff 1">Nama Staff 1</option>
@@ -73,12 +91,11 @@ const Page = () => {
               <select
                 id="kpiSelect"
                 className="border border-gray-300 sm:w-[200px] w-[100px] p-2 rounded-md"
-                onChange={(e) => setSelectedKPI(e.target.value)}
-                value={selectedKPI}
+                onChange={handleChangeKPI}
+                value={selectedKpi}
               >
                 <option value="">Select KPI</option>
-                <option value="DPK RITEL">DPK RITEL</option>
-                <option value="TABUNGAN">TABUNGAN</option>
+                <option value="TABUNGAN">T ABUNGAN</option>
                 <option value="DEPO RITEL">DEPO RITEL</option>
                 <option value="NTB - PBO">NTB - PBO</option>
                 <option value="NOA BTN MOVE">NOA BTN MOVE</option>
@@ -101,30 +118,29 @@ const Page = () => {
               </select>
             </div>
           </div>
-          {selectedKPI && (
+          {selectedKpi && (
             <div className="mb-4 ">
               <label htmlFor="inputValue" className="block mb-2">Bobot Penilaian:</label>
               <input
                 type="text"
                 id="inputValue"
                 className="border border-gray-500 p-2 w-1/3 rounded-md mb-2"
-                value={inputValue}
+                value={inputTarget.bobot_penilaian || ""}
                 onChange={handleInputChange}
               />
               <div className="grid grid-cols-3 gap-4 h-full mr-3">
-                {monthlyInputs.map((value, index) => (
-                  <div key={index} className="flex flex-col  justify-center h-full">
-                    <span className="mb-2">{`${months[index]}:`}</span>
+                {monthlyInputs.map((month, index) => (
+                  <div key={index} className="flex flex-col justify-center h-full">
+                    <span className="mb-2">{month.charAt(0).toUpperCase() + month.slice(1)}:</span>
                     <input
                       type="text"
                       className="border border-gray-500 p-2 rounded-md w-full"
-                      value={value}
-                      onChange={(e) => handleMonthlyInputChange(index, e)}
+                      value={inputTarget[month] || ""}
+                      onChange={(e) => handleChangeTarget(e, month)}
                     />
                   </div>
                 ))}
               </div>
-
             </div>
           )}
           <div className='flex justify-end mt-5 mr-3'>
@@ -135,14 +151,15 @@ const Page = () => {
               Tambah Data
             </button>
           </div>
+          {message && <p className="text-red-500">{message}</p>}
           <div className="bg-white rounded-b-2xl h-auto overflow-x-scroll">
             <table className="border border-gray-300 w-full mr-5">
               <thead>
                 <tr>
                   <th className="border border-gray-300 px-14 sm:py-4 py-2">KPI</th>
                   <th className="border border-gray-300 px-14 sm:py-4 py-2">Bobot Penilaian</th>
-                  {monthlyInputs.map((_, index) => (
-                    <th key={index} className="border border-gray-300 px-14 sm:py-4 py-2">{months[index]}</th>
+                  {months.map((month, index) => (
+                    <th key={index} className="border border-gray-300 px-14 sm:py-4 py-2">{month.charAt(0).toUpperCase() + month.slice(1)}</th>
                   ))}
                 </tr>
               </thead>
@@ -150,7 +167,7 @@ const Page = () => {
                 {tableData.map((data, index) => (
                   <tr key={index}>
                     <td className="border border-gray-300 p-2">{data.kpi}</td>
-                    <td className="border border-gray-300 p-2">{data.value}%</td>
+                    <td className="border border-gray-300 p-2">{data.value}</td>
                     {data.monthlyValues.map((value, index) => (
                       <td key={index} className="border border-gray-300 p-2">{value}</td>
                     ))}
@@ -162,7 +179,7 @@ const Page = () => {
           <div className='justify-end mt-5 flex mr-3'>
             <button
               className="bg-blue-500 text-white px-4 py-2 mb-10 rounded-md mr-2"
-              onClick={handleAddData}
+              onClick={test}
             >
               Simpan
             </button>

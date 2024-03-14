@@ -18,7 +18,7 @@ const Dropdown = ({ text, options, onChange, value, placeholder }) => {
       <div className='sm:px-10 pt'>
         <Select
           id="dropdown"
-          value={options.find(option => option.value === value)}
+          value={options.find(option => option === value)}
           onChange={onChange}
           options={options}
           isSearchable={true} 

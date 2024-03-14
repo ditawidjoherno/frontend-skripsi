@@ -2,11 +2,38 @@
 import { IoCheckmarkDoneCircleOutline } from "react-icons/io5";
 import { IoTimeSharp } from "react-icons/io5";
 import Box from "./_components/Box";
-import RecentData from "./_components/RecentData";
+import React, { useEffect, useState } from 'react';
+import useUser from "@/hooks/use-user";
+import useAktivitasSelesai from "@/hooks/use-aktivitas-selesai";
 import TodoList from "./_components/ToDoList";
 import Calendar from "./_components/Calendar";
+import RecentData from "./_components/RecentData";
+import useAktivitasDitunda from "@/hooks/use-aktivitas-ditunda";
 
-const page = () => {
+const Page = () => {
+  const { data: userData, getUserData: getUser } = useUser();
+  const { data: selesaiData, getUserData: getSelesaiData } = useAktivitasSelesai();
+  const { data: DitundaData, getUserData: getDitundaData } = useAktivitasDitunda();
+  const [jumlahSelesaiData, setJumlahSelesaiData] = useState(0);
+  const [jumlahDitundaData, setJumlahDitundaData] = useState(0);
+
+  useEffect(() => {
+    getUser();
+    getSelesaiData();
+    getDitundaData();
+  }, []);
+
+  useEffect(() => {
+    if (selesaiData) {
+      setJumlahSelesaiData(selesaiData.length);
+    }
+  }, [selesaiData]);
+
+  useEffect(() => {
+    if (DitundaData) {
+      setJumlahDitundaData(DitundaData.length);
+    }
+  }, [DitundaData]);
 
   const handleSelesaiClick = () => {
     window.location.href = '/aktivitas-selesai';
@@ -29,7 +56,7 @@ const page = () => {
               <IoCheckmarkDoneCircleOutline className="text-white ml-9 mt-7" />
             }
             text={"Selesai"}
-            number={25}
+            number={jumlahSelesaiData}
             hoverColor={"bg-blue-600"}
           />
         </button>
@@ -38,16 +65,17 @@ const page = () => {
             bgColor={"bg-[#F76B03]"}
             icon={<IoTimeSharp className="text-white ml-9 mt-7" />}
             text={"Ditunda"}
-            number={25}
+            number={jumlahDitundaData}
             hoverColor={"bg-blue-600"}
           />
         </button>
       </div>
-      <div className="flex  flex-col lg:flex-row ml-5 justfiy-center items-center">
+      <div className="flex  flex-col lg:flex-row ml-5 justfiy-center">
         <div className="sm:w-1/2">
-          <RecentData />
+          {userData && userData.jabatan === 'manager' && <RecentData />}
           <TodoList />
         </div>
+
         <div className="sm:w-1/2">
           <Calendar />
         </div>
@@ -55,4 +83,4 @@ const page = () => {
     </div>
   );
 };
-export default page;
+export default Page;
