@@ -4,7 +4,7 @@ import { useState } from "react";
 import { create } from "zustand";
 import useUserStore from "./use-data-user";
 
-const useDataPerbulan = () => {
+const useTotalMingguan = () => {
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState(null)
     const [data, setData] = useState(null)
@@ -13,17 +13,18 @@ const useDataPerbulan = () => {
     const { user, setUser, clearUser } = useUserStore();
 
     const bearerToken = `Bearer ${token}`
-    const getDataPerbulan = async (bulan, tahun) => {
+    const getTotalMingguan = async () => {
         setLoading(true)
         setError(null)
         setData(null)
 
         try {
-            const response = await axios.get(`https://backend-btn-tracking.vercel.app/aktivitas-bulanan/${bulan}/${tahun}`, {
+            const response = await axios.get(`https://back-btn-boost.vercel.app/aktivitas-mingguan`, {
                 headers: {
                     Authorization: bearerToken
                 }
             });
+            console.log(response);
             if (response.status !== 200) {
                 throw new Error(response.data.message || "Gagal Mendapat Data Bulanan")
             }
@@ -36,7 +37,7 @@ const useDataPerbulan = () => {
         }
     }
 
-    return { loading, error, data, getDataPerbulan }
+    return { loading, error, data, getTotalMingguan }
 }
 
-export default useDataPerbulan;
+export default useTotalMingguan;

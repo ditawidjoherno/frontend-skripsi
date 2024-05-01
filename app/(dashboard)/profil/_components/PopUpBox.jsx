@@ -7,7 +7,7 @@ import useUserStore from '@/hooks/use-data-user';
 import { IoEyeOutline, IoEyeOffOutline } from "react-icons/io5";
 
 const PopUpBox = () => {
-  const { loading, error, data, updateData, updatePassword } = UpdateProfile();
+  const { loading, error, data, updateData, updatePassword, updateProfileImage } = UpdateProfile();
   const { user } = useUserStore();
   const [updatedNama, setUpdatedNama] = useState('');
   const [updatedEmail, setUpdatedEmail] = useState('');
@@ -15,8 +15,8 @@ const PopUpBox = () => {
   const [updatedTelpon, setUpdatedTelpon] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
-  const [showPassword, setShowPassword] = useState(false); // State untuk menunjukkan atau menyembunyikan password
-
+  const [showPassword, setShowPassword] = useState(false); 
+  const [selectedImage, setSelectedImage] = useState(null);
   const { isPopUpOpen, setIsPopUpOpen, actionType, setActionType } = usePopup();
 
   const handleButtonClick = (type) => {
@@ -30,15 +30,9 @@ const PopUpBox = () => {
       setUpdatedEmail(user.email);
       setUpdatedAlamat(user.alamat);
       setUpdatedTelpon(user.nomor_telepon);
+      setNewPassword(user.password);
     }
   }, [user]);
-
-  const allUpdatedData = {
-    "nama": updatedNama,
-    "email": updatedEmail || "",
-    "nomor_telepon": updatedTelpon,
-    "alamat": updatedAlamat
-  };
 
   const handleUpdateData = async () => {
     if (actionType === 'changePassword') {
@@ -50,9 +44,26 @@ const PopUpBox = () => {
         alert('Gagal memperbarui password');
       }
     } else {
-      console.log(allUpdatedData);
-      await updateData(allUpdatedData);
-      setIsPopUpOpen(false);
+      try {
+        let imageUrl = '';
+
+        if (selectedImage) {
+          await updateProfileImage(selectedImage);
+          setIsPopUpOpen(false);
+        } else {
+          const updatedProfileData = {
+            nama: updatedNama,
+            email: updatedEmail || '',
+            nomor_telepon: updatedTelpon,
+            alamat: updatedAlamat,
+          };
+          updateData(updatedProfileData);
+          setIsPopUpOpen(false);
+        }
+      } catch (error) {
+        console.error('Gagal memperbarui profil:', error);
+        alert('Gagal memperbarui profil');
+      }
     }
   };
 
@@ -169,12 +180,22 @@ const PopUpBox = () => {
                         onChange={(e) => setUpdatedTelpon(e.target.value)}
                       />
                     </div>
+                    <div className="mb-3 flex flex-col ">
+                      <label htmlFor="newProfilePicture" className="block items-center text-md font-medium text-gray-700">
+                        Foto Profil
+                      </label>
+                      <input
+                        type="file"
+                        id="newProfilePicture"
+                        className="mt-1 pl- py-1 w-full rounded-md"
+                        onChange={(e) => setSelectedImage(e.target.files[0])}
+                      />
+                    </div>
                   </form>
-
                 </div>
               </>
             )}
-            <div className='justify-end flex gap-3 mr-3 mt-8'>
+            <div className='justify-end flex gap-3 mr-3 mt-3'>
               <button
                 onClick={() => setIsPopUpOpen(false)}
                 className=" text-white shadow-sm bg-[#8E969E] px-9 py-[3px] rounded hover:bg-[#adb5bd]"

@@ -5,7 +5,7 @@ import { useState } from "react";
 import { create } from "zustand";
 import useUserStore from "./use-data-user";
 
-const useDataAktivitas = (aktivitas) => {
+const useAktivitasSelesai = () => {
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState(null)
     const [data, setData] = useState(null)
@@ -18,14 +18,14 @@ const useDataAktivitas = (aktivitas) => {
         setLoading(true)
         setError(null)
         setData(null)
-        console.log(aktivitas)
 
         try {
-            const response = await axios.get(`https://backend-btn-tracking.vercel.app/aktivitas/${aktivitas}`, {
+            const response = await axios.get("https://back-btn-boost.vercel.app/aktivitas", {
                 headers: {
                     Authorization: bearerToken
                 }
             });
+
 
             if (!response.status === 200) {
                 throw new Error(response.data.message || "Gagal Mendapat User")
@@ -43,4 +43,4 @@ const useDataAktivitas = (aktivitas) => {
     return { loading, error, data, getUserData }
 }
 
-export default useDataAktivitas
+export default useAktivitasSelesai

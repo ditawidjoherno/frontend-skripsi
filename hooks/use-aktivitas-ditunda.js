@@ -20,7 +20,7 @@ const useAktivitasDitunda = () => {
         setData(null)
 
         try {
-            const response = await axios.get("https://backend-btn-tracking.vercel.app/aktivitas-ditunda", {
+            const response = await axios.get("https://back-btn-boost.vercel.app/aktivitas-ditunda", {
                 headers: {
                     Authorization: bearerToken
                 }

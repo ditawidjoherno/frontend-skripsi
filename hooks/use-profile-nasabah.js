@@ -21,7 +21,7 @@ const useProfileNasabah = (id) => {
         console.log(id)
 
         try {
-            const response = await axios.get(`https://backend-btn-tracking.vercel.app/profile-nasabah/${id}`, {
+            const response = await axios.get(`https://back-btn-boost.vercel.app/profile-nasabah/${id}`, {
                 headers: {
                     Authorization: bearerToken
                 }

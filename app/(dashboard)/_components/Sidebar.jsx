@@ -1,23 +1,25 @@
-"use client"
-
-import { IoCreate, IoDesktop, IoDocument, IoHome } from "react-icons/io5"
+import { IoCreate, IoDesktop, IoDocument, IoHome } from "react-icons/io5";
 import { IoIosPeople } from "react-icons/io";
-import { BiBullseye } from "react-icons/bi"
-import Header from "./Header"
-import { useState, useEffect } from "react"
-import Content from "./Content"
-import { IoIosArrowDropleftCircle } from "react-icons/io"
+import { BiBullseye } from "react-icons/bi";
+import Header from "./Header";
+import { useState, useEffect } from "react";
 import Link from 'next/link';
 import useUser from "@/hooks/use-user";
+import { HiUserAdd } from "react-icons/hi";
+
+
 
 const Sidebar = ({ isCollapse, setIsCollapse }) => {
     const [activePage, setActivePage] = useState("Beranda");
-
     const { loading, error, data: userData, getUserData } = useUser();
 
     useEffect(() => {
         getUserData();
     }, []);
+
+    if (loading) {
+        return <div>Loading...</div>;
+    }
 
     if (error) {
         return <div>Error: {error.message}</div>;
@@ -25,11 +27,15 @@ const Sidebar = ({ isCollapse, setIsCollapse }) => {
 
     if (!userData) {
         return <div>No user data available</div>;
+
+        
+    }
+    const obfuscateNumber = (number) => {
+        const secretKey = 3474;
+        return number + secretKey;
     }
 
     const { jabatan } = userData;
-
-
 
     const sidebarItems = [
         {
@@ -44,6 +50,12 @@ const Sidebar = ({ isCollapse, setIsCollapse }) => {
             visible: jabatan !== 'staff' && jabatan !== 'unit head'
         },
         {
+            icon: <HiUserAdd />,
+            text: "Tambah user",
+            route: "/input-staff",
+            visible: jabatan == 'admin'
+        },
+        {
             icon: <IoCreate />,
             text: "Input Data",
             route: "/data-aktivitas",
@@ -52,12 +64,19 @@ const Sidebar = ({ isCollapse, setIsCollapse }) => {
         {
             icon: <IoIosPeople />,
             text: "Data Nasabah",
-            route: "/data-nasabah/5"
+            route: `/data-nasabah/${obfuscateNumber(300)}`
+
+        },
+        {
+            icon: <HiUserAdd />,
+            text: "Input Target",
+            route: "/InputTargetTahunan",
+            visible: jabatan == 'admin'
         },
         {
             icon: <BiBullseye />,
             text: "Target Tahunan",
-            route: "/target-tahunan"
+            route: jabatan === 'staff' ? "/target-tahunan-staff" : "/target-tahunan"
         },
         {
             icon: <IoDocument />,
@@ -85,6 +104,7 @@ const Sidebar = ({ isCollapse, setIsCollapse }) => {
                                 <button
                                     className={`bg-[#00000] flex ${isCollapse ? "md:justify-center justify-start" : "md:justify-start justify-center"} items-center sidebar-transition hover:bg-[#FFE500]  w-full h-[35px] rounded-xl px-5 ${activePage === item.text ? "bg-[#FFE500]" : ""}`}
                                     onClick={() => handleItemClick(item.text)}
+
                                 >
                                     <div className="flex h-full gap-4 sidebar-transition items-center">
                                         {item.icon}
@@ -94,11 +114,10 @@ const Sidebar = ({ isCollapse, setIsCollapse }) => {
                             </Link>
                         )
                     ))}
-
                 </div>
             </div>
         </>
     );
 };
 
-export default Sidebar
+export default Sidebar;

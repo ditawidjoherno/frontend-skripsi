@@ -5,8 +5,8 @@ import dayGridPlugin from "@fullcalendar/daygrid";
 
 const Calendar = () => {
   return (
-    <div className="bg-white md:flex-row flex-col md:text-sm md:mx-4 sm:mt-10 mt-4 rounded-2xl py-4 px-4 ">
-      <div className="py-6 sm:w-auto w-[280px]">
+    <div className="bg-white md:flex-row flex-col mx-5 sm:mt-10 mt-4 rounded-2xl  h-auto w-auto sm:mc-0 mb-3">
+      <div className="py-8 px-3 sm:w-auto w-[280px]">
         <FullCalendar
           plugins={[dayGridPlugin]}
           initialView="dayGridMonth"

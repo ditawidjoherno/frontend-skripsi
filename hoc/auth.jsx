@@ -9,26 +9,31 @@ export default function withAuth(WrappedComponent, LoadingComponent) {
         const router = useRouter()
         const [loading, setLoading] = useState(true)
         const cookie = process.env.NEXT_PUBLIC_COOKIE_NAME
-        const data = getCookie(cookie);
 
         useEffect(() => {
+            const data = getCookie(cookie);
+            console.log(cookie)
+            console.log(data)
             if (!data) {
                 router.push('/')
             } else {
                 const decodedToken = jwt.decode(data)
                 console.log(cookie)
+                console.log(decodedToken)
                 if (!decodedToken) {
                     router.replace('/')
                 } else {
                     const isExpired = isTokenExpired(data);
+                    console.log(isExpired)
                     if (isExpired) {
                         deleteCookie(cookie)
-                        router.replace("/")
+                        console.log("test")
+                        router.replace("/test")
                     }
                 }
                 setLoading(false)
             }
-        }, [data, router])
+        }, [router])
 
         if (loading) {
             return <LoadingComponent />

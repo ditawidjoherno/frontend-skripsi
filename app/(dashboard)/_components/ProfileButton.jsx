@@ -1,26 +1,31 @@
-"use client"
-import useUser from "@/hooks/use-user"
+import useUser from "@/hooks/use-user";
 import TeksProfil from "../profil/_components/TeksProfil";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 
 const ProfileButton = () => {
-  const { loading, error, data, getUserData } = useUser()
-
-  const handleGetDataUser = async () => {
-    await getUserData();
-  }
+  const { loading, error, data, getUserData } = useUser();
 
   useEffect(() => {
-    handleGetDataUser();
-  }, [])
+    getUserData(); // Panggil fungsi getUserData saat komponen dimount
+  }, []);
 
+  // Tampilkan loading spinner atau pesan error jika sedang loading atau ada error
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
+
+  // Jika data sudah tersedia, tampilkan profil pengguna
   if (data) {
     return (
       <Link href="/profil">
         <div className="cursor-pointer px-2 gap-[5px] sm:bg-[#EAEAEA] bg-transparent w-auto h-auto sm:py-1 py-[2px] mt-[2px] flex rounded-lg">
           <img
-            src={"/img/profil-header.png"}
+            src={data?.foto_profil}
             alt="Profil staff"
             className="w-[35px] h-[35px]"
           />
@@ -34,9 +39,9 @@ const ProfileButton = () => {
       </Link>
     );
   }
+
+  // Jika tidak ada data, tampilkan null atau pesan bahwa data tidak tersedia
+  return null;
 };
 
 export default ProfileButton;
-
-
-

@@ -20,7 +20,7 @@ const useRole = () => {
         setData(null)
 
         try {
-            const response = await axios.get("https://backend-btn-tracking.vercel.app/user", body, {
+            const response = await axios.get("https://back-btn-boost.vercel.app/user", body, {
                 headers: {
                     Authorization: bearerToken
                 }

@@ -20,7 +20,7 @@ const useAktivitasHarian = () => {
         setData(null)
 
         try {
-            const response = await axios.get("https://backend-btn-tracking.vercel.app/aktivitas-harian", {
+            const response = await axios.get("https://back-btn-boost.vercel.app/aktivitas-harian", {
                 headers: {
                     Authorization: bearerToken
                 }

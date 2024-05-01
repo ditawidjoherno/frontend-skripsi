@@ -2,7 +2,7 @@
 import { IoIosArrowDropleftCircle } from "react-icons/io";
 import React, { useState } from 'react';
 import Link from "next/link";
-import Menu from "./_components/menu";
+import MonitoringMingguan from "./_components/monitoringMingguan";
 
 const page = () => {
 
@@ -19,59 +19,60 @@ const page = () => {
                 </div>
             </div>
             <div className="sm:ml-5 ml-3 w-full ">
-                <div className="bg-[#056AAA] rounded-t-2xl h-[65px] flex">
-                    <h1 className="font-bold text-white text-4xl pl-11 pt-3">Mingguan</h1>
+                <div className="bg-[#056AAA] rounded-t-2xl sm:h-[65px] h-auto flex">
+                    <h1 className="font-bold text-white sm:text-4xl text-xl sm:pl-11 pl-5 py-3">Mingguan</h1>
                 </div>
                 <div className="bg-white rounded-b-2xl h-auto">
                     <div className="container mx-auto py-3 gap-1">
-                            <Menu
-                                title="Januari 2024"
-                                description="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam ut neque vitae diam maximus interdum. Aenean ultrices eget neque eget pharetra. Suspendisse ullamcorper massa tincidunt nulla dictum, a dapibus ex hendrerit. Vivamus efficitur nulla at nibh eleifend consequat. Aliquam sodales lectus vitae lacus ultrices, non porttitor turpis facilisis."
-                            />
-                            <Menu
-                                title="Februari 2024"
-                                description="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam ut neque vitae diam maximus interdum. Aenean ultrices eget neque eget pharetra. Suspendisse ullamcorper massa tincidunt nulla dictum, a dapibus ex hendrerit. Vivamus efficitur nulla at nibh eleifend consequat. Aliquam sodales lectus vitae lacus ultrices, non porttitor turpis facilisis."
-                            />
-                            <Menu
-                                title="Maret 2024"
-                                description="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam ut neque vitae diam maximus interdum. Aenean ultrices eget neque eget pharetra. Suspendisse ullamcorper massa tincidunt nulla dictum, a dapibus ex hendrerit. Vivamus efficitur nulla at nibh eleifend consequat. Aliquam sodales lectus vitae lacus ultrices, non porttitor turpis facilisis."
-                            />
-                            <Menu
-                                title="April 2024"
-                                description="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam ut neque vitae diam maximus interdum. Aenean ultrices eget neque eget pharetra. Suspendisse ullamcorper massa tincidunt nulla dictum, a dapibus ex hendrerit. Vivamus efficitur nulla at nibh eleifend consequat. Aliquam sodales lectus vitae lacus ultrices, non porttitor turpis facilisis."
-                            />
-                            <Menu
-                                title="Mei 2024"
-                                description="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam ut neque vitae diam maximus interdum. Aenean ultrices eget neque eget pharetra. Suspendisse ullamcorper massa tincidunt nulla dictum, a dapibus ex hendrerit. Vivamus efficitur nulla at nibh eleifend consequat. Aliquam sodales lectus vitae lacus ultrices, non porttitor turpis facilisis."
-                            />
-                            <Menu
-                                title="Juni 2024"
-                                description="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam ut neque vitae diam maximus interdum. Aenean ultrices eget neque eget pharetra. Suspendisse ullamcorper massa tincidunt nulla dictum, a dapibus ex hendrerit. Vivamus efficitur nulla at nibh eleifend consequat. Aliquam sodales lectus vitae lacus ultrices, non porttitor turpis facilisis."
-                            />
-                            <Menu
-                                title="Juli 2024"
-                                description="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam ut neque vitae diam maximus interdum. Aenean ultrices eget neque eget pharetra. Suspendisse ullamcorper massa tincidunt nulla dictum, a dapibus ex hendrerit. Vivamus efficitur nulla at nibh eleifend consequat. Aliquam sodales lectus vitae lacus ultrices, non porttitor turpis facilisis."
-                            />
-                            <Menu
-                                title="Agustus 2024"
-                                description="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam ut neque vitae diam maximus interdum. Aenean ultrices eget neque eget pharetra. Suspendisse ullamcorper massa tincidunt nulla dictum, a dapibus ex hendrerit. Vivamus efficitur nulla at nibh eleifend consequat. Aliquam sodales lectus vitae lacus ultrices, non porttitor turpis facilisis."
-                            />
-                            <Menu
-                                title="September 2024"
-                                description="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam ut neque vitae diam maximus interdum. Aenean ultrices eget neque eget pharetra. Suspendisse ullamcorper massa tincidunt nulla dictum, a dapibus ex hendrerit. Vivamus efficitur nulla at nibh eleifend consequat. Aliquam sodales lectus vitae lacus ultrices, non porttitor turpis facilisis."
-                            />
-                            <Menu
-                                title="Oktober 2024"
-                                description="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam ut neque vitae diam maximus interdum. Aenean ultrices eget neque eget pharetra. Suspendisse ullamcorper massa tincidunt nulla dictum, a dapibus ex hendrerit. Vivamus efficitur nulla at nibh eleifend consequat. Aliquam sodales lectus vitae lacus ultrices, non porttitor turpis facilisis."
-                            />
-                            <Menu
-                                title="November 2024"
-                                description="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam ut neque vitae diam maximus interdum. Aenean ultrices eget neque eget pharetra. Suspendisse ullamcorper massa tincidunt nulla dictum, a dapibus ex hendrerit. Vivamus efficitur nulla at nibh eleifend consequat. Aliquam sodales lectus vitae lacus ultrices, non porttitor turpis facilisis."
-                            />
-                            <Menu
-                                title="Desember 2024"
-                                description="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam ut neque vitae diam maximus interdum. Aenean ultrices eget neque eget pharetra. Suspendisse ullamcorper massa tincidunt nulla dictum, a dapibus ex hendrerit. Vivamus efficitur nulla at nibh eleifend consequat. Aliquam sodales lectus vitae lacus ultrices, non porttitor turpis facilisis."
-                            />
+                        <MonitoringMingguan />
+                        {/* <MonitoringMingguan
+                            title="Januari 2024"
+                            description="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam ut neque vitae diam maximus interdum. Aenean ultrices eget neque eget pharetra. Suspendisse ullamcorper massa tincidunt nulla dictum, a dapibus ex hendrerit. Vivamus efficitur nulla at nibh eleifend consequat. Aliquam sodales lectus vitae lacus ultrices, non porttitor turpis facilisis."
+                        />
+                        <MonitoringMingguan
+                            title="Februari 2024"
+                            description="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam ut neque vitae diam maximus interdum. Aenean ultrices eget neque eget pharetra. Suspendisse ullamcorper massa tincidunt nulla dictum, a dapibus ex hendrerit. Vivamus efficitur nulla at nibh eleifend consequat. Aliquam sodales lectus vitae lacus ultrices, non porttitor turpis facilisis."
+                        />
+                        <MonitoringMingguan
+                            title="Maret 2024"
+                            description="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam ut neque vitae diam maximus interdum. Aenean ultrices eget neque eget pharetra. Suspendisse ullamcorper massa tincidunt nulla dictum, a dapibus ex hendrerit. Vivamus efficitur nulla at nibh eleifend consequat. Aliquam sodales lectus vitae lacus ultrices, non porttitor turpis facilisis."
+                        />
+                        <MonitoringMingguan
+                            title="April 2024"
+                            description="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam ut neque vitae diam maximus interdum. Aenean ultrices eget neque eget pharetra. Suspendisse ullamcorper massa tincidunt nulla dictum, a dapibus ex hendrerit. Vivamus efficitur nulla at nibh eleifend consequat. Aliquam sodales lectus vitae lacus ultrices, non porttitor turpis facilisis."
+                        />
+                        <MonitoringMingguan
+                            title="Mei 2024"
+                            description="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam ut neque vitae diam maximus interdum. Aenean ultrices eget neque eget pharetra. Suspendisse ullamcorper massa tincidunt nulla dictum, a dapibus ex hendrerit. Vivamus efficitur nulla at nibh eleifend consequat. Aliquam sodales lectus vitae lacus ultrices, non porttitor turpis facilisis."
+                        />
+                        <MonitoringMingguan
+                            title="Juni 2024"
+                            description="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam ut neque vitae diam maximus interdum. Aenean ultrices eget neque eget pharetra. Suspendisse ullamcorper massa tincidunt nulla dictum, a dapibus ex hendrerit. Vivamus efficitur nulla at nibh eleifend consequat. Aliquam sodales lectus vitae lacus ultrices, non porttitor turpis facilisis."
+                        />
+                        <MonitoringMingguan
+                            title="Juli 2024"
+                            description="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam ut neque vitae diam maximus interdum. Aenean ultrices eget neque eget pharetra. Suspendisse ullamcorper massa tincidunt nulla dictum, a dapibus ex hendrerit. Vivamus efficitur nulla at nibh eleifend consequat. Aliquam sodales lectus vitae lacus ultrices, non porttitor turpis facilisis."
+                        />
+                        <MonitoringMingguan
+                            title="Agustus 2024"
+                            description="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam ut neque vitae diam maximus interdum. Aenean ultrices eget neque eget pharetra. Suspendisse ullamcorper massa tincidunt nulla dictum, a dapibus ex hendrerit. Vivamus efficitur nulla at nibh eleifend consequat. Aliquam sodales lectus vitae lacus ultrices, non porttitor turpis facilisis."
+                        />
+                        <MonitoringMingguan
+                            title="September 2024"
+                            description="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam ut neque vitae diam maximus interdum. Aenean ultrices eget neque eget pharetra. Suspendisse ullamcorper massa tincidunt nulla dictum, a dapibus ex hendrerit. Vivamus efficitur nulla at nibh eleifend consequat. Aliquam sodales lectus vitae lacus ultrices, non porttitor turpis facilisis."
+                        />
+                        <MonitoringMingguan
+                            title="Oktober 2024"
+                            description="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam ut neque vitae diam maximus interdum. Aenean ultrices eget neque eget pharetra. Suspendisse ullamcorper massa tincidunt nulla dictum, a dapibus ex hendrerit. Vivamus efficitur nulla at nibh eleifend consequat. Aliquam sodales lectus vitae lacus ultrices, non porttitor turpis facilisis."
+                        />
+                        <MonitoringMingguan
+                            title="November 2024"
+                            description="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam ut neque vitae diam maximus interdum. Aenean ultrices eget neque eget pharetra. Suspendisse ullamcorper massa tincidunt nulla dictum, a dapibus ex hendrerit. Vivamus efficitur nulla at nibh eleifend consequat. Aliquam sodales lectus vitae lacus ultrices, non porttitor turpis facilisis."
+                        />
+                        <MonitoringMingguan
+                            title="Desember 2024"
+                            description="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam ut neque vitae diam maximus interdum. Aenean ultrices eget neque eget pharetra. Suspendisse ullamcorper massa tincidunt nulla dictum, a dapibus ex hendrerit. Vivamus efficitur nulla at nibh eleifend consequat. Aliquam sodales lectus vitae lacus ultrices, non porttitor turpis facilisis."
+                        /> */}
                     </div>
 
                 </div>

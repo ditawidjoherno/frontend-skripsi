@@ -1,47 +1,28 @@
 "use client"
-import { FaEdit } from "react-icons/fa";
 import React, { useState, useEffect } from 'react';
-// import Search from '../_components/search';
-import Link from 'next/link';
-import { IoIosArrowDropleftCircle } from "react-icons/io";
+import { IoSearchOutline } from "react-icons/io5";
+import { IoIosArrowDropleft, IoIosArrowDropright, IoIosArrowDropleftCircle } from "react-icons/io";
 import { ImProfile } from "react-icons/im";
+import { FaEdit } from "react-icons/fa";
 import useDataNasabah from "@/hooks/use-data-nasabah";
 import { useParams, useRouter } from 'next/navigation';
-import { IoSearchOutline } from "react-icons/io5";
 import useUser from "@/hooks/use-user";
+import Link from "next/link";
 
-const page = () => {
-
+const Page = () => {
   const { nasabah } = useParams();
-  const router = useRouter()
+  const router = useRouter();
 
-  const [searchTerm, setSearchTerm] = useState('');
-  const [isSearchActive, setIsSearchActive] = useState(false);
-  const { loading: dataLoading, error: dataError, data, getUserData } = useDataNasabah(nasabah);
+  const [currentPage, setCurrentPage] = useState(1);
   const [tableData, setTableData] = useState([]);
-  const { loading: userLoading, error: userError, data: userData, getUserData: userGetData } = useUser();
-
+  const { loading: dataLoading, error: dataError, data, getUserData } = useDataNasabah(nasabah);
+  const { loading, error, data: userData, getUserData: getDataUser } = useUser();
+  const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
     getUserData();
-    userGetData();
+    getDataUser();
   }, []);
-
-
-  // useEffect(() => {
-  //     handleGetDataUser();
-  // }, [])
-
-  const handleSearch = (event) => {
-    const { value } = event.target;
-    setSearchTerm(value);
-    setIsSearchActive(true);
-  };
-
-
-  useEffect(() => {
-    const jumlahNasabah = tableData.length;
-  }, [tableData]);
 
   useEffect(() => {
     if (data) {
@@ -49,30 +30,51 @@ const page = () => {
     }
   }, [data]);
 
+  const handleSearch = (event) => {
+    const { value } = event.target;
+    setSearchTerm(value);
+    setCurrentPage(1);
+  };
+
   if (!userData) {
-    return <div>No user data available</div>;
+    return <div>Loading...</div>;
   }
 
-  // Memeriksa apakah userData ada dan memiliki properti jabatan sebelum mengaksesnya
-  const jabatan = userData && userData.jabatan;
+  const { jabatan } = userData;
 
-  // if (loading) {
-  //   return (
-  //     <div>Loading</div>
-  //   );
-  // }
+  const filteredData = tableData.filter(item =>
+    item.nama.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
-  // if (error) {
-  //   return (
-  //     <div>Error: {error.message}</div>
-  //   );
-  // }
+  const itemsPerPage = 10;
+  const offset = (currentPage - 1) * itemsPerPage;
+  const indexOfLastItem = offset + itemsPerPage;
+  const indexOfFirstItem = offset + 1;
+  const currentItems = filteredData.slice(offset, indexOfLastItem);
+
+  const nextPage = () => {
+    if (currentPage < Math.ceil(filteredData.length / 10)) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
+
+  const prevPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
+
+  const maxPages = 5;
+  let startPage = Math.max(1, currentPage - Math.floor(maxPages / 2));
+  let endPage = Math.min(startPage + maxPages - 1, Math.ceil(filteredData.length / 10));
+
+  if (endPage - startPage + 1 < maxPages) {
+    startPage = Math.max(1, endPage - maxPages + 1);
+  }
 
   const handleInputClick = () => {
     window.location.href = '/inputdata-nasabah';
   };
-
-
 
   return (
     <div className={`bg-[#EAEAEA] h-auto flex flex-col items-center sm:pt-[75px] pt-[60px] sm:pr-4 pr-3 sm:ml-20 ml-10`}>
@@ -97,26 +99,24 @@ const page = () => {
             <IoSearchOutline className="sm:w-6 w-4 sm:h-6 h-4" />
           </button>
         </div>
-
       </div>
 
       <div className="sm:ml-5 ml-3 w-full gap-9 mt-5">
         <div className="bg-[#251382] justify-between rounded-t-2xl h-[65px] flex">
           <div className='flex'>
-            <h1 className="font-bold text-white sm:text-3xl text-[25px] pl-5 pt-4">Jumlah Nasabah: {tableData.length} </h1>
-            {/* <h1 className="font-bold text-white sm:text-3xl text-[25px] pl-5 pt-4">50</h1> */}
+            <h1 className="font-bold text-white sm:text-3xl text-[25px] pl-5 pt-4">Jumlah Nasabah: {filteredData.length} </h1>
           </div>
-          {userData.jabatan !== 'manager' && (
+          {jabatan !== 'manager' && (
             <button
               className="bg-blue-500 hover:bg-[#77c9ff] text-white font-semibold px-4 py-2 sm:my-3 rounded-md mr-3"
               onClick={handleInputClick}
             >
-              Tambah Data
+              Tambah Nasabah
             </button>
           )}
         </div>
-        <div className="bg-white rounded-b-2xl sm:h-[700px] h-[500px] overflow-x-scroll">
-          <table className="table-auto border-collapse w-full text-center overflow-x-acroll">
+        <div className="bg-white rounded-b-2xl sm:h-[450px] h-[500px]">
+          <table className="table-auto border-collapse w-full text-center">
             <thead>
               <tr>
                 <th className="px-5 sm:py-4 py-2 ">No</th>
@@ -124,45 +124,59 @@ const page = () => {
                 <th className="px-17 sm:py-4 py-2 ">Tipe Nasabah</th>
                 <th className="px-17 sm:py-4 py-2 ">Alamat</th>
                 <th className="px-17 sm:py-4 py-2 ">Data Pekerjaan / Usaha</th>
-                <th className="px-17  sm:py-4 py-2 ">Detail</th>
+                <th className="px-17 sm:py-4 py-2 ">Detail</th>
               </tr>
             </thead>
             <tbody>
-              {data && data.length > 0 ? (
-                data.map((item, index) => (
+              {currentItems.length > 0 ? (
+                currentItems.map((item, index) => (
                   <tr key={index}>
-                    <td>{index + 1}</td>
+                    <td>{offset + index + 1}</td>
                     <td onClick={() => router.push(`/profil-nasabah/${item.id}`)} className="cursor-pointer hover:text-blue-600 transition-all duration-500">{item.nama}</td>
                     <td>{item.tipe_nasabah}</td>
                     <td>{item.alamat}</td>
                     <td>{item.pekerjaan}</td>
                     <td>
                       <div className="w-full justify-center gap-3 flex items-center">
-                        {/* <Link href="/profil-nasabah"> */}
-                          <div className="bg-[#ffe946] hover:bg-[#f9ee98] py-2 px-2 rounded-md items-center flex cursor-pointer" onClick={() => router.push(`/profil-nasabah/${item.id}`)}>
-                            <ImProfile className="sm:h-5 sm:w-5 h-3 w-3" />
-                          </div>
-                        {/* </Link> */}
-                        <Link href="/ubah-datanasabah">
-                          <div className="bg-[#ffe946] hover:bg-[#f9ee98] py-2 px-2 rounded-md items-center flex">
-                            <FaEdit className="sm:h-5 sm:w-5 h-3 w-3" />
-                          </div>                    </Link>
+                        <div className="bg-[#ffe946] hover:bg-[#f9ee98] py-2 px-2 rounded-md items-center flex cursor-pointer" onClick={() => router.push(`/profil-nasabah/${item.id}`)}>
+                          <ImProfile className="sm:h-5 sm:w-5 h-3 w-3" />
+                        </div>
                       </div>
                     </td>
-
                   </tr>
                 ))
               ) : (
                 <tr>
-                  <td colSpan="7">Belum ada data yang ditambahkan</td>
+                  <td colSpan="6">Belum ada data yang ditambahkan</td>
                 </tr>
               )}
             </tbody>
           </table>
+        </div>
+        <div className="mt-5">
+          <div className='flex items-center justify-center gap-4 mb-5 '>
+            <button onClick={prevPage} disabled={currentPage === 1}>
+              <IoIosArrowDropleft className="text-blue-500 text-3xl" />
+            </button>
+            {filteredData.length > 0 &&
+              <ul className="pagination flex gap-4 text-xl]">
+                {Array.from({ length: endPage - startPage + 1 }, (_, index) => startPage + index).map((page) => (
+                  <li key={page} className={`page-item ${currentPage === page ? 'bg-blue-500 text-white px-2 py-[2px] rounded-sm' : ''}`}>
+                    <button onClick={() => setCurrentPage(page)} className="page-link">
+                      {page}
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            }
+            <button onClick={nextPage} disabled={currentPage === Math.ceil(filteredData.length / 10)}>
+              <IoIosArrowDropright className="text-blue-500 text-3xl" />
+            </button>
+          </div>
         </div>
       </div>
     </div>
   );
 }
 
-export default page;
+export default Page;

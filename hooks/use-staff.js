@@ -5,7 +5,7 @@ import { useState } from "react";
 import { create } from "zustand";
 import useUserStore from "./use-data-user";
 
-const useStaff = () => {
+const useTargetStaff = () => {
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState(null)
     const [data, setData] = useState(null)
@@ -19,20 +19,19 @@ const useStaff = () => {
         setError(null)
         setData(null)
 
+
         try {
-            const response = await axios.get("https://backend-btn-tracking.vercel.app/nama-staff", {
+            const response = await axios.get(`https://back-btn-boost.vercel.app/nama-staff`, {
                 headers: {
                     Authorization: bearerToken
                 }
             });
-
 
             if (!response.status === 200) {
                 throw new Error(response.data.message || "Gagal Mendapat User")
             }
 
             setData(response.data.data)
-            setUser(response.data.data);
             console.log(response.data.data)
         } catch (error) {
             setError(error.message)
@@ -44,4 +43,4 @@ const useStaff = () => {
     return { loading, error, data, getUserData }
 }
 
-export default useStaff
+export default useTargetStaff

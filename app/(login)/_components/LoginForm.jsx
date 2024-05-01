@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import React, { useState, useRef } from "react";
 import { IoEyeOutline, IoEyeOffOutline } from "react-icons/io5";
 import useLogin from "@/hooks/use-login";
 import { VscAccount } from "react-icons/vsc";
@@ -11,22 +11,17 @@ const LoginForm = () => {
     const [error, setError] = useState(''); 
     const passwordInputRef = useRef(null); 
 
-    const { loading, data, login } = useLogin()
+    const { loading, login } = useLogin();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         const loginResult = await login(nip, password);
-        if (loginResult && loginResult.success) {
+        if (loginResult && loginResult.status === 200) {
             setError('');
         } else {
-            if (!loginResult || !loginResult.success) {
-                setError('NIP atau password salah');
-            }
-            setPassword('');
-            passwordInputRef.current.focus();
+            setError('NIP atau password salah');
         }
     }
-    
 
     const handleKeyPressNIP = (e) => {
         if (e.key === 'Enter') {

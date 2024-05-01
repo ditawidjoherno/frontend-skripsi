@@ -20,7 +20,7 @@ const useRecentData = () => {
         setData(null)
 
         try {
-            const response = await axios.get("https://backend-btn-tracking.vercel.app/recent-data", {
+            const response = await axios.get("https://back-btn-boost.vercel.app/recent-data", {
                 headers: {
                     Authorization: bearerToken
                 }

@@ -20,7 +20,7 @@ const useNamaNasabah = () => {
         setData(null)
 
         try {
-            const response = await axios.get("https://backend-btn-tracking.vercel.app/nama-nasabah", {
+            const response = await axios.get("https://back-btn-boost.vercel.app/nama-nasabah", {
                 headers: {
                     Authorization: bearerToken
                 }

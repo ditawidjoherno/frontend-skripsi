@@ -10,24 +10,33 @@ import { useParams } from "next/navigation";
 
 const page = () => {
 
+  const [selectedMonth, setSelectedMonth] = useState("");
+
+
   const [searchResults, setSearchResults] = useState([]);
-  const {bulan} = useParams()
+  const { bulan } = useParams()
 
   const handleSearch = (event) => {
     const { value } = event.target;
     setSearchTerm(value);
     setIsSearchActive(true);
+
   };
 
   const { loading, error, data, getDataPerbulan } = useDataPerbulan()
 
   useEffect(() => {
     const fetchDataBulan = async () => {
-      await getDataPerbulan(bulan, "2024")
+      await getDataPerbulan(bulan)
+      setSelectedMonth(bulan);
     }
 
     fetchDataBulan();
   }, [])
+
+  // const capitalizeFirstLetter = (string) => {
+  //   return string.charAt(0).toUpperCase() + string.slice(1);
+  // };
 
   if (loading) {
     return (
@@ -65,8 +74,8 @@ const page = () => {
       </div>
       <div className="sm:ml-5 ml-3 w-full gap-9 mt-5 ">
         <div className="bg-[#1D2B53] rounded-t-2xl h-[65px] flex">
-          <h1 className="font-bold text-white sm:text-3xl text-[25px] pl-5 pt-3">Februari 2024</h1>
-          <h1 className="font-bold text-white sm:text-3xl text-[25px] pl-5 pt-3">(1.200)</h1>
+          {/* <h1 className="font-bold text-white sm:text-3xl text-[25px] pl-5 pt-3">{selectedMonth ? capitalizeFirstLetter(selectedMonth) : ""} 2024</h1> */}
+          {/* <h1 className="font-bold text-white sm:text-3xl text-[25px] pl-5 pt-3">{data && data.jumlah ? `(${data.jumlah})` : ''}</h1> */}
         </div>
         <div className="bg-white rounded-b-2xl h-[500px] overflow-x-scroll">
           <table className="table-auto border-collapse w-full text-center overflow-x-acroll">

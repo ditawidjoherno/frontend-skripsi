@@ -8,8 +8,10 @@ import { useEffect, useState } from 'react';
 import { IoIosArrowDropleftCircle } from "react-icons/io";
 import useAktivitasHarian from "@/hooks/use-aktivitas-harian";
 import useAktivitasBulanan from '@/hooks/use-aktivitas-bulanan';
-import useStaff from '@/hooks/use-staff';
+import useStaff from '@/hooks/use-staff-nip';
 import { useParams, useRouter } from 'next/navigation';
+import useAllBulanan from '@/hooks/use-all-bulanan';
+import useTotalMingguan from '@/hooks/use-monitoring-mingguan';
 
 
 const page = () => {
@@ -17,7 +19,9 @@ const page = () => {
   const [jumlahHarianData, setJumlahHarianData] = useState(0);
   const { data: HarianData, getUserData: getHarianData } = useAktivitasHarian();
   const [jumlahBulananData, setJumlahBulananData] = useState(0);
-  const { data: BulananData, getUserData: getBulananData } = useAktivitasBulanan();
+  const { data: BulananData, getUserData: getBulananData } = useAllBulanan();
+  const { data: MingguanData, getTotalMingguan } = useTotalMingguan();
+  const [jumlahMingguanData, setJumlahMingguanData] = useState(0);
   const { data: Staff, getUserData: getStaff } = useStaff();
   const router = useRouter()
 
@@ -26,6 +30,7 @@ const page = () => {
     getHarianData();
     getBulananData();
     getStaff();
+    getTotalMingguan();
   }, []);
 
   useEffect(() => {
@@ -39,6 +44,19 @@ const page = () => {
       setJumlahBulananData(BulananData.length);
     }
   }, [BulananData]);
+
+  useEffect(() => {
+    if (MingguanData) {
+      const currentMonth = new Date().toLocaleString('en-US', { month: 'long' }).toLowerCase();
+      const currentWeekName = 'minggu_' + (Math.ceil(new Date().getDate() / 7)).toString();
+      const currentWeekData = MingguanData[currentMonth] && MingguanData[currentMonth][currentWeekName];
+      if (currentWeekData) {
+        setJumlahMingguanData(currentWeekData.jumlah);
+      } else {
+        setJumlahMingguanData(0);
+      }
+    }
+  }, [MingguanData]);
 
 
   const handleHarianClick = () => {
@@ -67,7 +85,7 @@ const page = () => {
           <IoIosArrowDropleftCircle className="sm:h-10 sm:w-10 h-5 w-5 sm:ml-3 ml-1" />
         </Link>
       </div>
-      <div className="flex w-full px-6 gap-5">
+      <div className="flex md:flex-row flex-col w-full px-6 gap-5">
         <Box
           bgColor={"bg-[#059BC7]"}
           icon={<IoPodiumSharp className="text-[#FFCD27] ml-9 mt-7" />}
@@ -79,7 +97,7 @@ const page = () => {
           bgColor={"bg-[#056AAA]"}
           icon={<IoPodiumSharp className="text-[#FFCD27] ml-9 mt-7" />}
           text={"Mingguan"}
-          number={120}
+          number={jumlahMingguanData}
           onClick={handleMingguanClick}
         />
         <Box
@@ -91,15 +109,18 @@ const page = () => {
         />
 
       </div>
-      <div className="h-50 flex sm:w-full w-4/4 sm:mx-7 mx-6 flex-wrap justify-start sm:gap-5 gap-3 lg:items-start sm:pl-9 pl-1 pr-1 sm:mt-7 mt-5 px-4 sm:pt-0">
+      <div className="h-50 flex sm:w-full w-4/4 sm:mx-7 mx-4 flex-wrap justify-start sm:gap-5 gap-3 lg:items-start sm:pl-7 pl-1 pr-1 sm:mt-7 mt-5 px-4 sm:pt-0 mb-3">
+      <h2 className="sm:text-[28px] text-[24px] sm:ml-5 ml-4 font-semibold">
+          Monitoring Staff
+        </h2>
         <div className='w-full flex gap-3'>
-          <div className='w-full flex gap-3 justify-center'>
-            <div className='w-1/2 flex flex-col gap-2'>
+          <div className='w-full flex md:flex-row flex-col gap-3 justify-center'>
+            <div className='sm:w-1/2 w-full flex flex-col gap-2'>
               {Staff && Staff.slice(0, Math.ceil(Staff.length / 2)).map((item, index) => (
                 <BoxProfil
                   key={index}
                   bgColor={"bg-[#ffffff]"}
-                  image={"img/profil.png"}
+                  image={item.foto_profil}
                   nama={item.nama}
                   nip={item.nip}
                   onClick={() => router.push(`/monitoring-sales/${item.nip}`)}
@@ -107,12 +128,12 @@ const page = () => {
                 />
               ))}
             </div>
-            <div className='w-1/2 flex flex-col'>
+            <div className='sm:w-1/2 w-full flex flex-col gap-2'>
               {Staff && Staff.slice(Math.ceil(Staff.length / 2)).map((item, index) => (
                 <BoxProfil
                   key={index}
                   bgColor={"bg-[#ffffff]"}
-                  image={"img/profil.png"}
+                  image={item.foto_profil}
                   nama={item.nama}
                   nip={item.nip}
                   onClick={() => router.push(`/monitoring-sales/${item.nip}`)}

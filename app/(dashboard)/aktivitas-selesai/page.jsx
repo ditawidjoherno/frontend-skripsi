@@ -1,48 +1,35 @@
 "use client"
-import React from 'react'
-import { IoIosArrowDropleftCircle } from "react-icons/io";
-import { IoTime } from "react-icons/io5";
-import { IoFilterSharp } from "react-icons/io5";
+import React, { useState, useEffect } from 'react';
 import { IoSearchOutline } from "react-icons/io5";
 import Link from 'next/link';
-import { useState, useEffect } from 'react';
 import { IoCheckmarkDoneCircleOutline } from "react-icons/io5";
+import { IoIosArrowDropleft, IoIosArrowDropright, IoIosArrowDropleftCircle } from "react-icons/io";
+import Link from "next/link";
+
 import useAktivitasSelesai from '@/hooks/use-aktivitas-selesai';
 
-const page = () => {
-
+const Page = () => {
     const [searchTerm, setSearchTerm] = useState('');
-    const [isSearchActive, setIsSearchActive] = useState(false);
+    const [tableData, setTableData] = useState([]);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [searchResults, setSearchResults] = useState([]);
     const { loading, error, data, getUserData } = useAktivitasSelesai();
 
+    useEffect(() => {
+        getUserData();
+    }, []);
 
-    // const DataNasabah = [
-    //     {
-    //         image: "/img/profil-header.png",
-    //         nama: "Data 1",
-    //         tanggal: "Date Data 1",
-    //         namaNasabah: "John Doe",
-    //         aktivitas: "Tabungan",
-    //         alamat: "Lorem Ipsum",
-    //         prospek: "Lorem Ipsum",
-    //         aktivitasSales: "Lorem Ipsum",
-    //         statusprospek: "Diterima"
+    useEffect(() => {
+        if (data) {
+            setTableData(data);
+        }
+    }, [data]);
 
-    //     },
-    //     {
-    //         image: "/img/profil-header.png",
-    //         nama: "Data 3",
-    //         tanggal: "Date Data 1",
-    //         namaNasabah: "John Doe",
-    //         aktivitas: "Tabungan",
-    //         alamat: "Lorem Ipsum",
-    //         prospek: "Lorem Ipsum",
-    //         aktivitasSales: "Lorem Ipsum",
-    //         statusprospek: "Ditolak"
-
-    //     },
-    // ];
-
+    const handleSearch = (event) => {
+        const { value } = event.target;
+        setSearchTerm(value);
+        setCurrentPage(1);
+    };
 
     const handleGetDataUser = async () => {
         await getUserData();
@@ -52,38 +39,49 @@ const page = () => {
         handleGetDataUser();
     }, [])
 
-    const handleSearch = (event) => {
-        const { value } = event.target;
-        setSearchTerm(value);
-        setIsSearchActive(true);
-    };
-
-    useEffect(() => {
-        getUserData();
-    }, []);
-
 
     if (loading) {
-        return (
-            <div>Loading</div>
-        );
+        return <div>Loading</div>;
     }
 
     if (error) {
-        return (
-            <div>Error: {error.message}</div>
-        );
+        return <div>Error: {error.message}</div>;
     }
 
-    // const filteredData = DataNasabah.filter(data =>
-    //     data.nama.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    //     data.aktivitas.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    //     data.namaNasabah.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    //     data.prospek.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    //     data.aktivitasSales.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    //     data.statusprospek.toLowerCase().includes(searchTerm.toLowerCase()) ,
+    const filteredData = tableData.filter(item =>
+        item.nama_user.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        item.nama_aktivitas.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        item.nama_nasabah.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        item.prospek.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        item.aktivitas_sales.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        item.keterangan_aktivitas.toLowerCase().includes(searchTerm.toLowerCase())
+    );
 
-    // );
+    const itemsPerPage = 10;
+    const offset = (currentPage - 1) * itemsPerPage;
+    const indexOfLastItem = offset + itemsPerPage;
+    const indexOfFirstItem = offset + 1;
+    const currentItems = filteredData.slice(offset, indexOfLastItem);
+
+    const nextPage = () => {
+        if (currentPage < Math.ceil(filteredData.length / 10)) {
+            setCurrentPage(currentPage + 1);
+        }
+    };
+
+    const prevPage = () => {
+        if (currentPage > 1) {
+            setCurrentPage(currentPage - 1);
+        }
+    };
+
+    const maxPages = 5;
+    let startPage = Math.max(1, currentPage - Math.floor(maxPages / 2));
+    let endPage = Math.min(startPage + maxPages - 1, Math.ceil(filteredData.length / 10));
+
+    if (endPage - startPage + 1 < maxPages) {
+        startPage = Math.max(1, endPage - maxPages + 1);
+    }
 
     return (
         <div className={`bg-[#EAEAEA] h-full flex flex-col items-center sm:pt-[75px] pt-[60px] sm:pr-4 pr-3 sm:ml-20 ml-10`}>
@@ -103,7 +101,7 @@ const page = () => {
                             <h2 className='font-semibold text-[28px]'>Aktivitas Selesai</h2>
                         </div>
                         <div className='flex gap-1 sm:mr-5'>
-                            <div className="flex sm:mr-5 mr-3">
+                            <div className="flex items-center">
                                 <input
                                     type="text"
                                     placeholder="Search..."
@@ -115,7 +113,6 @@ const page = () => {
                                     <IoSearchOutline className="sm:w-6 w-4 sm:h-6 h-4" />
                                 </button>
                             </div>
-                            {/* <IoFilterSharp className="sm:text-4xl text-2xl" /> */}
                         </div>
                     </div>
                     <hr className="border-t-2 border-black my-3 mx-6 " />
@@ -124,51 +121,71 @@ const page = () => {
                     <table className="table-auto border-collapse w-full text-center overflow-x-auto">
                         <thead>
                             <tr>
-                            <th className="sm:px-14 px-7 sm:py-4 py-0">No</th>
-                                <th className="sm:px-14 px-7 sm:py-4 py-0">Nama</th>
+                                <th className="sm:px-14 px-7 sm:py-4 py-0">No</th>
+                                <th className="sm:px-14 px-7 sm:py-4 py-0">Nama Staff</th>
                                 <th className="sm:px-14 px-7 sm:py-4 py-0">Tanggal Prospek</th>
                                 <th className="sm:px-14 px-7 sm:py-4 py-0">Aktivitas</th>
                                 <th className="sm:px-14 px-7 sm:py-4 py-0">Nama Nasabah</th>
-                                
                                 <th className="sm:px-14 px-7 sm:py-4 py-0">Prospek</th>
                                 <th className="sm:px-14 px-7 sm:py-4 py-0">Aktivitas Sales</th>
                                 <th className="sm:px-14 px-7 sm:py-4 py-0">Keterangan Aktivitas</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {data && data.length > 0 ? (
-                                data.map((item, index) => (
+                            {currentItems.length > 0 ? (
+                                currentItems.map((item, index) => (
                                     <tr key={index}>
                                         <td>{index + 1}</td>
-                                        <td>{item.nama}</td>
-                                        <td>{item.tanggal}</td>
-                                        <td>{item.aktivitas}</td>
-                                        <td><Link href={`/profil-nasabah`}>
-                                            <div className="text-black hover:text-blue-700 cursor-pointer">{item.nama_nasabah}</div>
-                                        </Link>
+                                        <td>{item.nama_user}</td>
+                                        <td>{item.tanggal_aktivitas}</td>
+                                        <td>{item.nama_aktivitas}</td>
+                                        <td>
+                                            <Link href={`/profil-nasabah/${item.id_nasabah}`}>
+                                                <div className="text-black hover:text-blue-700 cursor-pointer">{item.nama_nasabah}</div>
+                                            </Link>
                                         </td>
                                         <td>{item.prospek}</td>
-                                        
                                         <td>{item.aktivitas_sales}</td>
                                         <td>
-                                    <div className={`py-1 rounded-md mx-6 my-1 text-white font-semibold ${item.keterangan_aktivitas === 'diterima' ? 'bg-green-500 ' : item.keterangan_aktivitas === 'ditolak' ? 'bg-red-500' : ''}`}>
-                                        {item.keterangan_aktivitas}
-                                    </div>
+                                            <div className={`py-1 rounded-md mx-6 my-1 text-white font-semibold ${item.keterangan_aktivitas === 'diterima' ? 'bg-green-500 ' : item.keterangan_aktivitas === 'ditolak' ? 'bg-red-500' : ''}`}>
+                                                {item.keterangan_aktivitas}
+                                            </div>
                                         </td>
-                                        
                                     </tr>
                                 ))
                             ) : (
                                 <tr>
-                                    <td colSpan="7">Belum ada data yang ditambahkan</td>
+                                    <td colSpan="8">Belum ada data yang ditambahkan</td>
                                 </tr>
                             )}
                         </tbody>
                     </table>
                 </div>
+                <div className="mt-5">
+                    <div className='flex items-center justify-center gap-4 mb-5 '>
+                        <button onClick={prevPage} disabled={currentPage === 1}>
+                            <IoIosArrowDropleft className="text-blue-500 text-3xl" />
+                        </button>
+                        {filteredData.length > 0 &&
+                            <ul className="pagination flex gap-4 text-xl]">
+                                {Array.from({ length: endPage - startPage + 1 }, (_, index) => startPage + index).map((page) => (
+                                    <li key={page} className={`page-item ${currentPage === page ? 'bg-blue-500 text-white px-2 py-[2px] rounded-sm' : ''}`}>
+                                        <button onClick={() => setCurrentPage(page)} className="page-link">
+                                            {page}
+                                        </button>
+                                    </li>
+                                ))}
+                            </ul>
+                        }
+                        <button onClick={nextPage} disabled={currentPage === Math.ceil(filteredData.length / 10)}>
+                            <IoIosArrowDropright className="text-blue-500 text-3xl" />
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
-    )
+    );
 }
 
-export default page
+export default Page;
+

@@ -3,6 +3,8 @@
 import React from 'react';
 
 const DateInput = ({ text, placeholder, ...props }) => {
+
+  
   return (
     <div className="flex flex-col sm:mr-0 mr-3">
       <label htmlFor="TanggalLahir" className="text-black sm:text-[20px] text-[20px] font-medium sm:mb-1 -mb-2 sm:px-10 pt-3 ">

@@ -3,7 +3,7 @@ import useUser from "@/hooks/use-user"
 import TeksProfil from "./TeksProfil"
 import { useEffect, useState } from "react";
 
-const UserData = () => {
+const UserData = (userData) => {
     const { loading, error, data, getUserData } = useUser()
 
     const handleGetDataUser = async () => {
@@ -23,6 +23,9 @@ const UserData = () => {
     if (data) {
         return (
             <div className="sm:mr-6 sm:flex">
+                <div className="sm:ml-6 ml-0 flex justify-center items-center">
+                    <img src={data?.foto_profil} alt="Foto Profil" className="sm:w-[250px] w-[100px] sm:h-[250px] h-[100px]" />
+                </div>
                 <div>
                     <TeksProfil label="NIP:" value={data?.nip} />
                     <TeksProfil label="Nama:" value={data?.nama} />

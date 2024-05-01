@@ -19,7 +19,7 @@ const AddAktivitas = () => {
 
         console.log(body)
         try {
-            const response = await axios.post("https://backend-btn-tracking.vercel.app/add-aktivitas", body, {
+            const response = await axios.post("https://back-btn-boost.vercel.app/aktivitas", body, {
                 headers: {
                     Authorization: bearerToken
                 }
@@ -30,9 +30,10 @@ const AddAktivitas = () => {
             }
 
             setData(response.data);
-            console.log(response);
+            console.log(response.data);
         } catch (error) {
             setError(error.message);
+            alert(`${error.response.data.message}`)
         } finally {
             setLoading(false);
         }

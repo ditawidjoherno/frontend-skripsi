@@ -11,11 +11,11 @@ const Dropdown = ({ text, options, onChange, value, placeholder }) => {
   };
 
   return (
-    <div className="flex flex-col">
-      <label htmlFor="dropdown" className="text-black sm:text-[20px] text-2xl font-medium mb-1 sm:px-10 pt-">
+    <div className="flex flex-col sm:mr-0 mr-3">
+      <label htmlFor="dropdown" className="text-black sm:text-[25px] text-[20px] font-medium sm:mb-1 mb-2 sm:px-10 sm:pt-0 pt- ">
         {text}
       </label>
-      <div className='sm:px-10 pt'>
+      <div className='sm:px-10 pt '>
         <Select
           id="dropdown"
           value={options.find(option => option.value === value)}

@@ -17,7 +17,7 @@ const addAktivitas = () => {
         setData(null);
 
         try {
-            const response = await axios.post("https://backend-btn-tracking.vercel.app/add-nasabah", {
+            const response = await axios.post("https://back-btn-boost.vercel.app/add-nasabah", {
                 headers: {
                     Authorization: bearerToken
                 }

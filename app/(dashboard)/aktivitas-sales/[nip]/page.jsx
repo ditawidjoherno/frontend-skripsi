@@ -10,6 +10,7 @@ import { useState, useEffect } from 'react';
 import { IoCheckmarkDoneCircleOutline } from "react-icons/io5";
 import useDataAktivitas from '@/hooks/use-data-aktivitas';
 import { useParams } from 'next/navigation';
+import Link from "next/link";
 
 
 
@@ -24,11 +25,8 @@ const page = () => {
     const handleGetDataUser = async () => {
         await getUserData();
     }
-    console.log(nip)
+    console.log(data)
 
-    // useEffect(() => {
-    //     handleGetDataUser();
-    // }, [])
 
     const handleSearch = (event) => {
         const { value } = event.target;
@@ -53,72 +51,25 @@ const page = () => {
         );
     }
 
-    // const DataNasabah = [
-    //     {
-    //         image: "/img/profil-header.png",
-    //         nama: "Data 1",
-    //         tanggal: "Date Data 1",
-    //         namaNasabah: "John Doe",
-    //         aktivitas: "Tabungan",
-    //         alamat: "Lorem Ipsum",
-    //         prospek: "Lorem Ipsum",
-    //         aktivitasSales: "Lorem Ipsum",
-    //     },
-    //     {
-    //         image: "/img/profil-header.png",
-    //         nama: "Data 3",
-    //         tanggal: "Date Data 1",
-    //         namaNasabah: "John Doe",
-    //         aktivitas: "Tabungan",
-    //         alamat: "Lorem Ipsum",
-    //         prospek: "Lorem Ipsum",
-    //         aktivitasSales: "Lorem Ipsum",
-    //     },
-
-
-
-    // ];
-
-    // const handleSearch = (event) => {
-    //     const { value } = event.target;
-    //     setSearchTerm(value);
-    //     setIsSearchActive(true);
-    // };
-
-
-    // const filteredData = DataNasabah.filter(data =>
-    //     data.nama.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    //     data.aktivitas.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    //     data.namaNasabah.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    //     data.prospek.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    //     data.aktivitasSales.toLowerCase().includes(searchTerm.toLowerCase()),
-    // );
-
-
     return (
         <div className={`bg-[#EAEAEA] h-full flex flex-col items-center sm:pt-[75px] pt-[60px] sm:pr-4 pr-3 sm:ml-20 ml-10`}>
             <div className="flex items-center w-full">
                 <h2 className="sm:text-[40px] text-[24px] sm:ml-5 ml-4 font-semibold">
                     Aktivitas Sales
                 </h2>
-                <Link href="/beranda">
+                <Link href="/monitoring">
                     <IoIosArrowDropleftCircle className="sm:h-10 sm:w-10 h-5 w-5 sm:ml-3 ml-1" />
                 </Link>
             </div>
             <div className='sm:ml-5 ml-3 w-full '>
                 <div className="bg-white rounded-t-2xl h-[80px] pt-3">
                     <div className='flex justify-between'>
-                        <div className='flex items-center gap-2 ml-5'>
-                            <IoPersonSharp className="w-10 h-10" />
-                            <div>
-                                {data && (
-                                    <>
-                                        <h2 className='font-semibold text-[20px]'>{data.nama}</h2>
-                                        <h2 className='font-semibold text-[16px]'>{data.nip}</h2>
-                                    </>
-                                )}
+                        {data && (
+                            <div className='flex items-center gap-2 ml-5'>
+                                <IoPersonSharp className="w-10 h-10" />
+                                <h2 className='font-semibold text-[20px]'>{data.nama_user}</h2>
                             </div>
-                        </div>
+                        )}
                         <div className='flex gap-1 sm:mr-5'>
                             <div className="flex sm:mr-5 mr-3">
                                 <input
@@ -158,9 +109,9 @@ const page = () => {
                                 data.map((item, index) => (
                                     <tr key={index}>
                                         <td>{index + 1}</td>
-                                        <td>{item.nama}</td>
-                                        <td>{item.tanggal}</td>
-                                        <td>{item.aktivitas}</td>
+                                        <td>{item.nama_user}</td>
+                                        <td>{item.tanggal_aktivitas}</td>
+                                        <td>{item.nama_aktivitas}</td>
                                         <td><Link href={`/profil_nasabah`}>
                                             <div className="text-black hover:text-blue-700 cursor-pointer">{item.nama_nasabah}</div>
                                         </Link>

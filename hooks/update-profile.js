@@ -16,7 +16,7 @@ const UpdateProfile = () => {
         setData(null);
 
         try {
-            const response = await axios.put("http://localhost:3003/update-profil", body, {
+            const response = await axios.patch("https://back-btn-boost.vercel.app/user", body, {
                 headers: {
                     Authorization: bearerToken
                 }
@@ -41,9 +41,7 @@ const UpdateProfile = () => {
         setData(null);
 
         try {
-            const response = await axios.put("https://backend-btn-tracking.vercel.app/update-password", body
-            
-            , {
+            const response = await axios.patch("https://back-btn-boost.vercel.app/user", body, {
                 headers: {
                     Authorization: bearerToken
                 }
@@ -62,7 +60,36 @@ const UpdateProfile = () => {
         }
     };
 
-    return { loading, error, data, updateData, updatePassword };
+    const updateProfileImage = async (imageFile) => {
+        setLoading(true);
+        setError(null);
+        setData(null);
+
+        try {
+            const formData = new FormData();
+            formData.append('image', imageFile);
+
+            const response = await axios.post("https://back-btn-boost.vercel.app/profile-image", formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                    Authorization: bearerToken
+                }
+            });
+
+            if (response.status !== 200) {
+                throw new Error(response.data.message || "Gagal Mengupload Foto Profil");
+            }
+
+            setData(response.data);
+            console.log(response);
+        } catch (error) {
+            setError(error.message);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    return { loading, error, data, updateData, updatePassword, updateProfileImage };
 };
 
 export default UpdateProfile;

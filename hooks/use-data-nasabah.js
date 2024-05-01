@@ -13,7 +13,7 @@ const useDataNasabah = (nasabah) => {
     const token = getCookie(cookie)
     const { user, setUser, clearUser } = useUserStore();
 
-    const bearerToken = `Bearer ${token}`
+    // const bearerToken = `Bearer ${token}`
     const getUserData = async () => {
         setLoading(true)
         setError(null)
@@ -21,10 +21,10 @@ const useDataNasabah = (nasabah) => {
         console.log(nasabah)
 
         try {
-            const response = await axios.get(`https://backend-btn-tracking.vercel.app/nasabah/${nasabah}`, {
+            const response = await axios.get(`https://back-btn-boost.vercel.app/nasabah/${nasabah}`, {
                 headers: {
-                    Authorization: bearerToken
-                }
+                    Authorization: `Bearer ${token}`
+                  }
             });
 
             if (!response.status === 200) {

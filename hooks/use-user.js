@@ -20,7 +20,7 @@ const useUser = () => {
         setData(null)
 
         try {
-            const response = await axios.get("https://backend-btn-tracking.vercel.app/user", {
+            const response = await axios.get("https://back-btn-boost.vercel.app/user", {
                 headers: {
                     Authorization: bearerToken
                 }
@@ -30,9 +30,8 @@ const useUser = () => {
             if (!response.status === 200) {
                 throw new Error(response.data.message || "Gagal Mendapat User")
             }
-
-            setData(response.data.data.user)
-            setUser(response.data.data.user);
+            setData(response.data.data)
+            setUser(response.data.data);
         } catch (error) {
             setError(error.message)
         } finally {

@@ -20,7 +20,7 @@ const useTotalAktivitasBulanan = () => {
         setData(null)
 
         try {
-            const response = await axios.get("https://backend-btn-tracking.vercel.app/total-aktivitas-bulanan", {
+            const response = await axios.get("https://back-btn-boost.vercel.app/total-aktivitas-bulanan", {
                 headers: {
                     Authorization: bearerToken
                 }

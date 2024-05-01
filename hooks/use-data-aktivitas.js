@@ -21,7 +21,7 @@ const useDataAktivitas = (nip) => {
         console.log(nip)
 
         try {
-            const response = await axios.get(`https://backend-btn-tracking.vercel.app/aktivitas-bulanan/${nip}`, {
+            const response = await axios.get(`https://back-btn-boost.vercel.app/aktivitas-sales/${nip}`, {
                 headers: {
                     Authorization: bearerToken
                 }

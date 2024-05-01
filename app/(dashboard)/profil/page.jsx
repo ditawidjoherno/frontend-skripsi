@@ -18,9 +18,7 @@ const page = () => {
       </div>
       <div className="bg-white rounded-2xl h-auto mb-5 sm:ml-5 ml-3 w-full sm:pt-10 pt-6 ">
         <div className="sm:flex  sm:text-start text-center">
-          <div className="sm:ml-6 ml-0 flex justify-center items-center">
-            <img src={"/img/profil.png"} alt="Foto Profil" className="sm:w-[250px] w-[100px] sm:h-[250px] h-[100px]" />
-          </div>
+          
           <UserData />
         </div>
         <div className="flex gap-3 justify-end mb-5 sm:mr-5 mr-3">

@@ -5,7 +5,7 @@ import { useState } from "react";
 import { create } from "zustand";
 import useUserStore from "./use-data-user";
 
-const useAktivitasSelesai = () => {
+const useAddNasabah = () => {
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState(null)
     const [data, setData] = useState(null)
@@ -14,33 +14,36 @@ const useAktivitasSelesai = () => {
     const { user, setUser, clearUser } = useUserStore();
 
     const bearerToken = `Bearer ${token}`
-    const getUserData = async () => {
+    const addNasabah = async (body) => {
         setLoading(true)
         setError(null)
         setData(null)
 
+        console.log(body)
+
         try {
-            const response = await axios.get("https://backend-btn-tracking.vercel.app/aktivitas-selesai", {
+            const response = await axios.post(`https://back-btn-boost.vercel.app/nasabah`, body, {
                 headers: {
                     Authorization: bearerToken
                 }
             });
 
 
-            if (!response.status === 200) {
-                throw new Error(response.data.message || "Gagal Mendapat User")
-            }
+            // if (!response.status === 200) {
+            //     throw new Error(response.data.message || "Gagal Mendapat User")
+            // }
 
-            setData(response.data.data)
-            console.log(response.data.data)
+            setData(response.data)
+            console.log(response.data)
         } catch (error) {
             setError(error.message)
+            alert(`${error.response.data.message}`)
         } finally {
             setLoading(false)
         }
     }
 
-    return { loading, error, data, getUserData }
+    return { loading, error, data, addNasabah }
 }
 
-export default useAktivitasSelesai
+export default useAddNasabah

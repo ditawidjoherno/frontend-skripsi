@@ -3,7 +3,6 @@ import axios from "axios";
 import { useState } from "react";
 import { create } from "zustand";
 import useUserStore from "./use-data-user";
-import { bulanToAngka } from "@/lib/utils";
 
 const useDataPerbulan = () => {
     const [loading, setLoading] = useState(false)
@@ -14,14 +13,13 @@ const useDataPerbulan = () => {
     const { user, setUser, clearUser } = useUserStore();
 
     const bearerToken = `Bearer ${token}`
-    const getDataPerbulan = async (bulan, tahun) => {
+    const getDataPerbulan = async () => {
         setLoading(true)
         setError(null)
         setData(null)
-        const bulanBaru = bulanToAngka(bulan)
 
         try {
-            const response = await axios.get(`https://backend-btn-tracking.vercel.app/aktivitas-bulanan/${bulanBaru}/${tahun}`, {
+            const response = await axios.get(`https://back-btn-boost.vercel.app/aktivitas-bulanan`, {
                 headers: {
                     Authorization: bearerToken
                 }

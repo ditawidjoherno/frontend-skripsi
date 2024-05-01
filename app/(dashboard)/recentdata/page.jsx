@@ -1,7 +1,6 @@
 "use client"
 import { IoIosArrowDropleftCircle } from "react-icons/io";
 import { IoNewspaper } from "react-icons/io5";
-import { IoFilterSharp } from "react-icons/io5";
 import { IoSearchOutline } from "react-icons/io5";
 import Link from "next/link";
 import { useState, useEffect } from 'react';
@@ -9,7 +8,6 @@ import useRecentData from "@/hooks/use-recent-data";
 
 const Page = () => {
   const [searchTerm, setSearchTerm] = useState('');
-  const [isSearchActive, setIsSearchActive] = useState(false);
   const { loading, error, data, getUserData } = useRecentData();
 
   const handleGetDataUser = async () => {
@@ -23,14 +21,11 @@ const Page = () => {
   const handleSearch = (event) => {
     const { value } = event.target;
     setSearchTerm(value);
-    setIsSearchActive(true);
   };
 
-  useEffect(() => {
-    getUserData();
-  }, []);
-
-
+  const handleSearchSubmit = (event) => {
+    event.preventDefault();
+  };
 
   return (
     <div className={`bg-[#EAEAEA] h-full flex flex-col items-center sm:pt-[75px] pt-[60px] sm:pr-4 pr-3 sm:ml-20 ml-10`}>
@@ -50,18 +45,20 @@ const Page = () => {
               <h2 className='font-semibold sm:text-[28px] text-[20px]'>Recent Data</h2>
             </div>
             <div className='flex gap-1 sm:mr-5'>
-              <div className="flex sm:mr-5 mr-3">
-                <input
-                  type="text"
-                  placeholder="Search..."
-                  value={searchTerm}
-                  onChange={handleSearch}
-                  className="border-2 border-gray-300 px-4 py-2 sm:rounded-l-2xl rounded-l-lg focus:outline-none focus:border-blue-500 sm:w-[270px] w-[100px] sm:h-[40px] h-[30px]"
-                />
-                <button type="submit" className="bg-[#FFE500] text-black border-black px-1 py-1 sm:rounded-r-2xl rounded-r-lg hover:bg-[#f6f0ba] sm:w-[40px] w-[30px] sm:h-[40px] h-[30px] focus:outline-none">
-                  <IoSearchOutline className="sm:w-6 w-4 sm:h-6 h-4" />
-                </button>
-              </div>
+              <form onSubmit={handleSearchSubmit}>
+                <div className="flex sm:mr-5 mr-3">
+                  <input
+                    type="text"
+                    placeholder="Search..."
+                    value={searchTerm}
+                    onChange={handleSearch}
+                    className="border-2 border-gray-300 px-4 py-2 sm:rounded-l-2xl rounded-l-lg focus:outline-none focus:border-blue-500 sm:w-[270px] w-[100px] sm:h-[40px] h-[30px]"
+                  />
+                  <button type="submit" className="bg-[#FFE500] text-black border-black px-1 py-1 sm:rounded-r-2xl rounded-r-lg hover:bg-[#f6f0ba] sm:w-[40px] w-[30px] sm:h-[40px] h-[30px] focus:outline-none">
+                    <IoSearchOutline className="sm:w-6 w-4 sm:h-6 h-4" />
+                  </button>
+                </div>
+              </form>
             </div>
           </div>
           <hr className="border-t-2 border-black my-3 mx-6 " />
@@ -70,7 +67,7 @@ const Page = () => {
           <table className="table-auto border-collapse w-full text-center overflow-x-auto">
             <thead>
               <tr>
-                <th className="sm:px-14 px-7 sm:py-4 py-0">Nama</th>
+                <th className="sm:px-14 px-7 sm:py-4 py-0">Nama Staff</th>
                 <th className="sm:px-14 px-7 sm:py-4 py-0">Tanggal Prospek</th>
                 <th className="sm:px-14 px-7 sm:py-4 py-0">Aktivitas</th>
                 <th className="sm:px-14 px-7 sm:py-4 py-0">Nama Nasabah</th>
@@ -80,22 +77,34 @@ const Page = () => {
             </thead>
             <tbody>
               {data && data.length > 0 ? (
-                data.map((item, index) => (
-                  <tr key={index}>
-                    <td className="flex items-center sm:py-2 py-1 sm:px-4 px-1 ml-2">
-                      {/* <img src={item?.image} alt={item?.nama} className="sm:w-8 w-6 sm:h-8 h-6 sm:mr-4 mr-2" /> */}
-                      <span>{item.nama} </span>
-                    </td>
-                    <td>{item.tanggal}</td>
-                    <td>{item.aktivitas}</td>
-                    <td><Link href={`/profil_nasabah`}>
-                      <div className="text-black hover:text-blue-700 cursor-pointer">{item.nama_nasabah}</div>
-                    </Link>
-                    </td>
-                    <td>{item.aktivitas_sales}</td>
-                    <td>{item.prospek}</td>
-                  </tr>
-                ))
+                data
+                  .filter(item => {
+                    const searchTermLowerCase = searchTerm.toLowerCase();
+                    return (
+                      item.nama_user.toLowerCase().includes(searchTermLowerCase) ||
+                      item.tanggal_aktivitas.toLowerCase().includes(searchTermLowerCase) ||
+                      item.nama_aktivitas.toLowerCase().includes(searchTermLowerCase) ||
+                      item.nama_nasabah.toLowerCase().includes(searchTermLowerCase) ||
+                      item.aktivitas_sales.toLowerCase().includes(searchTermLowerCase) ||
+                      item.prospek.toLowerCase().includes(searchTermLowerCase)
+                    );
+                  })
+                  .map((item, index) => (
+                    <tr key={index}>
+                      <td className="flex items-center sm:py-2 py-1 sm:px-4 px-1 ml-2">
+                        <span>{item.nama_user} </span>
+                      </td>
+                      <td>{item.tanggal_aktivitas}</td>
+                      <td>{item.nama_aktivitas}</td>
+                      <td>
+                        <Link href={`/profil_nasabah`}>
+                          <div className="text-black hover:text-blue-700 cursor-pointer">{item.nama_nasabah}</div>
+                        </Link>
+                      </td>
+                      <td>{item.aktivitas_sales}</td>
+                      <td>{item.prospek}</td>
+                    </tr>
+                  ))
               ) : (
                 <tr>
                   <td colSpan="7">Belum ada data yang ditambahkan</td>
@@ -107,7 +116,6 @@ const Page = () => {
       </div>
     </div>
   );
-  
 };
 
 export default Page;

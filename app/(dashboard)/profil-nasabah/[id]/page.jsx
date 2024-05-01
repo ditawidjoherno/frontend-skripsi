@@ -3,29 +3,31 @@ import { IoIosArrowDropleftCircle } from "react-icons/io";
 import TeksProfil from '../_components/TeksProfil';
 import Button from '../_components/button';
 import useProfileNasabah from '@/hooks/use-profile-nasabah';
+import useDataAktivitas from "@/hooks/use-data-aktivitas";
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
+import Link from "next/link";
 
 
 const page = () => {
     const { id } = useParams();
     const { loading, error, data, getUserData } = useProfileNasabah(id);
-
+    const { data: dataAktivitas, getUserData: GetDataAktivitas } = useDataAktivitas();
     const handleGetDataUser = async () => {
         await getUserData();
     }
 
-
     console.log("id:", id);
-
 
     useEffect(() => {
         getUserData();
+        GetDataAktivitas();
     }, []);
 
     if (!data) {
         return <div>Data not found</div>;
     }
+    console.log(data)
 
     return (
         <div className='bg-[#EAEAEA] h-full flex flex-col items-center sm:pt-[75px] pt-[60px] sm:pr-4 pr-3 sm:ml-20 ml-10'>
@@ -33,7 +35,9 @@ const page = () => {
                 <h2 className="sm:text-[40px] text-[24px] sm:ml-5 ml-4 font-semibold">
                     Profil Nasabah
                 </h2>
+                <Link href="/data-nasabah">
                 <IoIosArrowDropleftCircle className="sm:h-10 sm:w-10 h-5 w-5 sm:ml-3 ml-1" />
+                </Link>
             </div>
 
             <div className='flex md:flex-row flex-col w-full pr-9 mb-5'>
@@ -119,12 +123,11 @@ const page = () => {
                     <h2 className='font-medium text-[28px] ml-11'>Dokumentasi</h2>
                     <hr className="my-3 mx-6  border-t-2 justify-center items-center border-black mt-1" />
                     <div className='flex md:flex-row flex-col items-center justify-center mb-5'>
-                        <img src={"/img/profil.png"} alt="Foto Profil" className="sm:w-[250px] w-[100px] sm:h-[250px] h-[100px] mx-9 sm:mb-0 mb-3" />
-                        <img src={"/img/profil.png"} alt="Foto Profil" className="sm:w-[250px] w-[100px] sm:h-[250px] h-[100px] mx-9 sm:mb-0 mb-3" />
-                        <img src={"/img/profil.png"} alt="Foto Profil" className="sm:w-[250px] w-[100px] sm:h-[250px] h-[100px] mx-9 sm:mb-0 mb-3" />
+                        {data && data.dokumentasi && data.dokumentasi.map((item, index) => (
+                            <img key={index} src={item.dokumentasi} alt={`Foto ${index + 1}`} className="sm:w-[250px] w-[100px] sm:h-[250px] h-[100px] mx-9 sm:mb-0 mb-3" />
+                        ))}
                     </div>
                 </div>
-
             </div>
             <div className='w-full flex justify-end items-start h-full'>
                 <Button className="justify-end"
@@ -136,4 +139,4 @@ const page = () => {
     )
 }
 
-export default page
+export default page;

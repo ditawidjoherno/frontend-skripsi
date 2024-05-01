@@ -16,7 +16,7 @@ const UpdatePassword = () => {
         setData(null);
 
         try {
-            const response = await axios.put("https://backend-btn-tracking.vercel.app/update-password", body, {
+            const response = await axios.put("https://back-btn-boost.vercel.app/update-password", body, {
                 headers: {
                     Authorization: bearerToken
                 }

@@ -5,7 +5,7 @@ import { useState } from "react";
 import { create } from "zustand";
 import useUserStore from "./use-data-user";
 
-const useDataNasabah = (nip) => {
+const useTargetStaff = () => {
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState(null)
     const [data, setData] = useState(null)
@@ -18,10 +18,10 @@ const useDataNasabah = (nip) => {
         setLoading(true)
         setError(null)
         setData(null)
-        console.log(nasabah)
+
 
         try {
-            const response = await axios.get(`https://backend-btn-tracking.vercel.app/get-target-tahunan/${nip}`, {
+            const response = await axios.get(`https://back-btn-boost.vercel.app/target-tahunan`, {
                 headers: {
                     Authorization: bearerToken
                 }
@@ -43,4 +43,4 @@ const useDataNasabah = (nip) => {
     return { loading, error, data, getUserData }
 }
 
-export default useDataNasabah
+export default useTargetStaff

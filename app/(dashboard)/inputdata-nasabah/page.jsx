@@ -5,8 +5,8 @@ import Input from './_components/Input';
 import Button from './_components/button';
 import Dropdown from './_components/dropdown';
 import DateInput from './_components/Date';
-import useNasabah from '@/hooks/use-nasabah';
-
+import useAddNasabah from '@/hooks/use-nasabah';
+import Link from "next/link";
 
 const Page = () => {
     const [maritalStatus, setMaritalStatus] = useState("");
@@ -14,9 +14,9 @@ const Page = () => {
     const [numberOfChildren, setNumberOfChildren] = useState(0);
     const [showSpouseData, setShowSpouseData] = useState(false);
     const [childrenData, setChildrenData] = useState([]);
-    const { loading, error, data, addNasabah } = useNasabah();
+    const { loading, error, data, addNasabah } = useAddNasabah();
 
-    const [selectedOptions1, setSelectedOptions1] = useState('');
+    const [selectedOptions1, setSelectedOptions1] = useState('option1'); // inisialisasi selectedOptions1
 
     const statusnasabah = [
         { value: 'option1', label: 'Pilih Status Nasabah' },
@@ -134,8 +134,17 @@ const Page = () => {
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
-        setNasabahData({ ...nasabahData, [name]: value })
-    }
+        let newValue = value; // Simpan nilai yang dimasukkan pengguna
+    
+        // Jika nama field adalah "estimasi_penghasilan_bulanan" dan nilai tidak dimulai dengan "Rp", tambahkan "Rp" di depan nilai
+        if (name === "estimasi_penghasilan_bulanan" && !value.startsWith("Rp")) {
+            newValue = "Rp" + value; // Tambahkan "Rp" di depan nilai
+        }
+    
+        // Setel nilai ke state
+        setNasabahData({ ...nasabahData, [name]: newValue });
+    };
+    
 
     const handleInputJumlahAnakChange = (e) => {
         const { name, value } = e.target;
@@ -212,9 +221,27 @@ const Page = () => {
         setNasabahData({ ...nasabahData, data_anak: newDataAnak });
     };
 
-    const handleSubmit = async () => {
-        await addNasabah(nasabahData);
+const handleSubmit = async () => {
+    let newData = { ...nasabahData };
+
+
+    if (!nasabahData.estimasi_penghasilan_bulanan.startsWith("Rp")) {
+        newData = {
+            ...nasabahData,
+            estimasi_penghasilan_bulanan: "Rp" + nasabahData.estimasi_penghasilan_bulanan
+        };
     }
+
+    if (nasabahData.status_pernikahan !== "menikah") {
+        newData = {
+            ...newData,
+            data_pasangan: {}
+        };
+    }
+
+    await addNasabah(newData);
+};
+
 
     const test = () => {
         console.log(nasabahData);
@@ -226,7 +253,9 @@ const Page = () => {
                 <h2 className="sm:text-[35px] text-[24px] sm:ml-5 ml-4 font-semibold">
                     Input Data Nasabah
                 </h2>
+                <Link href="/data-nasabah">
                 <IoIosArrowDropleftCircle className="sm:h-8 sm:w-8 h-5 w-5 sm:ml-3 ml-1 " />
+                </Link>
             </div>
             <div className="bg-white rounded-2xl h-auto mt-2 sm:ml-5 ml-3 w-full sm:pt-5 pt-6">
                 <div className='sm:flex '>
@@ -292,6 +321,7 @@ const Page = () => {
                         <Input text={"Data Pekerjaan / Usaha"} placeholder={"Masukkan Pekerjaan"} name="pekerjaan" value={nasabahData.pekerjaan} onChange={handleInputChange} />
                         <Input text={"Alamat Pekerjaan / Usaha"} placeholder={"Masukkan Key Person"} name="alamat_pekerjaan" value={nasabahData.alamat_pekerjaan} onChange={handleInputChange} />
                         <Input text={"Estimasi Penghasilan Bulanan"} placeholder={"Masukkan Estimasi Penghasilan Bulanan"} name="estimasi_penghasilan_bulanan" value={nasabahData.estimasi_penghasilan_bulanan} onChange={handleInputChange} />
+                        <Input text={"Key Person"} placeholder={"Masukkan Key Person"} name="key_person" value={nasabahData.key_person} onChange={handleInputChange} />
 
                         {nasabahData.status_pernikahan === "menikah" || nasabahData.status_pernikahan === "bercerai" ? (
                             <div className='sm:px-10 pt-4 sm:mr-0 mr-1 items-center'>

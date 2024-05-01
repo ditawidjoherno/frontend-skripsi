@@ -1,27 +1,25 @@
 import React, { useState } from "react";
+import tambahReminder from "@/hooks/add-reminder";
 
-const PopupReminder = ({ showPopup, handlePopupToggle, addReminder }) => {
-  const [reminderText, setReminderText] = useState("");
-  const [reminderDate, setReminderDate] = useState("");
-  const [reminderTime, setReminderTime] = useState("");
+const PopupReminder = ({ showPopup, handlePopupToggle }) => {
+  const { updateData } = tambahReminder();
+  const [task, setTask] = useState("");
+  const [deadline, setDeadline] = useState("");
 
-  const handleChangeText = (e) => {
-    setReminderText(e.target.value);
+  const handleChangeTask = (e) => {
+    setTask(e.target.value);
   };
 
-  const handleChangeDate = (e) => {
-    setReminderDate(e.target.value);
-  };
-
-  const handleChangeTime = (e) => {
-    setReminderTime(e.target.value);
+  const handleChangeDeadline = (e) => {
+    setDeadline(e.target.value);
   };
 
   const handleAddReminder = () => {
-    addReminder(reminderText, reminderDate, reminderTime);
-    setReminderText("");
-    setReminderDate("");
-    setReminderTime("");
+    updateData(task, deadline);
+    setTask("");
+    setDeadline("");
+    handlePopupToggle();
+    window.location.reload()
   };
 
   return (
@@ -33,33 +31,23 @@ const PopupReminder = ({ showPopup, handlePopupToggle, addReminder }) => {
               <h2 className="text-lg font-semibold">Add Reminder</h2>
             </div>
             <div className="p-4">
-              <label htmlFor="reminder" className="block mb-2 font-semibold">Reminder:</label>
-              <input 
-                type="text" 
-                id="reminder" 
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500 mb-4" 
-                placeholder="Enter your reminder"
-                value={reminderText}
-                onChange={handleChangeText}
+              <label htmlFor="task" className="block mb-2 font-semibold">Task:</label>
+              <input
+                type="text"
+                id="task"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500 mb-4"
+                placeholder="Enter your task"
+                value={task}
+                onChange={handleChangeTask}
               />
               <div className="flex items-center mb-4">
-                <label htmlFor="time" className="mr-2">Time:</label>
-                <input 
-                  type="time" 
-                  id="time" 
+                <label htmlFor="deadline" className="mr-2">Deadline:</label>
+                <input
+                  type="date"
+                  id="deadline"
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500"
-                  value={reminderTime}
-                  onChange={handleChangeTime}
-                />
-              </div>
-              <div className="flex items-center">
-                <label htmlFor="date" className="mr-2">Date:</label>
-                <input 
-                  type="date" 
-                  id="date" 
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500"
-                  value={reminderDate}
-                  onChange={handleChangeDate}
+                  value={deadline}
+                  onChange={handleChangeDeadline}
                 />
               </div>
             </div>
