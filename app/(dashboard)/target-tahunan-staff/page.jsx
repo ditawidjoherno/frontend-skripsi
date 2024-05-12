@@ -6,7 +6,7 @@ import TableKpiMonitoring from './_components/tabelnilaikpimonitoring';
 import useUser from '@/hooks/use-user';
 import Link from "next/link";
 import { useRouter } from 'next/navigation';
-
+import { FaSpinner } from 'react-icons/fa';
 
 const Page = () => {
   const router = useRouter();
@@ -17,38 +17,43 @@ const Page = () => {
     getUserData();
   }, []);
 
-  if (loading) {
-    return <div>Loading...</div>;
-  }
 
   if (error) {
-    return <div>Error: {error.message}</div>;
+    return;
   }
 
   if (!userData) {
-    return <div>No user data available</div>;
+    return;
   }
 
+  if (loading) {
+    return (
+        <div className="fixed inset-0 flex items-center justify-center">
+            <FaSpinner className="animate-spin mr-2" /> Loading
+        </div>
+    );
+}
+
   const { jabatan } = userData;
-  
+
   const handleGoBack = () => {
     router.back();
-};
+  };
 
   return (
-    <div className={`bg-[#EAEAEA] h-full flex flex-col items-center sm:pt-[75px] pt-[60px] sm:pr-4 pr-3 sm:ml-20 ml-10`}>
+    <div className={`bg-[#EAEAEA] h-auto flex flex-col items-center sm:pt-[75px] pt-[60px] sm:pr-4 pr-3 sm:ml-20 ml-10`}>
       <div className="flex items-center w-full">
         <h2 className="sm:text-[40px] text-[24px] sm:ml-5 ml-4 font-semibold">
           Target Staff
         </h2>
         <div>
-        <IoIosArrowDropleftCircle
-                        className="sm:h-10 sm:w-10 h-5 w-5 sm:ml-3 ml-0 transition-colors duration-300 hover:text-gray-400 focus:text-gray-400 cursor-pointer"
-                        onClick={handleGoBack}
-                    />
-                </div>
+          <IoIosArrowDropleftCircle
+            className="sm:h-10 sm:w-10 h-5 w-5 sm:ml-3 ml-0 transition-colors duration-300 hover:text-gray-400 focus:text-gray-400 cursor-pointer"
+            onClick={handleGoBack}
+          />
+        </div>
       </div>
-      <div className="bg-white rounded-2xl h-auto sm:ml-5 ml-3 w-full sm:pt-10 pt-6 ">
+      <div className="bg-white rounded-2xl h-auto sm:ml-5 ml-3 sm:mb-3 mb-1 w-full sm:pt-10 pt-6 ">
         <div className='mx-9'>
           {(jabatan === 'staff') && (
             <TableKpi />

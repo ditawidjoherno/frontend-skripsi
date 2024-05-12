@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import useTargetHarianStaff from "@/hooks/use-target-harian";
 import useUserStore from "@/hooks/use-data-user";
 import useTargetMingguanStaff from "@/hooks/use-target-mingguan";
+import { FaSpinner } from 'react-icons/fa';
 
 const TableKpi = () => {
   const { loading, error, data, getUserData } = useTargetStaff();
@@ -15,12 +16,19 @@ const TableKpi = () => {
     getHarian();
     getMingguan();
   }, []);
+  const capitalizeFirstLetter = (string) => {
+    if (string && typeof string === 'string' && string.length > 0) {
+        return string.charAt(0).toUpperCase() + string.slice(1);
+    } else {
+        return string;
+    }
+};
 
   useEffect(() => {
     if (data) {
       const tableRows = data.map((staffData, index) => ({
         No: index + 1,
-        KPI: staffData.nama_kpi,
+        KPI:capitalizeFirstLetter(staffData.nama_kpi),
         TargetJan: staffData.target.januari,
         TargetFeb: staffData.target.februari,
         TargetMar: staffData.target.maret,
@@ -43,12 +51,17 @@ const TableKpi = () => {
   console.log(data)
 console.log(harian)
 
-  if (loading) {
-    return <div>Loading</div>;
-  }
+if (loading) {
+  return (
+      <div className="fixed inset-0 flex items-center justify-center">
+          <FaSpinner className="animate-spin mr-2" /> Loading
+      </div>
+  );
+}
+
 
   if (error) {
-    return <div>Error: {error.message}</div>;
+    return;
   }
 
   return (
@@ -121,7 +134,7 @@ console.log(harian)
               mingguan.map((row, index) => (
                 <tr key={index + 1}>
                   <td className="border border-gray-400 px-4 py-2">{index + 1}</td>
-                  <td className="border border-gray-400 px-4 py-2">{mingguan}</td>
+                  <td className="border border-gray-400 px-4 py-2">{capitalizeFirstLetter(row)}</td>
 
                 </tr>
               ))
@@ -152,7 +165,7 @@ console.log(harian)
               harian.map((row, index) => (
                 <tr key={index + 1}>
                   <td className="border border-gray-400 px-4 py-2">{index + 1}</td>
-                  <td className="border border-gray-400 px-4 py-2">{row}</td>
+                  <td className="border border-gray-400 px-4 py-2">{capitalizeFirstLetter(row)}</td>
                 </tr>
               ))
             ) : (

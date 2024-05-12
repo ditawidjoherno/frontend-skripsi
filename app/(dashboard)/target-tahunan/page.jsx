@@ -12,6 +12,7 @@ import TargetHarianMonitoring from './_components/TargetHarian';
 import TargetMingguanMonitoring from './_components/TargetMingguan';
 import TargetTahunanMonitoring from './_components/TargetTahunanMonitoring';
 import { useRouter } from 'next/navigation';
+import { FaSpinner } from 'react-icons/fa';
 
 const Page = () => {
   const router = useRouter();
@@ -24,8 +25,12 @@ const Page = () => {
   }, []);
 
   if (loading) {
-    return <div>Loading...</div>;
-  }
+    return (
+        <div className="fixed inset-0 flex items-center justify-center">
+            <FaSpinner className="animate-spin mr-2" /> Loading
+        </div>
+    );
+}
 
   if (error) {
     return <div>Error: {error.message}</div>;

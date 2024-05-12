@@ -31,6 +31,9 @@ const TargetHarian = () => {
     getUserData();
   }, []);
 
+  const capitalizeFirstLetter = (string) => {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+};
 
   return (
     <div className="bg-white md:flex-row flex-col sm:ml-11 sm:mt-10 mt-4 rounded-2xl sm:h-[250px] h-[220px] sm:w-auto w-[300px]">
@@ -58,7 +61,7 @@ const TargetHarian = () => {
                 data.map((item, index) => (
                   <tr key={index}>
                     <td className="text-center">{index + 1}</td>
-                  <td >{item}</td>
+                  <td >{capitalizeFirstLetter(item)}</td>
                   </tr>
                 ))
               ) : (

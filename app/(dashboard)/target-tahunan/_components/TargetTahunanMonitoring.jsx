@@ -20,12 +20,16 @@ const TargetTahunanMonitoring = () => {
   }, [selectedStaff]);
   
   useEffect(() => {
-    if (dataTargetTahunan && dataTargetTahunan.length > 0) {
+    if (dataTargetTahunan && dataTargetTahunan.length > 0 && selectedStaff !== "") {
+      const capitalizeFirstLetter = (string) => {
+        return string.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+      };
+      
       const foundStaffData = dataTargetTahunan.find(staff => staff.nip_staff === selectedStaff);
       if (foundStaffData && foundStaffData.aktivitas_kpi) {
         const tableRows = foundStaffData.aktivitas_kpi.map((kpi, index) => ({
           No: index + 1,
-          KPI: kpi.nama_kpi,
+          KPI: capitalizeFirstLetter(kpi.nama_kpi),
           TargetJan: kpi.target.januari,
           TargetFeb: kpi.target.februari,
           TargetMar: kpi.target.maret,
