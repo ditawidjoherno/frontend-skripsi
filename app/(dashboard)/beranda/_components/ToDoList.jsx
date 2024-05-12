@@ -36,7 +36,7 @@ const TodoList = () => {
   };
 
   return (
-    <div className="bg-white md:flex-row flex-col sm:ml-11 sm:mx-0 mx-5 sm:mt-5 mt-4 rounded-2xl sm:h-[350px] h-[220px] sm:w-auto w-auto sm:mb-5 mb-0">
+    <div className="bg-white md:flex-row flex-col sm:ml-11 sm:mx-0 mx-5 sm:mt-10 mt-4 rounded-2xl sm:h-[350px] h-[220px] sm:w-auto w-auto sm:mb-5 mb-0">
       <div className="flex sm:mx-9 mx-5 pt-4 justify-between">
         <div className="flex gap-2">
           <IoReceipt className="sm:text-4xl text-2xl" />

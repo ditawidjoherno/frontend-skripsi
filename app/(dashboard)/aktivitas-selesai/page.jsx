@@ -4,16 +4,16 @@ import { IoSearchOutline } from "react-icons/io5";
 import Link from 'next/link';
 import { IoCheckmarkDoneCircleOutline } from "react-icons/io5";
 import { IoIosArrowDropleft, IoIosArrowDropright, IoIosArrowDropleftCircle } from "react-icons/io";
-import Link from "next/link";
-
+import { FaSpinner } from 'react-icons/fa';
+import { useRouter } from 'next/navigation';
 import useAktivitasSelesai from '@/hooks/use-aktivitas-selesai';
 
 const Page = () => {
+    const router = useRouter();
     const [searchTerm, setSearchTerm] = useState('');
     const [tableData, setTableData] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
-    const [searchResults, setSearchResults] = useState([]);
-    const { loading, error, data, getUserData } = useAktivitasSelesai();
+    const { loading, data, getUserData } = useAktivitasSelesai();
 
     useEffect(() => {
         getUserData();
@@ -41,13 +41,14 @@ const Page = () => {
 
 
     if (loading) {
-        return <div>Loading</div>;
+        return (
+            <div className="fixed inset-0 flex items-center justify-center">
+                <FaSpinner className="animate-spin mr-2" /> Loading
+            </div>
+        );
     }
 
-    if (error) {
-        return <div>Error: {error.message}</div>;
-    }
-
+    
     const filteredData = tableData.filter(item =>
         item.nama_user.toLowerCase().includes(searchTerm.toLowerCase()) ||
         item.nama_aktivitas.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -56,19 +57,19 @@ const Page = () => {
         item.aktivitas_sales.toLowerCase().includes(searchTerm.toLowerCase()) ||
         item.keterangan_aktivitas.toLowerCase().includes(searchTerm.toLowerCase())
     );
-
+    
     const itemsPerPage = 10;
     const offset = (currentPage - 1) * itemsPerPage;
     const indexOfLastItem = offset + itemsPerPage;
     const indexOfFirstItem = offset + 1;
     const currentItems = filteredData.slice(offset, indexOfLastItem);
-
+    
     const nextPage = () => {
         if (currentPage < Math.ceil(filteredData.length / 10)) {
             setCurrentPage(currentPage + 1);
         }
     };
-
+    
     const prevPage = () => {
         if (currentPage > 1) {
             setCurrentPage(currentPage - 1);
@@ -78,10 +79,23 @@ const Page = () => {
     const maxPages = 5;
     let startPage = Math.max(1, currentPage - Math.floor(maxPages / 2));
     let endPage = Math.min(startPage + maxPages - 1, Math.ceil(filteredData.length / 10));
-
+    
     if (endPage - startPage + 1 < maxPages) {
         startPage = Math.max(1, endPage - maxPages + 1);
     }
+    
+    const capitalizeFirstLetter = (string) => {
+        if (string && typeof string === 'string' && string.length > 0) {
+            return string.charAt(0).toUpperCase() + string.slice(1);
+        } else {
+            return string;
+        }
+    };
+
+    const handleGoBack = () => {
+        router.back();
+    };
+    
 
     return (
         <div className={`bg-[#EAEAEA] h-full flex flex-col items-center sm:pt-[75px] pt-[60px] sm:pr-4 pr-3 sm:ml-20 ml-10`}>
@@ -89,9 +103,12 @@ const Page = () => {
                 <h2 className="sm:text-[40px] text-[24px] sm:ml-5 ml-4 font-semibold">
                     Aktivitas Sales
                 </h2>
-                <Link href="/beranda">
-                    <IoIosArrowDropleftCircle className="sm:h-10 sm:w-10 h-5 w-5 sm:ml-3 ml-1" />
-                </Link>
+                <div>
+                <IoIosArrowDropleftCircle
+                        className="sm:h-10 sm:w-10 h-5 w-5 sm:ml-3 ml-0 transition-colors duration-300 hover:text-gray-400 focus:text-gray-400 cursor-pointer"
+                        onClick={handleGoBack}
+                    />
+                </div>
             </div>
             <div className='sm:ml-5 ml-3 w-full '>
                 <div className="bg-white rounded-t-2xl h-[80px] pt-3">
@@ -136,19 +153,19 @@ const Page = () => {
                                 currentItems.map((item, index) => (
                                     <tr key={index}>
                                         <td>{index + 1}</td>
-                                        <td>{item.nama_user}</td>
+                                        <td>{capitalizeFirstLetter(item.nama_user)}</td>
                                         <td>{item.tanggal_aktivitas}</td>
-                                        <td>{item.nama_aktivitas}</td>
+                                        <td>{capitalizeFirstLetter(item.nama_aktivitas)}</td>
                                         <td>
                                             <Link href={`/profil-nasabah/${item.id_nasabah}`}>
                                                 <div className="text-black hover:text-blue-700 cursor-pointer">{item.nama_nasabah}</div>
                                             </Link>
                                         </td>
-                                        <td>{item.prospek}</td>
-                                        <td>{item.aktivitas_sales}</td>
+                                        <td>{capitalizeFirstLetter(item.prospek)}</td>
+                                        <td>{capitalizeFirstLetter(item.aktivitas_sales)}</td>
                                         <td>
                                             <div className={`py-1 rounded-md mx-6 my-1 text-white font-semibold ${item.keterangan_aktivitas === 'diterima' ? 'bg-green-500 ' : item.keterangan_aktivitas === 'ditolak' ? 'bg-red-500' : ''}`}>
-                                                {item.keterangan_aktivitas}
+                                            {capitalizeFirstLetter(item.keterangan_aktivitas)}
                                             </div>
                                         </td>
                                     </tr>

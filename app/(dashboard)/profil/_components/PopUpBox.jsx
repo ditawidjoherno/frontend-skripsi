@@ -59,6 +59,7 @@ const PopUpBox = () => {
           };
           updateData(updatedProfileData);
           setIsPopUpOpen(false);
+
         }
       } catch (error) {
         console.error('Gagal memperbarui profil:', error);
@@ -69,7 +70,7 @@ const PopUpBox = () => {
 
   return (
     <>
-      <div className='gap-2 flex justify-end w-full'>
+      <div className='gap-2 flex justify-end w-full '>
         <Button
           text={"Ganti Password"}
           onClick={() => handleButtonClick("changePassword")}
@@ -82,21 +83,21 @@ const PopUpBox = () => {
       {isPopUpOpen && (
         <div className="fixed inset-0 flex items-center justify-center z-10">
           <div className="fixed inset-0 bg-black opacity-25"></div>
-          <div className="bg-white sm:h-[530px] h-[550px] sm:w-[500px] w-[300px] rounded-lg z-20 relative shadow-lg">
+          <div className="bg-white h-auto w-full sm:ml-[380px] ml-[70px] sm:mr-[250px] mr-[30px] rounded-lg z-20 relative shadow-lg">
             {actionType === 'changePassword' && (
               <>
                 <div className=" flex mt-3 flex-col">
-                  <h2 className="font-medium text-[24px] ml-11">Ganti Password</h2>
+                  <h2 className="font-medium sm:text-[24px] text-[18px] sm:ml-11 ml-6">Ganti Password</h2>
                   <hr className="my-3 mx-6 border-t-[1px] justify-center items-center border-black mt-1" />
-                  <div className="mt-4  my-3 mx-3">
-                    <label htmlFor="newPassword" className=" items-center text-md font-medium text-lg text-gray-700 justify-center flex">
+                  <div className="sm:mt-4 mt-1 my-3 sm:mx-8 mx-3">
+                    <label htmlFor="newPassword" className=" items-center font-medium sm:text-lg text-md text-gray-700 justify-center flex">
                       Password Baru
                     </label>
-                    <div className='flex gap-2 w-full px-2 py-1 bg-[#D9D9D9] items-center rounded-xl'>
+                    <div className='flex gap-2 w-full px-2 py-1 bg-[#D9D9D9] items-center rounded-lg'>
                       <input
                         type={showPassword ? 'text' : 'password'}
                         id="newPassword"
-                        className="mt-1 py-1 w-full text-center border border-gray-300  bg-[#D9D9D9] rounded-md"
+                        className="sm:py-1 py-0 w-full sm:h-[30px] h-[20px] text-center border border-gray-300  bg-[#D9D9D9] rounded-md sm:text-lg text-sm"
                         placeholder="Masukkan password baru"
                         value={newPassword}
                         onChange={(e) => setNewPassword(e.target.value)}
@@ -104,13 +105,13 @@ const PopUpBox = () => {
                       {showPassword ? (
                         <IoEyeOffOutline
                           size={20}
-                          className='text-gray-500 cursor-pointer'
+                          className='text-gray-400 cursor-pointer'
                           onClick={() => setShowPassword(false)}
                         />
                       ) : (
                         <IoEyeOutline
                           size={20}
-                          className='text-gray-500 cursor-pointer'
+                          className='text-gray-400 cursor-pointer'
                           onClick={() => setShowPassword(true)}
                         />
                       )}
@@ -195,16 +196,16 @@ const PopUpBox = () => {
                 </div>
               </>
             )}
-            <div className='justify-end flex gap-3 mr-3 mt-3'>
+            <div className='justify-end flex gap-3 mr-3 mt-3 mb-6'>
               <button
                 onClick={() => setIsPopUpOpen(false)}
-                className=" text-white shadow-sm bg-[#8E969E] px-9 py-[3px] rounded hover:bg-[#adb5bd]"
+                className=" text-white shadow-sm bg-[#8E969E] sm:px-9 px-4 py-[3px] rounded hover:bg-[#adb5bd] sm:text-[18px] text-[14px]"
               >
                 Tutup
               </button>
               <button
                 type="submit"
-                className="bg-blue-500 shadow-md text-white px-9 py-[3px] rounded hover:bg-blue-600"
+                className="bg-blue-500 shadow-md text-white sm:px-9 px-4 py-[3px] rounded hover:bg-blue-600 sm:text-[18px] text-[14px]"
                 onClick={handleUpdateData}
               >
                 Simpan

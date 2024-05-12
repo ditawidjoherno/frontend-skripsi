@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { IoIosArrowDropleftCircle } from "react-icons/io";
-import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import axios from 'axios';
 import { getCookie } from '@/lib/cookieFunction';
 import useTargetTahunan from '@/hooks/use-target-tahunan';
@@ -10,6 +10,7 @@ import TargetHarian from './_components/TargetHarian';
 import TargetMingguan from './_components/TargetMingguan';
 
 const Page = () => {
+  const router = useRouter();
   const [selectedKpi, setSelectedKpi] = useState('');
   const [inputTarget, setInputTarget] = useState({});
 
@@ -119,65 +120,72 @@ const Page = () => {
 
   const monthlyInputs = months.map(month => `${month.charAt(0).toUpperCase()}${month.slice(1)}`);
 
+  const handleGoBack = () => {
+    router.back();
+};
+
   return (
     <div className={`bg-[#EAEAEA] h-full flex flex-col items-center sm:pt-[75px] pt-[60px] sm:pr-4 pr-3 sm:ml-20 ml-10`}>
       <div className="flex items-center w-full">
         <h2 className="sm:text-[40px] text-[24px] sm:ml-5 ml-4 font-semibold">
           Input Target Staff
         </h2>
-        <Link href="/beranda">
-          <IoIosArrowDropleftCircle className="sm:h-10 sm:w-10 h-5 w-5 sm:ml-3 ml-1" />
-        </Link>
+        <div>
+        <IoIosArrowDropleftCircle
+                        className="sm:h-10 sm:w-10 h-5 w-5 sm:ml-3 ml-0 transition-colors duration-300 hover:text-gray-400 focus:text-gray-400 cursor-pointer"
+                        onClick={handleGoBack}
+                    />
+                </div>
       </div>
       <div className="bg-white rounded-2xl h-auto mb-16 sm:ml-5 ml-3 w-full sm:pt-4 pt-6 ">
-        <div className="pl- mt-4">
-        <h2 className="sm:text-[30px] pl-8 mb-4 text-[24px] font-semibold">
+        <div className="pl- sm:mt-4 mt-0 ">
+        <h2 className="sm:text-[30px] sm:pl-8 pl-4 sm:mb-4 mb-1 text-[22px] font-semibold">
                 Input Target Tahunan
             </h2>
-          <div className="mb-4 pl-8 flex gap-5">
+          <div className="mb-4 sm:pl-8 pl-4 flex md:flex-row flex-col gap-5">
             <div className=''>
               <label htmlFor="staffSelect" className="block mb-2">Nama Staff:</label>
               <select
                 id="staffSelect"
-                className="border border-gray-300 sm:w-[200px] w-[100px] p-2 rounded-md bg-white"
+                className="border border-gray-300 sm:w-[200px] w-[145px] p-2 rounded-md bg-white"
                 value={selectedStaff}
                 onChange={(e) => setSelectedStaff(e.target.value)}
               >
-                <option value="">Select Nama Staff</option>
+                <option className="sm:text-[15px] text-[12px]" value="">Select Nama Staff</option>
                 {namaStaff && namaStaff.map((staff, index) => (
-                  <option key={index} value={staff.nip}>{staff.nama}</option>
+                  <option className="sm:text-[20px] text-[12px]" key={index} value={staff.nip}>{staff.nama}</option>
                 ))}
               </select>
             </div>
             <div>
-              <label htmlFor="kpiSelect" className="block mb-2">Nilai KPI:</label>
+              <label htmlFor="kpiSelect" className="block mb-2 ">Nilai KPI:</label>
               <select
                 id="kpiSelect"
-                className="border border-gray-300 sm:w-[200px] w-[100px] p-2 rounded-md bg-white"
+                className="border border-gray-300 sm:w-[200px] w-[145px] p-2 rounded-md bg-white"
                 onChange={handleChangeKPI}
                 value={selectedKpi}
               >
-                <option value="">Select KPI</option>
-                <option value="TABUNGAN">TABUNGAN</option>
-                <option value="DEPO RITEL">DEPO RITEL</option>
-                <option value="NTB - PBO">NTB - PBO</option>
-                <option value="NOA BTN MOVE">NOA BTN MOVE</option>
-                <option value="TRANSAKSI TELLER">TRANSAKSI TELLER</option>
-                <option value="TRANSAKSI CRM">TRANSAKSI CRM</option>
-                <option value="OPERASIONAL MKK">OPERASIONAL MKK</option>
-                <option value="QRIS">QRIS</option>
-                <option value="EDC">EDC</option>
-                <option value="KUADRAN AGEN">KUADRAN AGEN</option>
-                <option value="NOA PAYROLL">NOA PAYROLL</option>
-                <option value="VOA PAYROLL">VOA PAYROLL</option>
-                <option value="NOA PENSIUN">NOA PENSIUN</option>
-                <option value="VOA PENSIUN">VOA PENSIUN</option>
-                <option value="VOA E-BATARAPOS">VOA E-BATARAPOS</option>
-                <option value="NOA GIRO">NOA GIRO</option>
-                <option value="AKUISISI SATKER">AKUISISI SATKER</option>
-                <option value="CMS">CMS</option>
-                <option value="JUMLAH PKS PPO">JUMLAH PKS PPO</option>
-                <option value="DPK LEMBAGA">DPK LEMBAGA</option>
+                <option className="sm:text-[20px] text-[12px]" value="">Select KPI</option>
+                <option className="sm:text-[20px] text-[12px]" value="TABUNGAN">TABUNGAN</option>
+                <option className="sm:text-[20px] text-[12px]" value="DEPO RITEL">DEPO RITEL</option>
+                <option className="sm:text-[20px] text-[12px]" value="NTB - PBO">NTB - PBO</option>
+                <option className="sm:text-[20px] text-[12px]" value="NOA BTN MOVE">NOA BTN MOVE</option>
+                <option className="sm:text-[20px] text-[12px]" value="TRANSAKSI TELLER">TRANSAKSI TELLER</option>
+                <option className="sm:text-[20px] text-[12px]" value="TRANSAKSI CRM">TRANSAKSI CRM</option>
+                <option className="sm:text-[20px] text-[12px]" value="OPERASIONAL MKK">OPERASIONAL MKK</option>
+                <option className="sm:text-[20px] text-[12px]" value="QRIS">QRIS</option>
+                <option className="sm:text-[20px] text-[12px]" value="EDC">EDC</option>
+                <option className="sm:text-[20px] text-[12px]" value="KUADRAN AGEN">KUADRAN AGEN</option>
+                <option className="sm:text-[20px] text-[12px]" value="NOA PAYROLL">NOA PAYROLL</option>
+                <option className="sm:text-[20px] text-[12px]" value="VOA PAYROLL">VOA PAYROLL</option>
+                <option className="sm:text-[20px] text-[12px]" value="NOA PENSIUN">NOA PENSIUN</option>
+                <option className="sm:text-[20px] text-[12px]" value="VOA PENSIUN">VOA PENSIUN</option>
+                <option className="sm:text-[20px] text-[12px]" value="VOA E-BATARAPOS">VOA E-BATARAPOS</option>
+                <option className="sm:text-[20px] text-[12px]" value="NOA GIRO">NOA GIRO</option>
+                <option className="sm:text-[20px] text-[12px]" value="AKUISISI SATKER">AKUISISI SATKER</option>
+                <option className="sm:text-[20px] text-[12px]" value="CMS">CMS</option>
+                <option className="sm:text-[20px] text-[12px]" value="JUMLAH PKS PPO">JUMLAH PKS PPO</option>
+                <option className="sm:text-[20px] text-[12px]" value="DPK LEMBAGA">DPK LEMBAGA</option>
               </select>
             </div>
           </div>
@@ -229,7 +237,7 @@ const Page = () => {
             </button>
           </div>
           {message && <p className="text-red-500">{message}</p>}
-          <div className="bg-white rounded-b-2xl pl-8 h-auto overflow-x-scroll">
+          <div className="bg-white rounded-b-2xl sm:pl-8 pl-6 h-auto overflow-x-scroll">
             <table className="border border-gray-300 w-full mr-5">
               <thead>
                 <tr>
@@ -277,4 +285,3 @@ const Page = () => {
 };
 
 export default Page;
-

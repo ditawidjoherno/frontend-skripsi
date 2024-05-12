@@ -1,14 +1,14 @@
 "use client";
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 
-const Box = ({ bgColor, icon, text, number, bulan }) => {
-
+const Box = ({ bgColor, icon, text, number, bulan, className }) => {
+    const router = useRouter()
     const lowerCaseBulan = bulan.toLowerCase();
     const handleClick = () => {
         window.location.href = `/data-bulan?bulan=${bulan}`;
     }
     return (
-        <button onClick={handleClick} className={`${bgColor} sm:h-[180px] sm:w-full h-[90px]  w-full flex rounded-lg`}>
+        <button onClick={() => router.push(`/data-bulan?bulan=${bulan}`)} className={`${bgColor} sm:h-[180px] sm:w-full h-[90px]  w-full flex rounded-lg ${className}`}>
             <div className="w-full h-full flex-col sm:py-4 py-1 sm:pb-8 pb-4 ">
                 <p className="text-white sm:text-3xl text-base flex justify-start sm:px-10 px-5 sm:pt-2 pt-1 font-semibold h-1/4">
                     {text}

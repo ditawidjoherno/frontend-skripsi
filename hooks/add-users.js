@@ -33,6 +33,7 @@ const AddStaff = () => {
             console.log(response);
         } catch (error) {
             setError(error.message);
+            alert(`${error.response.data.message}`)
         } finally {
             setLoading(false);
         }

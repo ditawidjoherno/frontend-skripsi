@@ -17,7 +17,7 @@ const TargetTahunanMonitoring = () => {
   
   useEffect(() => {
     getTargetTahunan();
-  }, [selectedStaff]); // Memperbarui data ketika selectedStaff berubah
+  }, [selectedStaff]);
   
   useEffect(() => {
     if (dataTargetTahunan && dataTargetTahunan.length > 0) {
@@ -60,7 +60,7 @@ const TargetTahunanMonitoring = () => {
   return (
     <div>
         <div className="flex justify-between mb-3">
-      <h2 className="sm:text-[30px] text-[24px]  font-semibold">
+      <h2 className="sm:text-[30px] text-[21px]   font-semibold">
           Target Tahunan
         </h2>
         {/* <button
@@ -87,20 +87,20 @@ const TargetTahunanMonitoring = () => {
         <table className="table-auto mr-9 mt-5 mb-5">
           <thead>
             <tr>
-              <th className="border border-gray-400 px-1 py-2 bg-gray-200">No</th>
-              <th className="border border-gray-400 px-20 py-2 bg-gray-200">KPI</th>
-              <th className="border border-gray-400 px-20 py-2 bg-gray-200">Jan</th>
-              <th className="border border-gray-400 px-20 py-2 bg-gray-200">Feb</th>
-              <th className="border border-gray-400 px-20 py-2 bg-gray-200">Mar</th>
-              <th className="border border-gray-400 px-20 py-2 bg-gray-200">Apr</th>
-              <th className="border border-gray-400 px-20 py-2 bg-gray-200">Mei</th>
-              <th className="border border-gray-400 px-20 py-2 bg-gray-200">Jun</th>
-              <th className="border border-gray-400 px-20 py-2 bg-gray-200">Jul</th>
-              <th className="border border-gray-400 px-20 py-2 bg-gray-200">Agu</th>
-              <th className="border border-gray-400 px-20 py-2 bg-gray-200">Sep</th>
-              <th className="border border-gray-400 px-20 py-2 bg-gray-200">Okt</th>
-              <th className="border border-gray-400 px-20 py-2 bg-gray-200">Nov</th>
-              <th className="border border-gray-400 px-20 py-2 bg-gray-200">Des</th>
+              <th className="border border-gray-400 px-1 py-2 bg-gray-200" >No</th>
+              <th className="border border-gray-400 px-20 py-2 bg-gray-200" >KPI</th>
+              <th className="border border-gray-400 px-20 py-2 bg-gray-200" >Jan</th>
+              <th className="border border-gray-400 px-20 py-2 bg-gray-200" >Feb</th>
+              <th className="border border-gray-400 px-20 py-2 bg-gray-200" >Mar</th>
+              <th className="border border-gray-400 px-20 py-2 bg-gray-200" >Apr</th>
+              <th className="border border-gray-400 px-20 py-2 bg-gray-200" >Mei</th>
+              <th className="border border-gray-400 px-20 py-2 bg-gray-200" >Jun</th>
+              <th className="border border-gray-400 px-20 py-2 bg-gray-200" >Jul</th>
+              <th className="border border-gray-400 px-20 py-2 bg-gray-200" >Agu</th>
+              <th className="border border-gray-400 px-20 py-2 bg-gray-200" >Sep</th>
+              <th className="border border-gray-400 px-20 py-2 bg-gray-200" >Okt</th>
+              <th className="border border-gray-400 px-20 py-2 bg-gray-200" >Nov</th>
+              <th className="border border-gray-400 px-20 py-2 bg-gray-200" >Des</th>
             </tr>
           </thead>
           <tbody>

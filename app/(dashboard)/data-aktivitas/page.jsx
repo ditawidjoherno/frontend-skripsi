@@ -1,10 +1,9 @@
 "use client"
 import { FaEdit } from "react-icons/fa";
 import React, { useState, useEffect } from 'react';
-import Search from './_components/search';
 import { IoIosArrowDropleftCircle } from "react-icons/io";
 import useUser from "@/hooks/use-user";
-import { useParams, useRouter } from 'next/navigation';
+import {  useRouter } from 'next/navigation';
 import { ImProfile } from "react-icons/im";
 import { IoSearchOutline } from "react-icons/io5";
 import useAktivitasBulanan from "@/hooks/use-aktivitas-bulan";

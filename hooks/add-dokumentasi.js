@@ -10,12 +10,12 @@ const AddDokumentasi = () => {
     const cookie = process.env.NEXT_PUBLIC_COOKIE_NAME;
     const token = getCookie(cookie)
 
-
     const bearerToken = `Bearer ${token}`
     const addDokumentasi = async (formData) => {
         setLoading(true);
         setError(null);
         setData(null);
+        console.log(formData)
 
         try {
             const response = await axios.post("https://back-btn-boost.vercel.app/dokumentasi-image", formData, {

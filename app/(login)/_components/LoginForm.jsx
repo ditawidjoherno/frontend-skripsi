@@ -22,7 +22,7 @@ const LoginForm = () => {
             setError('NIP atau password salah');
         }
     }
-
+    
     const handleKeyPressNIP = (e) => {
         if (e.key === 'Enter') {
             passwordInputRef.current.focus();

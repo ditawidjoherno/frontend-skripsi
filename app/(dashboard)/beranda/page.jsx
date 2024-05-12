@@ -10,9 +10,10 @@ import Calendar from "./_components/Calendar";
 import RecentData from "./_components/RecentData";
 import useAktivitasDitunda from "@/hooks/use-aktivitas-ditunda";
 import TargetHarian from "./_components/target";
+import { FaSpinner } from 'react-icons/fa';
 
 const Page = () => {
-  const { data: userData, getUserData: getUser } = useUser();
+  const { loading, data: userData, getUserData: getUser } = useUser();
   const { data: selesaiData, getUserData: getSelesaiData } = useAktivitasSelesai();
   const { data: DitundaData, getUserData: getDitundaData } = useAktivitasDitunda();
   const [jumlahSelesaiData, setJumlahSelesaiData] = useState(0);
@@ -23,6 +24,8 @@ const Page = () => {
     getSelesaiData();
     getDitundaData();
   }, []);
+
+
 
   useEffect(() => {
     if (selesaiData) {
@@ -43,6 +46,14 @@ const Page = () => {
   const handleDitundaClick = () => {
     window.location.href = '/aktivitas-ditunda';
   };
+
+  if (loading) {
+    return (
+        <div className="fixed inset-0 flex items-center justify-center">
+            <FaSpinner className="animate-spin mr-2" /> Loading
+        </div>
+    );
+}
 
 
 
@@ -68,8 +79,8 @@ const Page = () => {
               }
               text={"Selesai"}
               number={jumlahSelesaiData}
-              hoverColor={"bg-blue-600"}
-            />
+              className={"hover:bg-[#63ec39] transition duration-300"}
+              />
           </button>
         )}
         {userData && userData.jabatan === 'manager' && (
@@ -79,7 +90,7 @@ const Page = () => {
               icon={<IoTimeSharp className="text-white ml-9 mt-7" />}
               text={"Ditunda"}
               number={jumlahDitundaData}
-              hoverColor={"bg-blue-600"}
+              className={"hover:bg-[#f08e42] transition duration-300"}
             />
           </button>
 

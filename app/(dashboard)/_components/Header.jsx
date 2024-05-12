@@ -15,7 +15,7 @@ const Header = ({ setIsCollapse, isCollapse }) => {
         <div className="flex">
           <ProfileButton />
           <Link href="/">
-            <IoExitOutline size={32} className="sm:ml-6 ml-4 my-2" />
+            <IoExitOutline size={32} className="sm:ml-6 ml-4 my-2 transition-colors duration-300 hover:text-gray-400 focus:text-gray-400 cursor-pointer" />
           </Link>
         </div>
       </div>

@@ -6,9 +6,11 @@ import Button from './_components/button';
 import Dropdown from './_components/dropdown';
 import DateInput from './_components/Date';
 import useAddNasabah from '@/hooks/use-nasabah';
-import Link from "next/link";
+import { useRouter } from 'next/navigation';
 
 const Page = () => {
+    const router = useRouter();
+
     const [maritalStatus, setMaritalStatus] = useState("");
     const [hasChildren, setHasChildren] = useState(false);
     const [numberOfChildren, setNumberOfChildren] = useState(0);
@@ -21,7 +23,7 @@ const Page = () => {
     const statusnasabah = [
         { value: 'option1', label: 'Pilih Status Nasabah' },
         { value: 'eksisting', label: 'Nasabah Eksisting' },
-        { value: 'nasabah baru', label: 'Nasabah Baru' },
+        { value: 'baru', label: 'Nasabah Baru' },
     ];
 
     const jeniskelamin = [
@@ -134,65 +136,134 @@ const Page = () => {
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
-        let newValue = value; // Simpan nilai yang dimasukkan pengguna
+        let newValue = value;
     
-        // Jika nama field adalah "estimasi_penghasilan_bulanan" dan nilai tidak dimulai dengan "Rp", tambahkan "Rp" di depan nilai
-        if (name === "estimasi_penghasilan_bulanan" && !value.startsWith("Rp")) {
-            newValue = "Rp" + value; // Tambahkan "Rp" di depan nilai
+        if (name === "nomor_telepon") {
+            newValue = value.replace(/\D/g, '');
         }
     
-        // Setel nilai ke state
+        if (name === "estimasi_penghasilan_bulanan") {
+            newValue = newValue.replace(/[^\d.]/g, '');
+    
+            newValue = newValue.replace(/\./g, '');
+    
+            newValue = newValue.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+    
+            if (!newValue.startsWith("Rp")) {
+                newValue = "Rp" + newValue;
+            }
+        }
+    
         setNasabahData({ ...nasabahData, [name]: newValue });
     };
+    
     
 
     const handleInputJumlahAnakChange = (e) => {
         const { name, value } = e.target;
-        setNasabahData({ ...nasabahData, [name]: value })
-
-        if (name === 'jumlah_anak') {
-            const numChildren = parseInt(value, 10) || 0;
-            if (numChildren > nasabahData.data_anak.length) {
-                const diff = numChildren - nasabahData.data_anak.length;
-                const newDataAnak = Array.from({ length: diff }, () => ({
-                    nama: '',
-                    nomor_telepon: '',
-                    alamat: '',
-                    jenis_kelamin: '',
-                    agama: '',
-                    tempat_lahir: '',
-                    tanggal_lahir: '',
-                    nomor_telepon: '',
-                    pekerjaan: '',
-                    alamat_pekerjaan: '',
-                    estimasi_penghasilan_bulanan: '',
-                }));
-                setNasabahData({ ...nasabahData, data_anak: [...nasabahData.data_anak, ...newDataAnak] });
-            } else if (numChildren < nasabahData.data_anak.length) {
-                setNasabahData({ ...nasabahData, data_anak: nasabahData.data_anak.slice(0, numChildren) });
+    
+        setNasabahData(prevData => {
+            // Konversi nilai jumlah_anak menjadi tipe data number
+            const numValue = parseInt(value, 10);
+    
+            const newData = { ...prevData, [name]: numValue };
+    
+            if (name === 'jumlah_anak') {
+                const numChildren = numValue || 0; // Jika value adalah NaN, atur ke 0
+                if (numChildren > prevData.data_anak.length) {
+                    const diff = numChildren - prevData.data_anak.length;
+                    const newDataAnak = Array.from({ length: diff }, () => ({
+                        nama: '',
+                        nomor_telepon: '',
+                        alamat: '',
+                        jenis_kelamin: '',
+                        agama: '',
+                        tempat_lahir: '',
+                        tanggal_lahir: '',
+                        pekerjaan: '',
+                        alamat_pekerjaan: '',
+                        estimasi_penghasilan_bulanan: '',
+                    }));
+                    newData.data_anak = [...prevData.data_anak, ...newDataAnak];
+                } else if (numChildren < prevData.data_anak.length) {
+                    newData.data_anak = prevData.data_anak.slice(0, numChildren);
+                }
             }
-        }
-    }
+    
+            return newData;
+        });
+    };
+    
+    
 
     const handleChildInputChange = (index, e) => {
         const { name, value } = e.target;
-
-        const newDataAnak = [...nasabahData.data_anak];
-
-        newDataAnak[index][name] = value;
-        setNasabahData({ ...nasabahData, data_anak: newDataAnak })
-    }
+    
+        if (name === "nomor_telepon") {
+            const newValue = value.replace(/\D/g, '');
+    
+            const newDataAnak = [...nasabahData.data_anak];
+            newDataAnak[index][name] = newValue;
+            setNasabahData({ ...nasabahData, data_anak: newDataAnak });
+        } else if (name === "estimasi_penghasilan_bulanan") {
+            let newValue = value;
+    
+            // Remove non-numeric characters except the decimal separator
+            newValue = newValue.replace(/[^\d.]/g, '');
+    
+            // Remove existing dots
+            newValue = newValue.replace(/\./g, '');
+    
+            // Add dots every three digits from the right
+            newValue = newValue.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+    
+            // Add "Rp" in front if it's missing
+            if (!newValue.startsWith("Rp")) {
+                newValue = "Rp" + newValue;
+            }
+    
+            const newDataAnak = [...nasabahData.data_anak];
+            newDataAnak[index][name] = newValue;
+            setNasabahData({ ...nasabahData, data_anak: newDataAnak });
+        } else {
+            const newDataAnak = [...nasabahData.data_anak];
+            newDataAnak[index][name] = value;
+            setNasabahData({ ...nasabahData, data_anak: newDataAnak });
+        }
+    };
+    
+    
+    
 
     const handlePasanganInputChange = (e) => {
         const { name, value } = e.target;
+        let newValue = value;
+    
+        if (name === "nomor_telepon") {
+            newValue = value.replace(/\D/g, '');
+        }
+
+        if (name === "estimasi_penghasilan_bulanan") {
+            newValue = newValue.replace(/[^\d.]/g, '');
+    
+            newValue = newValue.replace(/\./g, '');
+    
+            newValue = newValue.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+    
+            if (!newValue.startsWith("Rp")) {
+                newValue = "Rp" + newValue;
+            }
+        }
+    
         setNasabahData({
             ...nasabahData,
             data_pasangan: {
                 ...nasabahData.data_pasangan,
-                [name]: value,
+                [name]: newValue,
             },
         });
     };
+    
 
     const handleAddChild = () => {
         setNasabahData({
@@ -242,10 +313,9 @@ const handleSubmit = async () => {
     await addNasabah(newData);
 };
 
-
-    const test = () => {
-        console.log(nasabahData);
-    }
+const handleGoBack = () => {
+    router.back();
+};
 
     return (
         <div className={`bg-[#EAEAEA] h-full flex flex-col items-center sm:pt-[75px] pt-[60px] sm:pr-4 pr-3 sm:ml-20 ml-10`}>
@@ -253,9 +323,10 @@ const handleSubmit = async () => {
                 <h2 className="sm:text-[35px] text-[24px] sm:ml-5 ml-4 font-semibold">
                     Input Data Nasabah
                 </h2>
-                <Link href="/data-nasabah">
-                <IoIosArrowDropleftCircle className="sm:h-8 sm:w-8 h-5 w-5 sm:ml-3 ml-1 " />
-                </Link>
+                <IoIosArrowDropleftCircle
+                        className="sm:h-10 sm:w-10 h-5 w-5 sm:ml-3 ml-0 transition-colors duration-300 hover:text-gray-400 focus:text-gray-400 cursor-pointer"
+                        onClick={handleGoBack}
+                    />
             </div>
             <div className="bg-white rounded-2xl h-auto mt-2 sm:ml-5 ml-3 w-full sm:pt-5 pt-6">
                 <div className='sm:flex '>
@@ -429,7 +500,7 @@ const handleSubmit = async () => {
                                         </div>
                                     </div>
                                     <div className='sm:w-1/2 w-full sm:ml-0 ml-2'>
-                                        <Input text={"Nomor Telepon"} placeholder={"Masukkan No Telp"} name="nomor_telepong" value={child.nomor_telepong} onChange={(e) => handleChildInputChange(index, e)} />
+                                        <Input text={"Nomor Telepon"} placeholder={"Masukkan No Telp"} name="nomor_telepon" value={child.nomor_telepon} onChange={(e) => handleChildInputChange(index, e)} />
                                         <Input text={"Data Pekerjaan / Usaha"} placeholder={"Masukkan Pekerjaan"} name="pekerjaan" value={child.pekerjaan} onChange={(e) => handleChildInputChange(index, e)} />
                                         <Input text={"Alamat Pekerjaan / Usaha"} placeholder={"Masukkan Alamat Pekerjaan"} name="alamat_pekerjaan" value={child.alamat_pekerjaan} onChange={(e) => handleChildInputChange(index, e)} />
                                         <Input text={"Estimasi Penghasilan Bulanan"} placeholder={"Masukkan Estimasi Penghasilan Bulanan"} name="estimasi_penghasilan_bulanan" value={child.estimasi_penghasilan_bulanan} onChange={(e) => handleChildInputChange(index, e)} />

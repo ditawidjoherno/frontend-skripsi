@@ -83,6 +83,10 @@ const page = () => {
     data.KeyPerson.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
+  const handleGoBack = () => {
+    router.back();
+};
+
   return (
     <div className={`bg-[#EAEAEA] h-full pb-4 flex flex-col items-center sm:pt-[75px] pt-[60px] sm:pr-5 pr-3 sm:ml-20 ml-10`}>
       <div className="flex items-center w-full sm:justify-between">
@@ -90,7 +94,12 @@ const page = () => {
           <h2 className="sm:text-[40px] text-[24px]  font-semibold">
             Monitoring Harian
           </h2>
-          <IoIosArrowDropleftCircle className="sm:h-10 sm:w-10 h-5 w-5  " />
+          <div>
+                    <IoIosArrowDropleftCircle
+                        className="sm:h-10 sm:w-10 h-5 w-5 sm:ml-3 ml-0 transition-colors duration-300 hover:text-gray-400 focus:text-gray-400"
+                        onClick={handleGoBack}
+                    />
+                </div>
         </div>
         <div className='flex gap-1 sm:mr-5'>
           <div className="flex sm:mr-5 mr-3">

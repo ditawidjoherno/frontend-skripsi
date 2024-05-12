@@ -48,31 +48,31 @@ const TargetHarian = () => {
     };
 
     return (
-        <div className='pl-8 mt-4 mr-5'>
-            <h2 className="sm:text-[30px] text-[24px] font-semibold">
+        <div className='sm:pl-8 pl-4 sm:mt-4 mt-2 mr-5 sm:mb-2 mb-3'>
+            <h2 className="sm:text-[30px] text-[22px] font-semibold">
                 Input Target Harian
             </h2>
             <div className=''>
-                <label htmlFor="staffSelect" className="block mb-2">Nama Staff:</label>
+                <label htmlFor="staffSelect" className="block sm:mb-2 mb-3 ">Nama Staff:</label>
                 <select
                     id="staffSelect"
-                    className="border border-gray-300 sm:w-[200px] w-[100px] p-2 rounded-md bg-white"
+                    className="border border-gray-300 sm:w-[200px] w-[190px] p-2 sm:mb-2 mb-4 rounded-md bg-white"
                     value={selectedStaff}
                     onChange={(e) => setSelectedStaff(e.target.value)}
                 >
-                    <option value="">Select Nama Staff</option>
+                    <option className="sm:text-[15px] text-[12px]" value="">Select Nama Staff</option>
                     {namaStaff.map((staff, index) => (
-                        <option key={index} value={staff.nip}>{staff.nama}</option>
+                        <option className="sm:text-[15px] text-[12px]" key={index} value={staff.nip}>{staff.nama}</option>
                     ))}
                 </select>
             </div>
             <div>
-                <label htmlFor="inputHarian" className="block mb-2">Target Harian:</label>
-                <div className="flex mb-2">
+                <label htmlFor="inputHarian" className="block sm:mb-2 mb-3">Target Harian:</label>
+                <div className="flex sm:mb-2 mb-4">
                     <input
                         type="text"
                         id="inputHarian"
-                        className="border border-gray-500 p-2 w-1/3 rounded-l-md bg-white "
+                        className="border border-gray-500 p-2 sm:w-1/3 w-2/3 rounded-l-md bg-white "
                         value={inputTargetHarian}
                         onChange={(e) => setInputTargetHarian(e.target.value)}
                     />
@@ -100,9 +100,9 @@ const TargetHarian = () => {
                     </tbody>
                 </table>
             </div>
-            <div className='justify-end mt-5 flex mr-3'>
+            <div className='justify-end mt-5 flex sm:mr-3 mr-0'>
                 <button
-                    className="bg-blue-500 text-white px-4 py-2 mb-10 rounded-md mr-2"
+                    className="bg-blue-500 text-white px-4 py-2 mb-10 rounded-md sm:mr-2 mr-0"
                     onClick={handleSubmitHarian}
                 >
                     Simpan Target Harian

@@ -20,95 +20,95 @@ const Page = () => {
     const [showSpouseData, setShowSpouseData] = useState(false);
     const [childrenData, setChildrenData] = useState([]);
     const { data: profil, getUserData } = useProfileNasabah(id);
-    const {  data, updateData } = updateDataNasabah();
+    const { data, updateData } = updateDataNasabah();
     const [userData, setUserData] = useState({
-      tipe_nasabah: "",
-      tanggal_lahir: "",
-      jenis_kelamin: "",
-      tempat_lahir: "",
-      id: "",
-      staff_id: "",
-      nomor_telepon: "",
-      alamat: "",
-      pekerjaan: "",
-      status_pernikahan: "",
-      memiliki_anak: false,
-      nama: "",
-      data_anak: [
-        {
-          nomor_telepon: "",
-          pekerjaan: "",
-          tempat_lahir: "",
-          alamat_pekerjaan: "",
-          estimasi_penghasilan_bulanan: "",
-          tanggal_lahir: "",
-          nama: "",
-          jenis_kelamin: "",
-          alamat: "",
-          agama: ""
-        }
-      ],
-      agama: "",
-      alamat_pekerjaan: "",
-      key_person: "",
-      jumlah_anak: 0,
-      data_pasangan: {
-        estimasi_penghasilan_bulanan: "",
-        nama: "",
-        tempat_lahir: "",
+        tipe_nasabah: "",
         tanggal_lahir: "",
-        alamat: "",
         jenis_kelamin: "",
+        tempat_lahir: "",
+        id: "",
+        staff_id: "",
         nomor_telepon: "",
-        alamat_pekerjaan: "",
+        alamat: "",
+        pekerjaan: "",
+        status_pernikahan: "",
+        memiliki_anak: false,
+        nama: "",
+        data_anak: [
+            {
+                nomor_telepon: "",
+                pekerjaan: "",
+                tempat_lahir: "",
+                alamat_pekerjaan: "",
+                estimasi_penghasilan_bulanan: "",
+                tanggal_lahir: "",
+                nama: "",
+                jenis_kelamin: "",
+                alamat: "",
+                agama: ""
+            }
+        ],
         agama: "",
-        pekerjaan: ""
-      }
+        alamat_pekerjaan: "",
+        key_person: "",
+        jumlah_anak: 0,
+        data_pasangan: {
+            estimasi_penghasilan_bulanan: "",
+            nama: "",
+            tempat_lahir: "",
+            tanggal_lahir: "",
+            alamat: "",
+            jenis_kelamin: "",
+            nomor_telepon: "",
+            alamat_pekerjaan: "",
+            agama: "",
+            pekerjaan: ""
+        }
     });
 
-    
-    
+
+
     const handleButtonClick = (type) => {
-      setIsPopUpOpen(true);
-      setActionType(type);
+        setIsPopUpOpen(true);
+        setActionType(type);
     };
-    
+
     useEffect(() => {
         if (profil) {
-          setUserData(profil);
+            setUserData(profil);
         }
-      }, [profil]);
-      
-    
+    }, [profil]);
+
+
     const handleUpdateData = async () => {
-      if (actionType === 'changePassword') {
-        try {
-          await updatePassword({ password: newPassword });
-          setIsPopUpOpen(false);
-        } catch (error) {
-          console.error('Gagal memperbarui password:', error.message);
-          alert('Gagal memperbarui password');
+        if (actionType === 'changePassword') {
+            try {
+                await updatePassword({ password: newPassword });
+                setIsPopUpOpen(false);
+            } catch (error) {
+                console.error('Gagal memperbarui password:', error.message);
+                alert('Gagal memperbarui password');
+            }
+        } else {
+            console.log(userData);
+            await updateData(userData);
+            setIsPopUpOpen(false);
         }
-      } else {
-        console.log(userData);
-        await updateData(userData);
-        setIsPopUpOpen(false);
-      }
-    }; 
-    
+    };
 
 
-    
+
+
 
     useEffect(() => {
         const fetchData = async () => {
-          await updateData(id);
+            await updateData(id);
         };
-    
-        fetchData();
-      }, [id]);
 
-      console.log(id)
+        fetchData();
+    }, [id]);
+
+    console.log(id)
 
 
     const [selectedOptions1, setSelectedOptions1] = useState('');
@@ -315,13 +315,22 @@ const Page = () => {
         console.log(nasabahData);
     }
 
+    const handleGoBack = () => {
+        router.back();
+    };
+
     return (
         <div className={`bg-[#EAEAEA] h-full flex flex-col items-center sm:pt-[75px] pt-[60px] sm:pr-4 pr-3 sm:ml-20 ml-10`}>
             <div className="flex items-center w-full">
                 <h2 className="sm:text-[35px] text-[24px] sm:ml-5 ml-4 font-semibold">
                     Ubah Data Nasabah
                 </h2>
-                <IoIosArrowDropleftCircle className="sm:h-8 sm:w-8 h-5 w-5 sm:ml-3 ml-1 " />
+                <div>
+                    <IoIosArrowDropleftCircle
+                        className="sm:h-10 sm:w-10 h-5 w-5 sm:ml-3 ml-0 transition-colors duration-300 hover:text-gray-400 focus:text-gray-400"
+                        onClick={handleGoBack}
+                    />
+                </div>
             </div>
             <div className="bg-white rounded-2xl h-auto mt-2 sm:ml-5 ml-3 w-full sm:pt-5 pt-6">
                 <div className='sm:flex '>

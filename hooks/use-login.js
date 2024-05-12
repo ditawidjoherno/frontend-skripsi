@@ -17,11 +17,11 @@ const useLogin = () => {
 
         try {
             const response = await axios.post("https://back-btn-boost.vercel.app/auth/login", {
-                nip: parseInt(nip), // Ubah string `nip` menjadi bilangan bulat
+                nip: parseInt(nip),
                 password: String(password)
             });
 
-            console.log(response); // Pernyataan logging tambahan
+            console.log(response);
 
             if (response.status !== 200) {
                 throw new Error(response.data.message || "Gagal Login");

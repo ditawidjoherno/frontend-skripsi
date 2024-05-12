@@ -52,7 +52,9 @@ const page = () => {
 
   const rataRataNilaiKpi = jumlahBulan !== 0 ? parseInt(totalNilaiKpi / jumlahBulan) : 0;
 
-
+  const handleGoBack = () => {
+    router.back();
+};
 
   return (
     <div className={`bg-[#EAEAEA] h-full flex flex-col items-center sm:pt-[75px] pt-[60px] sm:pr-4 pr-3 sm:ml-20 ml-10`}>
@@ -60,15 +62,18 @@ const page = () => {
         <h2 className="sm:text-3xl text-[24px] font-bold sm:mt-[12px] sm:mb-3 mb-1 sm:ml-5 ml-2 ">
           Monitoring Sales
         </h2>
-        <Link href="/monitoring">
-        <IoIosArrowDropleftCircle className="sm:h-10 h-6 sm:w-20 w-10 sm:mt-[0px] mt-[2px]" />
-        </Link>
+        <div>
+        <IoIosArrowDropleftCircle
+                        className="sm:h-10 sm:w-10 h-5 w-5 sm:ml-3 ml-0 transition-colors duration-300 hover:text-gray-400 focus:text-gray-400 cursor-pointer"
+                        onClick={handleGoBack}
+                    />
+                </div>
       </div>
       <div className="bg-white rounded-2xl h-auto mb-6 sm:ml-5 ml-3 w-full sm:pt-5 pt-4 sm:pr-0 pr-19">
         <div className='sm:flex sm:ml-0 ml-1'>
           <div className="w-1/2 sm:flex sm:items-center sm:mt-[-10px] mt-[15px]">
-            {data && data.foto_profil && (
-              <img src={data.foto_profil} alt="Foto Profil" className="sm:w-[220px] w-[190px] sm:h-[220px] h-[190px] sm:ml-10 ml-20 sm:mt-[-20px] mt-[-10px] " />
+            {data &&  (
+              <img src={data.foto_profil || '/img/profil.png'} alt="Foto Profil" className="sm:w-[220px] w-[190px] sm:h-[220px] h-[190px] sm:ml-10 ml-20 sm:mt-[-20px] mt-[-10px] " />
             )}            <div className="w-full sm:mt-[-40px] mt-[20px] sm:text-left text-center sm:ml-0 ml-[80px]">
               {data && (
                 <>
@@ -96,7 +101,7 @@ const page = () => {
         <div className="flex flex-col mt-[15px] sm:mr-[85px] mr-[70px]">
         {jabatan !== 'admin' && (
 
-          <button className="bg-[#d9d9d9] transition-all transform hover:bg-[#a9a7a7] sm:w-[220px] w-[200px] h-[35px] ml-auto px-10 pt-30 mt-[25px] font-medium sm:mr-20 mr-middle shadow-md" onClick={handleTargetClick}>
+          <button className="bg-[#d9d9d9] transition-all transform hover:bg-[#a9a7a7] sm:w-[220px] w-[200px] h-[35px] ml-auto px-10 pt-30 mt-[25px] font-medium sm:mr-20 mr-middle shadow-md" onClick={() => router.push(`/target-tahunan-staff?nip=${nip}`)}>
             Lihat Target
           </button>
         )}
@@ -111,7 +116,8 @@ const page = () => {
 
         </div>
         <div className="w-full sm:pl-10 pl-[20px] flex justify-between px-9">
-          <div className="flex flex-col gap-1 relative border border-gray-500 border-solid sm:border-3 border-10 sm:pr-0 pr-23 pt-[5px] sm:-mt-[90px] mt-[30px] sm:ml-0 -ml-[10px]">
+          <div className="flex flex-col gap-1 w-1/2 border border-gray-500 border-solid sm:border-3 border-10 sm:pr-0 pr-23 pt-[5px] sm:-mt-[90px] mt-[30px] sm:ml-0 -ml-[10px]">
+        <TeksProfil label="Sales Productivity Bulanan" />
             <div className="relative pr-50">
               <button className={`bg-[#F8DE22] text-black text-left transition-all transform hover:bg-[#9ebfea] h-[35px] px-2 pt-30 mt-[25px] mr-[60px] rounded-r-xl font-semibold `} style={{
                 width: `${Math.max(50, data ? (data.total_nilai_kpi.januari / 130 * 400) : 50)}px`

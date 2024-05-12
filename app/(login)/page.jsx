@@ -16,19 +16,19 @@ const LoginPage = () => {
   return (
     <div className="bg-[#030637] h-screen w-screen pt-10">
       <img
-        src={"/img/logobgbtn.png"}
+        src={"/img/new_btn.png"}
         alt="logo2"
-        className="w-[150px] rounded-[0px] mr-2 absolute top-0 right-0 mt-3 "
+        className="w-[150px] rounded-[0px] mr-2 absolute top-0 right-0 "
       />
       <img
         src={"/img/Logo_BUMN_Untuk_Indonesia_2020.svg-removebg-preview.png"}
         alt="logo3"
-        className="w-[150px] rounded-[0px] mr-2 absolute top-0 left-2 mt-5 "
+        className="w-[150px] rounded-[0px] mr-2 absolute top-0 left-2 mt-7"
       />
       <div className="w-full h-full flex justify-center items-center">
-        <div className="bg-white xl:w-[300px] xl:h-[350px] w-[300px] h-[350px] md:w-[500px] md:h-[550px] rounded-2xl px-4 pt-10 flex flex-col">
+        <div className="bg-white xl:w-[300px] xl:h-[350px] w-[300px] h-[350px] md:w-[500px] md:h-[550px] rounded-2xl px-4 pt-1 flex flex-col">
           <img
-            src={"/img/btn_logoopening.png"}
+            src={"/img/btn_boost.png"}
             alt="logo1"
             className="w-full px-[25px] mr-1 pt-1 "
           />

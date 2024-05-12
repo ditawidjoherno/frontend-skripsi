@@ -29,7 +29,7 @@ const MonitoringMingguan = ({ title, description }) => {
                 return (
                     <div className="my-4" key={index}>
                         <div
-                            className="bg-[#056AAA]  p-4 rounded-t-md cursor-pointer transition-opacity"
+                            className="bg-[#056AAA] hover:bg-[#2f7cac] p-4 rounded-t-md cursor-pointer transition-opacity"
                             onClick={() => toggleDropdown(bulan)}
                         >
                             <h3 className="text-lg font-bold text-[#FFE500] text-center py-">{capitalizedMonth}</h3>

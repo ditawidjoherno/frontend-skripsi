@@ -16,13 +16,17 @@ const TableKpiMonitoring = () => {
     getTargetTahunan();
   }, []);
 
+  
   useEffect(() => {
     if (dataTargetTahunan && dataTargetTahunan.length > 0 && selectedStaff !== "") {
+      const capitalizeFirstLetter = (string) => {
+        return string.charAt(0).toUpperCase() + string.slice(1);
+      };
       const foundStaffData = dataTargetTahunan.find(staff => staff.nip_staff === selectedStaff);
       if (foundStaffData && foundStaffData.aktivitas_kpi) {
         const tableRows = foundStaffData.aktivitas_kpi.map((kpi, index) => ({
           No: index + 1,
-          KPI: kpi.nama_kpi,
+          KPI: capitalizeFirstLetter(kpi.nama_kpi),
           TargetJan: kpi.target.januari,
           TargetFeb: kpi.target.februari,
           TargetMar: kpi.target.maret,
@@ -50,6 +54,7 @@ const TableKpiMonitoring = () => {
     setSelectedStaff(selectedStaff);
   };
 
+  
   return (
     <div>
       <div className='w-full'>

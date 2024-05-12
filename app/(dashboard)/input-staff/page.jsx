@@ -2,16 +2,16 @@
 import React, { useState, useRef } from 'react';
 import { IoIosArrowDropleftCircle } from "react-icons/io";
 import Input from './_components/input';
-import Button from './_components/button';
+import { useRouter } from 'next/navigation';
 import Dropdown from './_components/dropdown';
 import DateInput from './_components/Date';
 import AddStaff from '@/hooks/add-users';
-import DokumentasiButton from './_components/dokumentasibutton';
+import SuccessMessage from './_components/popup';
 import Link from "next/link";
 
 
 const Page = () => {
-    // const [selectedOptions1, setSelectedOptions1] = useState('');
+    const router = useRouter();
     const [namaStaff, setNamaStaff] = useState('');
     const [NIP, setNIP] = useState('');
     const [jabatan, setJabatan] = useState('');
@@ -22,58 +22,13 @@ const Page = () => {
     const [tanggalLahir, setTanggalLahir] = useState('');
     const [kataSandi, setKataSandi] = useState('');
     const [email, setEmail] = useState('');
-    const [dokumentasi, setDokumentasi] = useState('');
+    const [isDataUpdated, setIsDataUpdated] = useState(false);
     const [loading, setLoading] = useState(false);
     const [success, setSuccess] = useState(false);
     const [error, setError] = useState(null);
 
-    // const jeniskelamin = [
-    //     { value: 'option1', label: 'Perempuan' },
-    //     { value: 'option2', label: 'Laki-laki' }
-    // ];
-
-    // const agama = [
-    //     { value: 'option1', label: 'Islam' },
-    //     { value: 'option2', label: 'Kristen' },
-    //     { value: 'option3', label: 'Katolik' },
-    //     { value: 'option4', label: 'Hindu' },
-    //     { value: 'option5', label: 'Budha' },
-    //     { value: 'option6', label: 'Khonghucu' }
-    // ];
 
 
-    // const handleStatusNasabah = (selectedOption) => {
-    //     setNasabahData({
-    //         ...nasabahData,
-    //         tipe_nasabah: selectedOption.value
-    //     });
-    // };
-
-
-    // const handleJenisKelamin = (selectedOption) => {
-    //     setNasabahData({
-    //         ...nasabahData,
-    //         jenis_kelamin: selectedOption.value
-    //     });
-    // };
-
-    // const handleAgama = (selectedOption) => {
-    //     setNasabahData({
-    //         ...nasabahData,
-    //         agama: selectedOption.value
-    //     });
-    // };
-
-    const fileInputRef = useRef(null);
-
-    const handleClick = () => {
-        fileInputRef.current.click();
-    };
-
-    const handleFileUpload = (event) => {
-        const file = event.target.files[0];
-
-    };
     const { updateData } = AddStaff();
 
     const handleSubmit = async () => {
@@ -106,49 +61,10 @@ const Page = () => {
         }
     };
 
-    function convertDateFormat(dateString) {
-        const [month, day, year] = dateString.split('-');
-        const newDateString = `${year}-${month}-${day}`;
 
-        return newDateString;
-    }
-
-    const handleDateChange = () => {
-        const formattedDate = convertDateFormat(e.target.value);
-        setTanggalLahir(formattedDate);
+    const handleGoBack = () => {
+        router.back();
     };
-
-    // const handleFileUpload = (event) => {
-    //     const file = event.target.files[0];
-    // };
-
-    // const handleClick = () => {
-    //     fileInputRef.current.click();
-    // };
-
-    // const handleSubmit = async () => {
-    //     try {
-    //         const body = {
-    //             nama_staff: 'nilai-namaStaff',
-    //             nip: 'nilai-NIP',
-    //             jabatan: 'nilai-jabatan',
-    //             email: 'nilai-email',
-    //             nomor_telepon: 'nilai-nomorTelepon',
-    //             tanggal_mulai_bekerja: 'nilai-tanggalMulaiBekerja',
-    //             agama: 'nilai-Agama',
-    //             jenis_kelamin: 'nilai-jenisKelamin',
-    //             kata_sandi_: 'nilai-kata_Sandi',
-    //             dokumentasi: 'nilai-dokumentasi',
-    //         };
-    //         await updateData(body);
-    //         setSuccess(true);
-    //         alert("Berhasil ditambahkan")
-    //     } catch (error) {
-    //         setError(error.message || "Terjadi kesalahan saat mengirim data.");
-    //     } finally {
-    //         setLoading(false);
-    //     }
-    // };
 
     return (
         <div className={"bg-[#EAEAEA] h-full flex flex-col items-center sm:pt-[75px] pt-[60px] sm:pr-4 pr-3 sm:ml-20 ml-10"}>
@@ -156,22 +72,26 @@ const Page = () => {
                 <h2 className="sm:text-[35px] text-[24px] sm:ml-5 ml-4 font-semibold">
                     Input Data Staff
                 </h2>
-                <Link href="/beranda">
-                <IoIosArrowDropleftCircle className="sm:h-8 sm:w-8 h-5 w-5 sm:ml-3 ml-1 " />
-                </Link>
+                <div>
+                <IoIosArrowDropleftCircle
+                        className="sm:h-10 sm:w-10 h-5 w-5 sm:ml-3 ml-0 transition-colors duration-300 hover:text-gray-400 focus:text-gray-400 cursor-pointer"
+                        onClick={handleGoBack}
+                    />
+                </div>
             </div>
             <div className="bg-white rounded-2xl h-auto mt-2 sm:ml-5 ml-3 mb-6 w-full sm:pt-5 pt-6">
                 <div className='sm:flex '>
                     <div className='sm:w-1/2 sm:mt-0 -mt-6 sm:ml-0 ml-2 sm:mr-0 -mr-2 mb-5'>
                         <Input text={"Nama Staff"} placeholder={"Masukkan Nama Lengkap"} value={namaStaff} onChange={e => setNamaStaff(e.target.value)} />
-                        <div className="flex flex-col ">
+                        <div className="flex flex-col">
                             <Input
                                 text={"NIP"}
                                 placeholder={"Masukkan NIP"}
-                                value={NIP.toString()}
+                                value={isNaN(NIP) ? "" : NIP.toString()} // Jika NIP adalah NaN, gunakan string kosong
                                 onChange={e => setNIP(parseInt(e.target.value))}
                             />
                         </div>
+
                         <div className="flex flex-col ">
                             <label htmlFor="dropdown" className="text-black sm:text-[20px] text-[16px] font-medium flex sm:mb-1 -mb-1 sm:px-10 pt-3">
                                 Jabatan
@@ -191,7 +111,18 @@ const Page = () => {
                             <Input text={"Email"} placeholder={"Masukkan Email"} />
                         </div> */}
                         <div className="flex flex-col ">
-                            <Input text={"Nomor Telepon"} placeholder={"Masukkan Nomor Telepon"} value={nomorTelepon} onChange={e => setNomorTelepon(e.target.value)} />
+                        <Input
+                                text={"Nomor Telepon"}
+                                value={nomorTelepon}
+                                onChange={(e) => {
+                                    const re = /^[0-9\b]+$/;
+                                    if (e.target.value === '' || re.test(e.target.value)) {
+                                        setNomorTelepon(e.target.value)
+                                    }
+                                }}
+                                placeholder={"Masukkan Nomor Telepon"}
+                                type="number"
+                            />
                         </div>
                         <div className="flex flex-col ">
                             <Input text={"Alamat"} placeholder={"Masukkan Alamat"} value={alamat} onChange={e => setAlamat(e.target.value)} />
@@ -228,8 +159,8 @@ const Page = () => {
                                 value={jenisKelamin}
                                 onChange={(e) => setJenisKelamin(e.value)}
                                 options={[
-                                    { value: 'wanita', label: 'wanita' },
-                                    { value: 'pria', label: 'pria' }
+                                    { value: 'wanita', label: 'Wanita' },
+                                    { value: 'pria', label: 'Pria' }
                                 ]}
                                 placeholder="Pilih Jenis Kelamin"
                             />
@@ -251,15 +182,15 @@ const Page = () => {
                                 <DokumentasiButton onClick={handleClick} />
                             </div> */}
                             <div className='flex gap-3 sm:justify-end justify-center mt-8 sm:mr-5'>
-                    
-                    <button onClick={handleSubmit} disabled={loading}>
-                        <div className="sm:mt-10 mt-1 sm:mb-6 mb-5 flex justify-center">
-                            <div className="cursor-pointer sm:bg-[#5293CE] bg-[#5293CE] items-center justify-center sm:w-[170px] w-[150px] sm:h-[40px] h-[35px] flex rounded-lg">
-                                <p className="font-medium text-white text-semibold sm:text-[20px] text-[18px]">{loading ? "Loading..." : "Tambah"}</p>
+
+                                <button onClick={handleSubmit} disabled={loading}>
+                                    <div className="sm:mt-10 mt-1 sm:mb-6 mb-5 flex justify-center">
+                                        <div className="cursor-pointer hover:bg-[#467bac] bg-[#5293CE] items-center justify-center sm:w-[170px] w-[150px] sm:h-[40px] h-[35px] flex rounded-lg">
+                                            <p className="font-medium text-white text-semibold sm:text-[16px] text-[18px]">{loading ? "Loading..." : "Tambah"}</p>
+                                        </div>
+                                    </div>
+                                </button>
                             </div>
-                        </div>
-                    </button>
-                </div>
                         </div>
                     </div>
                 </div>

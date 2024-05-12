@@ -1,10 +1,11 @@
 "use client";
 import { IoTimeSharp } from "react-icons/io5";
 
-const Box = ({ bgColor, icon, text, number, onClick }) => {
+const Box = ({ bgColor, icon, text, number, onClick, className }) => {
   return (
     <div
-      className={`${bgColor} sm:h-[190px] sm:w-[420px] w-[315px] h-[120px] flex rounded-lg cursor-pointer` } onClick={onClick}
+      className={`sm:h-[190px] sm:w-[420px] w-[315px] h-[120px] flex rounded-lg cursor-pointer ${bgColor} ${className}`} 
+      onClick={onClick}
     >
       <div className="w-full h-full flex-col sm:pb-8 pb-4">
         <p className="text-white text-xl font-bold ml-7 sm:pt-6 pt-2 h-1/4">

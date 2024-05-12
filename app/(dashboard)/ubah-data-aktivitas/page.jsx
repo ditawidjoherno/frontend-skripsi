@@ -88,14 +88,21 @@ const Page = () => {
         }));
     }
 
+    const handleGoBack = () => {
+        router.back();
+    };
     return (
         <div className={`bg-[#EAEAEA] h-full flex flex-col items-center sm:pt-[75px] pt-[60px] sm:pr-4 pr-3 sm:ml-20 ml-10`}>
             <div className="flex items-center w-full">
                 <h2 className="sm:text-3xl text-[24px] sm:ml-5 ml-2 font-bold sm:mt-3 sm:mb-3 mb-1">
                     Input Data Harian
                 </h2>
-                <IoIosArrowDropleftCircle className="sm:h-10 h-6 sm:w-10 w-10 sm:ml-3 ml-1" />
-            </div>
+                <div>
+                    <IoIosArrowDropleftCircle
+                        className="sm:h-10 sm:w-10 h-5 w-5 sm:ml-3 ml-0 transition-colors duration-300 hover:text-gray-400 focus:text-gray-400"
+                        onClick={handleGoBack}
+                    />
+                </div>            </div>
             <div className="bg-white rounded-2xl h-auto mb-6 sm:ml-5 ml-3 w-full sm:pt-5 pt-4">
                 <div className='sm:flex sm:ml-0 ml-1 sm:mr-0 mr-2'>
                     <div className='sm:w-1/2 w-full'>

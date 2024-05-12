@@ -1,11 +1,12 @@
 import { IoCreate, IoDesktop, IoDocument, IoHome } from "react-icons/io5";
 import { IoIosPeople } from "react-icons/io";
-import { BiBullseye } from "react-icons/bi";
+import { FaSpinner } from 'react-icons/fa';
 import Header from "./Header";
 import { useState, useEffect } from "react";
 import Link from 'next/link';
 import useUser from "@/hooks/use-user";
 import { HiUserAdd } from "react-icons/hi";
+import { IoPieChartSharp } from "react-icons/io5";
 
 
 
@@ -16,19 +17,16 @@ const Sidebar = ({ isCollapse, setIsCollapse }) => {
     useEffect(() => {
         getUserData();
     }, []);
-
-    if (loading) {
-        return <div>Loading...</div>;
-    }
+    
 
     if (error) {
         return <div>Error: {error.message}</div>;
     }
 
     if (!userData) {
-        return <div>No user data available</div>;
+        return <div> </div>;
 
-        
+
     }
     const obfuscateNumber = (number) => {
         const secretKey = 3474;
@@ -58,13 +56,13 @@ const Sidebar = ({ isCollapse, setIsCollapse }) => {
         {
             icon: <IoCreate />,
             text: "Input Data",
-            route: "/data-aktivitas",
+            route: "/data_aktivitas",
             visible: jabatan !== 'manager'
         },
         {
             icon: <IoIosPeople />,
             text: "Data Nasabah",
-            route: `/data-nasabah/${obfuscateNumber(300)}`
+            route: `/data_nasabah`
 
         },
         {
@@ -74,7 +72,7 @@ const Sidebar = ({ isCollapse, setIsCollapse }) => {
             visible: jabatan == 'admin'
         },
         {
-            icon: <BiBullseye />,
+            icon: <IoPieChartSharp />,
             text: "Target Tahunan",
             route: jabatan === 'staff' ? "/target-tahunan-staff" : "/target-tahunan"
         },
@@ -94,8 +92,7 @@ const Sidebar = ({ isCollapse, setIsCollapse }) => {
             <Header setIsCollapse={setIsCollapse} isCollapse={isCollapse} />
             <div className={`h-screen transition-all duration-500 fixed bg-white shadow-2xl ${isCollapse ? "md:w-20 w-48" : "md:w-64 w-10"} py-1 flex flex-col gap-8 z-[999]`}>
                 <div className={`w-full flex justify-center ${isCollapse ? "md:px-1" : "md:px-8"} `}>
-                    <img src="/img/btnlogoside.png" className={`${isCollapse ? "md:block hidden" : "md:hidden block"}`} />
-                    <img src="/img/btnsp.png" className={`${isCollapse ? "md:hidden block" : "md:block hidden"}`} />
+                    <img src="/img/btn_boost.png" className={`${isCollapse ? "" : ""}`} />
                 </div>
                 <div className="w-full flex flex-col md:px-4 sidebar-transition">
                     {sidebarItems.map((item, index) => (

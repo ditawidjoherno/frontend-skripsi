@@ -29,10 +29,9 @@ const updateAktivitas = () => {
             }
 
             setData(response.data);
-            console.log(response);
+            console.log(response.data.data);
         } catch (error) {
             setError(error.message);
-            alert(`${error.response.data.message}`)
         } finally {
             setLoading(false);
         }

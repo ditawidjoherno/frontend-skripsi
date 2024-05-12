@@ -20,9 +20,14 @@ const Page = () => {
   const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
-    getUserData();
     getDataUser();
   }, []);
+
+  useEffect(() => {
+    if (nasabah) {
+      getUserData();
+    }
+  }, [nasabah]);
 
   useEffect(() => {
     if (data) {
