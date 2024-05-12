@@ -31,7 +31,7 @@ const ProfileButton = () => {
           <img
             src={data.foto_profil || '/img/profil.png'}
             alt="Profil staff"
-            className="w-[35px] h-[35px]"
+            className="w-[35px] h-[35px] rounded-sm"
           />
           <div className="sm:block hidden">
             <p className="font-medium text-[13px]">

@@ -92,7 +92,7 @@ const Sidebar = ({ isCollapse, setIsCollapse }) => {
             <Header setIsCollapse={setIsCollapse} isCollapse={isCollapse} />
             <div className={`h-screen transition-all duration-500 fixed bg-white shadow-2xl ${isCollapse ? "md:w-20 w-48" : "md:w-64 w-10"} py-1 flex flex-col gap-8 z-[999]`}>
                 <div className={`w-full flex justify-center ${isCollapse ? "md:px-1" : "md:px-8"} `}>
-                    <img src="/img/btn_boost.png" className={`${isCollapse ? "" : ""}`} />
+                    <img src="/img/btn_boost.png" className={`${isCollapse ? "md:w-20 w-28" : "md:w-64 w-10"}`} />
                 </div>
                 <div className="w-full flex flex-col md:px-4 sidebar-transition">
                     {sidebarItems.map((item, index) => (
