@@ -15,11 +15,20 @@ const LoginForm = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const loginResult = await login(nip, password);
-        if (loginResult && loginResult.status === 200) {
-            setError('');
-        } else {
-            setError('NIP atau password salah');
+        try {
+            const loginResult = await login(nip, password);
+            console.log("Login Result:", loginResult);
+
+            if (loginResult && loginResult.status === 200) {
+                setError('');
+                console.log("Login Successful!");
+            } else {
+                setError('NIP atau password salah');
+                console.log("Login Failed!");
+            }
+        } catch (error) {
+            console.error("Login Error:", error);
+            setError('Terjadi kesalahan saat login');
         }
     }
     
