@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import Link from "next/link";
 import { IoSearchOutline } from "react-icons/io5";
 import useAktivitasBulanan from "@/hooks/use-aktivitas-bulanan";
-import {  useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { FaSpinner } from 'react-icons/fa';
 import { ImProfile } from "react-icons/im";
 
@@ -14,12 +14,12 @@ const page = () => {
   const [tableData, setTableData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [searchResults, setSearchResults] = useState([])
-  const [bulanNama, setBulanNama] = useState(""); 
+  const [bulanNama, setBulanNama] = useState("");
   const { loading, error, data, getUserData } = useAktivitasBulanan();
 
   useEffect(() => {
     getUserData();
-    }, []);
+  }, []);
 
   useEffect(() => {
     if (data) {
@@ -53,11 +53,11 @@ const page = () => {
 
   if (loading) {
     return (
-        <div className="fixed inset-0 flex items-center justify-center">
-            <FaSpinner className="animate-spin mr-2" /> Loading
-        </div>
+      <div className="fixed inset-0 flex items-center justify-center">
+        <FaSpinner className="animate-spin mr-2" /> Loading
+      </div>
     );
-}
+  }
 
   if (error) {
     return (
@@ -71,11 +71,11 @@ const page = () => {
 
   const capitalizeFirstLetter = (string) => {
     if (string && typeof string === 'string' && string.length > 0) {
-        return string.charAt(0).toUpperCase() + string.slice(1);
+      return string.charAt(0).toUpperCase() + string.slice(1);
     } else {
-        return string;
+      return string;
     }
-};
+  };
 
 
   const filteredData = tableData.filter(item =>
@@ -116,23 +116,21 @@ const page = () => {
 
   const handleGoBack = () => {
     router.back();
-};
+  };
 
   return (
-    <div className={`bg-[#EAEAEA] h-full pb-4 flex flex-col items-center sm:pt-[75px] pt-[60px] sm:pr-5 pr-3 sm:ml-20 ml-10`}>
+    <div className={`bg-[#EAEAEA] h-full pb-4 flex flex-col items-center sm:pt-[75px] pt-[55px] sm:pr-5 pr-3 sm:ml-20 ml-10`}>
       <div className="sm:flex items-center w-full sm:justify-between">
-      <div className="sm:ml-5 ml-3 flex items-center sm:gap-3 gap-1 ">
-          <h2 className="sm:text-4xl text-[24px] sm:pt-2 pt-7 font-bold sm:-mt-2 -mt-7 ">
+        <div className="sm:ml-5 ml-3 sm:mt-3 mt-0 flex items-center sm:gap-3 gap-1 ">
+          <h2 className="sm:text-4xl text-[24px] font-bold ">
             Monitoring Bulanan
           </h2>
-          <div>
-          <IoIosArrowDropleftCircle
-                        className="sm:h-10 sm:w-10 h-5 w-5 sm:ml-3 ml-0 transition-colors duration-300 hover:text-gray-400 focus:text-gray-400 cursor-pointer"
-                        onClick={handleGoBack}
-                    />
-                </div>
+            <IoIosArrowDropleftCircle
+              className="sm:h-10 sm:w-10 h-5 w-5 sm:ml-3 ml-0 transition-colors duration-300 hover:text-gray-400 focus:text-gray-400 cursor-pointer"
+              onClick={handleGoBack}
+            />
         </div>
-        <div className='flex justify-center gap-1 sm:mr-5'>
+        <div className='flex justify-center gap-1 sm:mr-5 sm:mt-2'>
           <div className="flex items-center">
             <input
               type="text"
@@ -148,49 +146,49 @@ const page = () => {
         </div>
       </div>
       <div className="sm:ml-5 ml-3 w-full gap-9 mt-5 ">
-        <div className="bg-[#1D2B53] rounded-t-2xl sm:h-[65px] h-[50px] flex justify-between">
-          <h1 className="font-bold text-white sm:text-3xl text-[25px] pl-5 sm:pt-4 pt-1">{bulanNama} 2024</h1>
-          <h1 className="font-bold text-white sm:text-2xl text-[20px] pl-5 pt-4 sm:mr-3 mr-0">Jumlah Aktivitas: {tableData.length} </h1>
+        <div className="bg-[#1D2B53] rounded-t-2xl sm:h-[65px] h-[45px] flex justify-between">
+          <h1 className="font-bold text-white sm:text-3xl text-[20px] pl-5 sm:pt-4 pt-2">{bulanNama} 2024</h1>
+          <h1 className="font-bold text-white sm:text-2xl text-[14px] pl-5 sm:pt-4 pt-3 sm:mr-3 mr-2">Jumlah Aktivitas: {tableData.length} </h1>
         </div>
-        <div className="bg-white rounded-b-2xl h-[500px] overflow-x-scroll">
+        <div className="bg-white rounded-b-2xl sm:h-[520px] h-[400px] sm:overflow-hidden overflow-x-scroll">
           <table className="table-auto border-collapse w-full text-center overflow-x-scroll" style={{ whiteSpace: 'nowrap', overflow: 'hidden' }}>
             <thead>
               <tr>
-                <th className="sm:px-5  px-3 sm:py-4 py-2">No</th>
-                <th className="sm:px-10 px-6  sm:py-4 py-2">Tanggal Prospek</th>
-                <th className="sm:px-10 px-6  sm:py-4 py-2">Nama Staff</th>
-                <th className="sm:px-10 px-6  sm:py-4 py-2">Aktivitas</th>
-                <th className="sm:px-10 px-6  sm:py-4 py-2">Nama Nasabah</th>
-                {/* <th className="sm:px-10 px-6  sm:py-4 py-2">Tipe Nasabah</th>
-                <th className="sm:px-10 px-6  sm:py-4 py-2">Prospek</th>
-                <th className="sm:px-10 px-6  sm:py-4 py-2">Nominal Prospek</th> */}
-                <th className="sm:px-10 px-6  sm:py-4 py-2">Aktivitas Sales</th>
-                {/* <th className="sm:px-10 px-6  sm:py-4 py-2">Closing</th> */}
-                <th className="sm:px-8 px-6  sm:py-4 py-2">Detail</th>
+                <th className="sm:px-5 sm:text-lg text-sm px-3 sm:py-4 py-2">No</th>
+                <th className="sm:px-10 px-6 sm:text-lg text-sm  sm:py-4 py-2">Tanggal Prospek</th>
+                <th className="sm:px-10 px-6 sm:text-lg text-sm  sm:py-4 py-2">Nama Staff</th>
+                <th className="sm:px-10 px-6 sm:text-lg text-sm  sm:py-4 py-2">Aktivitas</th>
+                <th className="sm:px-10 px-6 sm:text-lg text-sm  sm:py-4 py-2">Nama Nasabah</th>
+                {/* <th className="sm:px-10 px-6 sm:text-lg text-sm  sm:py-4 py-2">Tipe Nasabah</th>
+                <th className="sm:px-10 px-6 sm:text-lg text-sm  sm:py-4 py-2">Prospek</th>
+                <th className="sm:px-10 px-6 sm:text-lg text-sm  sm:py-4 py-2">Nominal Prospek</th> */}
+                {/* <th className="sm:px-10 px-6 sm:text-lg text-sm  sm:py-4 py-2">Aktivitas Sales</th> */}
+                {/* <th className="sm:px-10 px-6 sm:text-lg text-sm  sm:py-4 py-2">Closing</th> */}
+                <th className="sm:px-8 px-6 sm:text-lg text-sm  sm:py-4 py-2">Detail</th>
               </tr>
             </thead>
             <tbody>
               {currentItems.length > 0 ? (
                 currentItems.map((item, index) => (
-                  <tr key={index}>
-                    <td>{index + 1}</td>
-                    <td>{item.tanggal_aktivitas}</td>
-                    <td>{capitalizeFirstLetter(item.nama_user)}</td>
-                    <td>{capitalizeFirstLetter(item.nama_aktivitas)}</td>
-                    <td>
-                      <div className="text-black hover:text-blue-700 cursor-pointer" onClick={() => router.push(`/profil-nasabah/${item.id_nasabah}`)}>{capitalizeFirstLetter(item.nama_nasabah)}</div>
+                  <tr key={index} className={index % 2 === 0 ? 'bg-gray-200' : 'bg-white'}>
+                    <td className="sm:text-lg text-sm">{offset + index + 1}</td>
+                    <td className="sm:text-lg text-sm">{item.tanggal_aktivitas}</td>
+                    <td className="sm:text-lg text-sm">{capitalizeFirstLetter(item.nama_user)}</td>
+                    <td className="sm:text-lg text-sm">{capitalizeFirstLetter(item.nama_aktivitas)}</td>
+                    <td className="sm:text-lg text-sm">
+                      <div className="text-blue-500 hover:text-blue-700 cursor-pointer" onClick={() => router.push(`/profil-nasabah/${item.id_nasabah}`)}>{capitalizeFirstLetter(item.nama_nasabah)}</div>
                     </td>
                     {/* <td>{capitalizeFirstLetter(item.tipe_nasabah)}</td>
                     <td>{capitalizeFirstLetter(item.prospek)}</td>
                     <td>{capitalizeFirstLetter(item.nominal_prospek)}</td> */}
-                    <td>{capitalizeFirstLetter(item.aktivitas_sales)}</td>
+                    {/* <td className="sm:text-lg text-sm">{capitalizeFirstLetter(item.aktivitas_sales)}</td> */}
                     {/* <td>{capitalizeFirstLetter(item.closing)}</td> */}
-                   
+
                     <div className="w-full justify-center gap-3 flex items-center">
-                        <div className="bg-[#ffe946] hover:bg-[#f9ee98] py-2 px-2 rounded-md items-center flex cursor-pointer my-1" onClick={() => router.push(`/detail-aktivitas/${item.id}`)}>
-                          <ImProfile className="sm:h-5 sm:w-5 h-3 w-3" />
-                        </div>
-                      </div>                  </tr>
+                      <div className="bg-[#ffe946] hover:bg-[#f9ee98] py-2 px-2 rounded-md items-center flex cursor-pointer my-1" onClick={() => router.push(`/detail-aktivitas/${item.id}`)}>
+                        <ImProfile className="sm:h-5 sm:w-5 h-3 w-3" />
+                      </div>
+                    </div>                  </tr>
                 ))
               ) : (
                 <tr>
@@ -201,26 +199,26 @@ const page = () => {
           </table>
         </div>
         <div className="mt-5">
-                    <div className='flex items-center justify-center gap-4 mb-5 '>
-                        <button onClick={prevPage} disabled={currentPage === 1}>
-                            <IoIosArrowDropleft className="text-blue-500 text-3xl" />
-                        </button>
-                        {filteredData.length > 0 &&
-                            <ul className="pagination flex gap-4 text-xl]">
-                                {Array.from({ length: endPage - startPage + 1 }, (_, index) => startPage + index).map((page) => (
-                                    <li key={page} className={`page-item ${currentPage === page ? 'bg-blue-500 text-white px-2 py-[2px] rounded-sm' : ''}`}>
-                                        <button onClick={() => setCurrentPage(page)} className="page-link">
-                                            {page}
-                                        </button>
-                                    </li>
-                                ))}
-                            </ul>
-                        }
-                        <button onClick={nextPage} disabled={currentPage === Math.ceil(filteredData.length / 10)}>
-                            <IoIosArrowDropright className="text-blue-500 text-3xl" />
-                        </button>
-                    </div>
-                </div>
+          <div className='flex items-center justify-center gap-4 mb-5 '>
+            <button onClick={prevPage} disabled={currentPage === 1}>
+              <IoIosArrowDropleft className="text-blue-500 text-3xl" />
+            </button>
+            {filteredData.length > 0 &&
+              <ul className="pagination flex gap-4 text-xl]">
+                {Array.from({ length: endPage - startPage + 1 }, (_, index) => startPage + index).map((page) => (
+                  <li key={page} className={`page-item ${currentPage === page ? 'bg-blue-500 text-white px-2 py-[2px] rounded-sm' : ''}`}>
+                    <button onClick={() => setCurrentPage(page)} className="page-link">
+                      {page}
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            }
+            <button onClick={nextPage} disabled={currentPage === Math.ceil(filteredData.length / 10)}>
+              <IoIosArrowDropright className="text-blue-500 text-3xl" />
+            </button>
+          </div>
+        </div>
       </div>
     </div>
 

@@ -5,7 +5,7 @@ import { useState } from "react";
 import { create } from "zustand";
 import useUserStore from "./use-data-user";
 
-const useTargetStaff = () => {
+const useStaff = () => {
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState(null)
     const [data, setData] = useState(null)
@@ -43,4 +43,4 @@ const useTargetStaff = () => {
     return { loading, error, data, getUserData }
 }
 
-export default useTargetStaff
+export default useStaff

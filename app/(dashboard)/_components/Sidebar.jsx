@@ -73,7 +73,7 @@ const Sidebar = ({ isCollapse, setIsCollapse }) => {
         },
         {
             icon: <IoPieChartSharp />,
-            text: "Target Tahunan",
+            text: "Lihat Target",
             route: jabatan === 'staff' ? "/target-tahunan-staff" : "/target-tahunan"
         },
         {

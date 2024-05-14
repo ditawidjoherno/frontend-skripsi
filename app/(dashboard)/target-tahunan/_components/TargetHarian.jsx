@@ -47,7 +47,7 @@ const TargetHarianMonitoring = () => {
           Target Harian
         </h2>
         <button
-              className="bg-blue-500 hover:bg-[#77c9ff] sm:w-[200px] w-[100px] sm:h-[45px] h-[37px] text-white font-semibold sm:px-4 px-2 sm:py-2 py-0 rounded-md mr-3 sm:text-[16px] text-[12px]"
+              className="bg-blue-500 hover:bg-[#77c9ff] sm:w-[200px] w-[100px] sm:h-[45px] h-[37px] text-white font-semibold sm:px-4 px-2 sm:py-2 py-0 rounded-md mr-3 sm:text-[16px] text-[10px]"
               onClick={() => router.push("/update-target-harian")}
             >
               Ubah Target Harian

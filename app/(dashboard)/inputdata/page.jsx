@@ -288,6 +288,7 @@ const Page = () => {
                             value={keteranganAktivitas}
                             onChange={(newValue) => setKeteranganAktivitas(newValue.value)}
                             options={[
+                                { value: 'ditolak', label: 'Belum Diproses' },
                                 { value: 'diterima', label: 'Diterima' },
                                 { value: 'ditolak', label: 'Ditolak' }
                             ]}

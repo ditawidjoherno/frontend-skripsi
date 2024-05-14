@@ -75,23 +75,23 @@ const Page = () => {
 
   const capitalizeFirstLetter = (string) => {
     if (string && typeof string === 'string' && string.length > 0) {
-        return string.charAt(0).toUpperCase() + string.slice(1);
+      return string.charAt(0).toUpperCase() + string.slice(1);
     } else {
-        return string;
+      return string;
     }
-};
+  };
 
   if (dataLoading) {
     return (
-        <div className="fixed inset-0 flex items-center justify-center">
-            <FaSpinner className="animate-spin mr-2" /> Loading
-        </div>
+      <div className="fixed inset-0 flex items-center justify-center">
+        <FaSpinner className="animate-spin mr-2" /> Loading
+      </div>
     );
-}
+  }
 
-const handleGoBack = () => {
-  router.back();
-};
+  const handleGoBack = () => {
+    router.back();
+  };
 
   return (
     <div className={`bg-[#EAEAEA] sm:h-auto h-screen flex flex-col items-center sm:pt-[75px] pt-[60px] sm:pr-4 pr-3 sm:ml-20 ml-10`}>
@@ -101,11 +101,11 @@ const handleGoBack = () => {
             Data Nasabah
           </h2>
           <div>
-          <IoIosArrowDropleftCircle
-                        className="sm:h-10 sm:w-10 h-5 w-5 sm:ml-3 ml-0 transition-colors duration-300 hover:text-gray-400 focus:text-gray-400 cursor-pointer"
-                        onClick={handleGoBack}
-                    />
-                </div>
+            <IoIosArrowDropleftCircle
+              className="sm:h-10 sm:w-10 h-5 w-5 sm:ml-3 ml-0 transition-colors duration-300 hover:text-gray-400 focus:text-gray-400 cursor-pointer"
+              onClick={handleGoBack}
+            />
+          </div>
         </div>
         <div className='flex justify-center gap-1 sm:mr-5'>
           <div className="flex items-center">
@@ -130,8 +130,8 @@ const handleGoBack = () => {
           </div>
           {jabatan !== 'manager' && (
             <button
-            className="bg-blue-500 hover:bg-[#77c9ff] text-white sm:text-[20px] text-[10px] font-semibold sm:px-4 px-3 sm:py-2 py-0 sm:my-3 my-[10px] rounded-md mr-3"
-            onClick={() => router.push("/inputdata-nasabah")}
+              className="bg-blue-500 hover:bg-[#77c9ff] text-white sm:text-[20px] text-[10px] font-semibold sm:px-4 px-3 sm:py-2 py-0 sm:my-3 my-[10px] rounded-md mr-3"
+              onClick={() => router.push("/inputdata-nasabah")}
             >
               Tambah Nasabah
             </button>
@@ -154,7 +154,7 @@ const handleGoBack = () => {
                 currentItems.map((item, index) => (
                   <tr key={index} className={index % 2 === 0 ? 'bg-gray-200' : 'bg-white'}>
                     <td>{offset + index + 1}</td>
-                    <td onClick={() => router.push(`/profil-nasabah/${item.id}`)} className="cursor-pointer hover:text-blue-600 transition-all duration-500">{capitalizeFirstLetter(item.nama)}</td>
+                    <td>{capitalizeFirstLetter(item.nama)}</td>
                     <td>{capitalizeFirstLetter(item.tipe_nasabah)}</td>
                     <td style={{ paddingRight: '10px', maxWidth: '150px', overflow: 'hidden', textOverflow: 'ellipsis' }}>{capitalizeFirstLetter(item.alamat)}</td>
                     <td style={{ paddingLeft: '20px', maxWidth: '150px', overflow: 'hidden', textOverflow: 'ellipsis' }}>{capitalizeFirstLetter(item.pekerjaan)}</td>

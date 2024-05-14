@@ -1,18 +1,16 @@
 "use client"
 import React from 'react'
 import { IoIosArrowDropleft, IoIosArrowDropright, IoIosArrowDropleftCircle } from "react-icons/io";
-import { IoTime } from "react-icons/io5";
-import { IoFilterSharp } from "react-icons/io5";
 import { IoSearchOutline } from "react-icons/io5";
 import { IoPersonSharp } from "react-icons/io5";
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
-import { IoCheckmarkDoneCircleOutline } from "react-icons/io5";
 import useDataAktivitas from '@/hooks/use-data-aktivitas';
 import { useParams } from 'next/navigation';
 import { useRouter } from 'next/navigation';
 import { FaSpinner } from 'react-icons/fa';
-
+import axios from 'axios';
+import { getCookie } from '@/lib/cookieFunction';
 
 const page = () => {
     const { nip } = useParams();
@@ -22,11 +20,30 @@ const page = () => {
     const { loading, error, data, getUserData } = useDataAktivitas(nip);
     const [tableData, setTableData] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
+    const [ setLoading] = useState(false)
+    const cookie = process.env.NEXT_PUBLIC_COOKIE_NAME;
+    const token = getCookie(cookie)
+    const bearerToken = `Bearer ${token}`
+    const [Staff, setNamaStaff] = useState()
 
-    const handleGetDataUser = async () => {
-        await getUserData();
-    }
-    console.log(data)
+    useEffect(() => {
+        const fetchNamaStaff = async () => {
+          const response = await axios.get(`https://back-btn-boost.vercel.app/nama-staff?nip=${nip}`, {
+            headers: {
+              Authorization: bearerToken
+            }
+          })
+    
+          setNamaStaff(response.data.data)
+        }
+    
+        fetchNamaStaff();
+      }, [bearerToken, nip])
+
+    // const handleGetDataUser = async () => {
+    //     await getStaff();
+    // }
+    // console.log(data)
 
     useEffect(() => {
         getUserData();
@@ -96,47 +113,51 @@ const page = () => {
 
     return (
         <div className={`bg-[#EAEAEA] h-full flex flex-col items-center sm:pt-[75px] pt-[60px] sm:pr-4 pr-3 sm:ml-20 ml-10`}>
-            <div className="flex items-center w-full">
-                <h2 className="sm:text-[40px] text-[24px] sm:ml-5 ml-4 font-semibold">
-                    Aktivitas Sales
-                </h2>
-                <IoIosArrowDropleftCircle
+            <div className="sm:flex items-center w-full sm:justify-between sm:mt-3 mt-0">
+                <div className="sm:ml-5 ml-3 sm:mt-3 mt-0 flex items-center sm:gap-3 gap-1 ">
+                    <h2 className="sm:text-4xl text-[24px] font-bold">
+                        Aktivitas Sales
+                    </h2>
+                    <IoIosArrowDropleftCircle
                         className="sm:h-10 sm:w-10 h-5 w-5 sm:ml-3 ml-0 transition-colors duration-300 hover:text-gray-400 focus:text-gray-400 cursor-pointer"
                         onClick={handleGoBack}
                     />
-            </div>
-            <div className='sm:ml-5 ml-3 w-full '>
-                <div className="bg-white rounded-t-2xl h-[80px] pt-3">
-                    <div className='flex justify-between'>
-                        {data && data.length > 0 && (
-                            <div className='flex items-center gap-2 ml-5'>
-                                <IoPersonSharp className="w-10 h-10" />
-                                <h2 className='font-semibold text-[20px]'>{data[0].nama_user}</h2>
-                            </div>
-                        )}
-                        <div className='flex justify-center gap-1 sm:mr-5'>
-                            <div className="flex items-center">
-                                <input
-                                    type="text"
-                                    placeholder="Search..."
-                                    value={searchTerm}
-                                    onChange={handleSearch}
-                                    className="border-2 border-gray-300 px-4 py-2 sm:rounded-l-2xl rounded-l-lg focus:outline-none focus:border-blue-500 sm:w-[270px] w-full sm:h-[40px] h-[30px]"
-                                />
-                                <button type="submit" className="bg-[#FFE500] text-black border-black px-1 py-1 sm:rounded-r-2xl rounded-r-lg hover:bg-[#f6f0ba] sm:w-[40px] w-[30px] sm:h-[40px] h-[30px] focus:outline-none">
-                                    <IoSearchOutline className="sm:w-6 w-4 sm:h-6 h-4" />
-                                </button>
-                            </div>
+                </div>
+                <div>
+                    <div className='flex justify-center gap-1 sm:mr-5 sm:mt-2'>
+                        <div className="flex items-center">
+                            <input
+                                type="text"
+                                placeholder="Search..."
+                                value={searchTerm}
+                                onChange={handleSearch}
+                                className="border-2 border-gray-300 px-4 py-2 sm:rounded-l-2xl rounded-l-lg focus:outline-none focus:border-blue-500 sm:w-[270px] w-full sm:h-[40px] h-[30px]"
+                            />
+                            <button type="submit" className="bg-[#FFE500] text-black border-black px-1 py-1 sm:rounded-r-2xl rounded-r-lg hover:bg-[#f6f0ba] sm:w-[40px] w-[30px] sm:h-[40px] h-[30px] focus:outline-none">
+                                <IoSearchOutline className="sm:w-6 w-4 sm:h-6 h-4" />
+                            </button>
                         </div>
+                    </div>
+                </div>
+            </div>
+            <div className='sm:ml-5 ml-3 w-full gap-9 mt-4'>
+                <div className="bg-white rounded-t-2xl sm:h-[80px] h-[72px] pt-3">
+                    <div className='flex justify-between'>
+                        {Staff && 
+                            <div className='flex items-center gap-2 ml-5'>
+                                <IoPersonSharp className="sm:w-10 w-7 sm:h-10 h-7" />
+                                <h2 className='font-semibold am:text-[20px] text-[18px]'>{Staff.nama}</h2>
+                            </div>
+                        }
                     </div>
 
                     <hr className="border-t-2 border-black my-3 mx-6 " />
                 </div>
                 <div className="bg-white rounded-b-2xl h-[500px] overflow-x-scroll">
-                    <table className="table-auto border-collapse w-full text-center overflow-x-auto">
+                    <table className="table-auto border-collapse w-full text-center overflow-x-scroll" style={{ whiteSpace: 'nowrap', overflow: 'hidden' }}>
                         <thead>
                             <tr>
-                                <th className="sm:px-14 px-7 sm:py-4 py-0">No</th>
+                                <th className="sm:px-8 px-7 sm:py-4 py-0">No</th>
                                 {/* <th className="sm:px-14 px-7 sm:py-4 py-0">Nama</th> */}
                                 <th className="sm:px-14 px-7 sm:py-4 py-0">Tanggal Prospek</th>
                                 <th className="sm:px-14 px-7 sm:py-4 py-0">Aktivitas</th>
@@ -150,7 +171,7 @@ const page = () => {
                         <tbody>
                             {currentItems.length > 0 ? (
                                 currentItems.map((item, index) => (
-                                    <tr key={index}>
+                                    <tr key={index} className={index % 2 === 0 ? 'bg-gray-200' : 'bg-white'}>
                                         <td>{index + 1}</td>
                                         {/* <td>{item.nama_user}</td> */}
                                         <td>{item.tanggal_aktivitas}</td>

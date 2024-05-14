@@ -4,7 +4,7 @@ import { IoTimeSharp } from "react-icons/io5";
 const Box = ({ bgColor, icon, text, number, onClick, className }) => {
   return (
     <div
-      className={`sm:h-[190px] sm:w-[420px] w-[315px] h-[120px] flex rounded-lg cursor-pointer ${bgColor} ${className}`} 
+      className={`sm:h-[190px] w-full h-[120px] flex rounded-lg cursor-pointer ${bgColor} ${className}`} 
       onClick={onClick}
     >
       <div className="w-full h-full flex-col sm:pb-8 pb-4">

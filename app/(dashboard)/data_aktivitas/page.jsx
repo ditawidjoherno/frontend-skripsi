@@ -30,7 +30,7 @@ const page = () => {
     const { value } = event.target;
     setSearchTerm(value);
     setCurrentPage(1);
-};
+  };
 
   console.log(data)
 
@@ -41,9 +41,9 @@ const page = () => {
 
   useEffect(() => {
     if (data) {
-        setTableData(data);
+      setTableData(data);
     }
-}, [data]);
+  }, [data]);
 
   if (!userData) {
     return;
@@ -56,48 +56,48 @@ const page = () => {
     item.prospek.toLowerCase().includes(searchTerm.toLowerCase()) ||
     item.aktivitas_sales.toLowerCase().includes(searchTerm.toLowerCase()) ||
     item.keterangan_aktivitas.toLowerCase().includes(searchTerm.toLowerCase())
-);
+  );
 
-const itemsPerPage = 10;
-const offset = (currentPage - 1) * itemsPerPage;
-const indexOfLastItem = offset + itemsPerPage;
-const indexOfFirstItem = offset + 1;
-const currentItems = filteredData.slice(offset, indexOfLastItem);
+  const itemsPerPage = 10;
+  const offset = (currentPage - 1) * itemsPerPage;
+  const indexOfLastItem = offset + itemsPerPage;
+  const indexOfFirstItem = offset + 1;
+  const currentItems = filteredData.slice(offset, indexOfLastItem);
 
-const nextPage = () => {
+  const nextPage = () => {
     if (currentPage < Math.ceil(filteredData.length / 10)) {
-        setCurrentPage(currentPage + 1);
+      setCurrentPage(currentPage + 1);
     }
-};
+  };
 
-const prevPage = () => {
+  const prevPage = () => {
     if (currentPage > 1) {
-        setCurrentPage(currentPage - 1);
+      setCurrentPage(currentPage - 1);
     }
-};
+  };
 
-const maxPages = 5;
-let startPage = Math.max(1, currentPage - Math.floor(maxPages / 2));
-let endPage = Math.min(startPage + maxPages - 1, Math.ceil(filteredData.length / 10));
+  const maxPages = 5;
+  let startPage = Math.max(1, currentPage - Math.floor(maxPages / 2));
+  let endPage = Math.min(startPage + maxPages - 1, Math.ceil(filteredData.length / 10));
 
-if (endPage - startPage + 1 < maxPages) {
+  if (endPage - startPage + 1 < maxPages) {
     startPage = Math.max(1, endPage - maxPages + 1);
-}
+  }
 
   if (loading) {
     return (
-        <div className="fixed inset-0 flex items-center justify-center">
-            <FaSpinner className="animate-spin mr-2" /> Loading
-        </div>
+      <div className="fixed inset-0 flex items-center justify-center">
+        <FaSpinner className="animate-spin mr-2" /> Loading
+      </div>
     );
-}
-const capitalizeFirstLetter = (string) => {
-  return string.charAt(0).toUpperCase() + string.slice(1);
-};
+  }
+  const capitalizeFirstLetter = (string) => {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+  };
 
-const handleGoBack = () => {
-  router.back();
-};
+  const handleGoBack = () => {
+    router.back();
+  };
 
   return (
     <div className={`bg-[#EAEAEA] h-auto flex flex-col items-center sm:pt-[75px] pt-[60px] sm:pr-4 pr-3 sm:ml-20 ml-10`}>
@@ -107,11 +107,11 @@ const handleGoBack = () => {
             Data Aktivitas
           </h2>
           <div>
-          <IoIosArrowDropleftCircle
-                        className="sm:h-10 sm:w-10 h-5 w-5 sm:ml-3 ml-0 transition-colors duration-300 hover:text-gray-400 focus:text-gray-400 cursor-pointer"
-                        onClick={handleGoBack}
-                    />
-                </div>
+            <IoIosArrowDropleftCircle
+              className="sm:h-10 sm:w-10 h-5 w-5 sm:ml-3 ml-0 transition-colors duration-300 hover:text-gray-400 focus:text-gray-400 cursor-pointer"
+              onClick={handleGoBack}
+            />
+          </div>
         </div>
         <div className='flex justify-center gap-1 sm:mr-5'>
           <div className="flex items-center">
@@ -142,31 +142,31 @@ const handleGoBack = () => {
             </button>
           )}
         </div>
-        <div className="bg-white rounded-b-2xl sm:h-[530px] h-[370px] mb-6 sm:overflow-hidden overflow-x-auto">
+        <div className="bg-white rounded-b-2xl sm:h-[520px] h-[370px] mb-6 sm:overflow-hidden overflow-x-auto">
           <table className="table-auto border-collapse w-full text-center " >
             <thead>
               <tr>
                 <th className="sm:px-5 px-2 sm:py-4 py-2">No</th>
                 <th className="sm:px-14 px-6  sm:py-4 py-2">Nama Nasabah</th>
                 <th className="sm:px-14 px-6  sm:py-4 py-2">Tipe Nasabah</th>
+                <th className="sm:px-10 px-6 sm:text-lg text-sm  sm:py-4 py-2">Aktivitas Sales</th>
                 <th className="sm:px-14 px-6  sm:py-4 py-2">Status Aktivitas</th>
-                <th className="sm:px-14 px-6  sm:py-4 py-2">Keterangan Aktivitas</th>
                 <th className="sm:px-14 px-6  sm:py-4 py-2">Detail</th>
               </tr>
             </thead>
             <tbody style={{ whiteSpace: 'nowrap' }}>
               {currentItems.length > 0 ? (
                 currentItems.map((item, index) => (
-                  <tr key={index}>
-                    <td>{index + 1}</td>
+                  <tr key={index} className={index % 2 === 0 ? 'bg-gray-200' : 'bg-white'}>
+                    <td>{offset + index + 1}</td>
                     <td>
-                      <div className="text-black hover:text-blue-700 cursor-pointer" onClick={() => router.push(`/profil-nasabah/${item.id_nasabah}`)}>{item.nama_nasabah}</div>
+                      <div className="text-blue-500 hover:text-blue-700 cursor-pointer" onClick={() => router.push(`/profil-nasabah/${item.id_nasabah}`)}>{item.nama_nasabah}</div>
                     </td>
                     <td>{capitalizeFirstLetter(item.tipe_nasabah)}</td>
-                    <td>{capitalizeFirstLetter(item.status_aktivitas)}</td>
+                    <td className="sm:text-lg text-sm">{capitalizeFirstLetter(item.aktivitas_sales)}</td>
                     <td>
-                      <div className={`py-1 rounded-md sm:mx-6 mx-2 my-1 text-white font-semibold ${item.keterangan_aktivitas === 'diterima' ? 'bg-green-500 ' : item.keterangan_aktivitas === 'ditolak' ? 'bg-red-500' : ''}`}>
-                      {capitalizeFirstLetter(item.keterangan_aktivitas)}
+                      <div className={`py-1 rounded-md sm:mx-6 mx-2 my-1 text-white font-semibold ${item.status_aktivitas === 'selesai' ? 'bg-green-500 ' : item.status_aktivitas === 'ditunda' ? 'bg-orange-500' : ''}`}>
+                        {capitalizeFirstLetter(item.status_aktivitas)}
                       </div>
                     </td>
                     <td>
@@ -190,26 +190,26 @@ const handleGoBack = () => {
           </table>
         </div>
         <div className="mt-5">
-                    <div className='flex items-center justify-center gap-4 mb-5 '>
-                        <button onClick={prevPage} disabled={currentPage === 1}>
-                            <IoIosArrowDropleft className="text-blue-500 text-3xl" />
-                        </button>
-                        {filteredData.length > 0 &&
-                            <ul className="pagination flex gap-4 text-xl]">
-                                {Array.from({ length: endPage - startPage + 1 }, (_, index) => startPage + index).map((page) => (
-                                    <li key={page} className={`page-item ${currentPage === page ? 'bg-blue-500 text-white px-2 py-[2px] rounded-sm' : ''}`}>
-                                        <button onClick={() => setCurrentPage(page)} className="page-link">
-                                            {page}
-                                        </button>
-                                    </li>
-                                ))}
-                            </ul>
-                        }
-                        <button onClick={nextPage} disabled={currentPage === Math.ceil(filteredData.length / 10)}>
-                            <IoIosArrowDropright className="text-blue-500 text-3xl" />
-                        </button>
-                    </div>
-                </div>
+          <div className='flex items-center justify-center gap-4 mb-5 '>
+            <button onClick={prevPage} disabled={currentPage === 1}>
+              <IoIosArrowDropleft className="text-blue-500 text-3xl" />
+            </button>
+            {filteredData.length > 0 &&
+              <ul className="pagination flex gap-4 text-xl]">
+                {Array.from({ length: endPage - startPage + 1 }, (_, index) => startPage + index).map((page) => (
+                  <li key={page} className={`page-item ${currentPage === page ? 'bg-blue-500 text-white px-2 py-[2px] rounded-sm' : ''}`}>
+                    <button onClick={() => setCurrentPage(page)} className="page-link">
+                      {page}
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            }
+            <button onClick={nextPage} disabled={currentPage === Math.ceil(filteredData.length / 10)}>
+              <IoIosArrowDropright className="text-blue-500 text-3xl" />
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   );

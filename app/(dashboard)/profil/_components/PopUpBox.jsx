@@ -7,7 +7,7 @@ import useUserStore from '@/hooks/use-data-user';
 import { IoEyeOutline, IoEyeOffOutline } from "react-icons/io5";
 
 const PopUpBox = () => {
-  const { loading, error, data, updateData, updatePassword, updateProfileImage } = UpdateProfile();
+  const { error, data, updateData, updatePassword, updateProfileImage } = UpdateProfile();
   const { user } = useUserStore();
   const [updatedNama, setUpdatedNama] = useState('');
   const [updatedEmail, setUpdatedEmail] = useState('');
@@ -18,6 +18,8 @@ const PopUpBox = () => {
   const [showPassword, setShowPassword] = useState(false); 
   const [selectedImage, setSelectedImage] = useState(null);
   const { isPopUpOpen, setIsPopUpOpen, actionType, setActionType } = usePopup();
+  const [loading, setLoading] = useState(false);
+
 
   const handleButtonClick = (type) => {
     setIsPopUpOpen(true);
@@ -35,6 +37,8 @@ const PopUpBox = () => {
   }, [user]);
 
   const handleUpdateData = async () => {
+    setLoading(true);
+
     if (actionType === 'changePassword') {
       try {
         await updatePassword({ password: newPassword });
@@ -46,7 +50,7 @@ const PopUpBox = () => {
     } else {
       try {
         let imageUrl = '';
-
+  
         if (selectedImage) {
           await updateProfileImage(selectedImage);
           setIsPopUpOpen(false);
@@ -57,9 +61,9 @@ const PopUpBox = () => {
             nomor_telepon: updatedTelpon,
             alamat: updatedAlamat,
           };
-          updateData(updatedProfileData);
+          await updateData(updatedProfileData);
           setIsPopUpOpen(false);
-
+          window.location.reload();
         }
       } catch (error) {
         console.error('Gagal memperbarui profil:', error);
@@ -67,6 +71,7 @@ const PopUpBox = () => {
       }
     }
   };
+  
 
   return (
     <>
@@ -126,69 +131,69 @@ const PopUpBox = () => {
             {actionType === 'editData' && (
               <>
                 <div className=" flex mt-3 flex-col">
-                  <h2 className="font-medium text-[24px] ml-11">Ubah Data</h2>
+                  <h2 className="font-medium sm:text-[24px] text-[18px] sm:ml-11 ml-7">Ubah Data</h2>
                   <hr className="my-3 mx-6  border-t-[1px] justify-center items-center border-black mt-1" />
                   <form className="mt-1 my-3 mx-7">
                     <div className="mb-3 flex flex-col ">
-                      <label htmlFor="newNama" className="block items-center text-md font-medium text-gray-700">
+                      <label htmlFor="newNama" className="block items-center sm:text-lg text-sm font-medium text-gray-700">
                         Nama
                       </label>
                       <input
                         type="nama"
                         id="newNama"
-                        className="mt-1 pl-3 py-1 w-full border border-gray-300  bg-[#D9D9D9] rounded-md"
+                        className="sm:mt-1 mt-2 pl-3 py-1 sm:text-lg text-sm w-full border border-gray-300  bg-[#D9D9D9] rounded-md"
                         placeholder="Masukkan Nama"
                         value={updatedNama}
                         onChange={(e) => setUpdatedNama(e.target.value)}
                       />
                     </div>
                     <div className="mb-4 flex flex-col">
-                      <label htmlFor="newAlamat" className="block items-center text-md font-medium text-gray-700">
+                      <label htmlFor="newAlamat" className="block items-center sm:text-lg text-sm font-medium text-gray-700">
                         Alamat
                       </label>
                       <input
                         type="newAlamat"
                         id="newAlamat"
-                        className="mt-1 pl-3 py-1 w-full border border-gray-300  bg-[#D9D9D9] rounded-md"
+                        className="sm:mt-1 mt-2 pl-3 py-1 sm:text-lg text-sm w-full border border-gray-300  bg-[#D9D9D9] rounded-md"
                         placeholder="Masukkan Alamat"
                         value={updatedAlamat}
                         onChange={(e) => setUpdatedAlamat(e.target.value)}
                       />
                     </div>
                     <div className="mb-3 flex flex-col ">
-                      <label htmlFor="newEmail" className="block items-center text-md font-medium text-gray-700">
+                      <label htmlFor="newEmail" className="block items-center sm:text-lg text-sm font-medium text-gray-700">
                         Email
                       </label>
                       <input
                         type="Email"
                         id="newEmail"
-                        className="mt-1 pl-3 py-1 w-full border border-gray-300  bg-[#D9D9D9] rounded-md"
+                        className="sm:mt-1 mt-2 pl-3 py-1 sm:text-lg text-sm w-full border border-gray-300  bg-[#D9D9D9] rounded-md"
                         placeholder="Masukkan Email"
                         value={updatedEmail}
                         onChange={(e) => setUpdatedEmail(e.target.value)}
                       />
                     </div>
                     <div className="mb-4 flex flex-col">
-                      <label htmlFor="newNomorTelepon" className="block items-center text-md font-medium text-gray-700">
+                      <label htmlFor="newNomorTelepon" className="block items-center sm:text-lg text-sm font-medium text-gray-700">
                         Nomor Telepon
                       </label>
                       <input
                         type="NomorTelepont"
                         id="newNomorTelepon"
-                        className="mt-1 pl-3 py-1 w-full border border-gray-300  bg-[#D9D9D9] rounded-md"
+                        className="sm:mt-1 mt-2 pl-3 py-1 sm:text-lg text-sm w-full border border-gray-300  bg-[#D9D9D9] rounded-md"
                         placeholder="Masukkan Nomor Telepon"
                         value={updatedTelpon}
                         onChange={(e) => setUpdatedTelpon(e.target.value)}
                       />
                     </div>
                     <div className="mb-3 flex flex-col ">
-                      <label htmlFor="newProfilePicture" className="block items-center text-md font-medium text-gray-700">
+                      <label htmlFor="newProfilePicture" className="block items-center sm:text-lg text-sm font-medium text-gray-700">
                         Foto Profil
                       </label>
                       <input
                         type="file"
                         id="newProfilePicture"
-                        className="mt-1 pl- py-1 w-full rounded-md"
+                        className="sm:mt-1 mt-2 py-1 sm:text-lg text-sm w-full border rounded-md"
                         onChange={(e) => setSelectedImage(e.target.files[0])}
                       />
                     </div>
@@ -207,8 +212,9 @@ const PopUpBox = () => {
                 type="submit"
                 className="bg-blue-500 shadow-md text-white sm:px-9 px-4 py-[3px] rounded hover:bg-blue-600 sm:text-[18px] text-[14px]"
                 onClick={handleUpdateData}
+                disabled={loading}
               >
-                Simpan
+                                <p className="font-medium text-white text-semibold">{loading ? "Loading..." : "Simpan"}</p>
               </button>
             </div>
           </div>

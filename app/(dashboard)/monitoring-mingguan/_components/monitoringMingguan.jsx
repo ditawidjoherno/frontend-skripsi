@@ -3,6 +3,7 @@ import { IoCaretUp } from "react-icons/io5";
 import { IoCaretDown } from "react-icons/io5";
 import Link from 'next/link';
 import useTotalMingguan from '@/hooks/use-monitoring-mingguan';
+import { FaSpinner } from 'react-icons/fa';
 
 const MonitoringMingguan = ({ title, description }) => {
     const [openStates, setOpenStates] = useState({});
@@ -20,6 +21,14 @@ const MonitoringMingguan = ({ title, description }) => {
     }, []);
 
     const weekColors = ["bg-blue-500", "bg-blue-600"];
+
+    if (loading) {
+        return (
+            <div className="fixed inset-0 flex items-center justify-center">
+                <FaSpinner className="animate-spin mr-2" /> Loading
+            </div>
+        );
+    }
 
     return (
         <div>

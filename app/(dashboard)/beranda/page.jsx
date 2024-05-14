@@ -59,7 +59,7 @@ const Page = () => {
 
   return (
     <div className={`bg-[#EAEAEA] h-auto transition-all sm:pl-11 pl-5 `}>
-      <h2 className="sm:text-[40px] text-[24px] sm:pt-[79px] pt-[75px] sm:ml-16 ml-8 font-semibold">
+      <h2 className="sm:text-[40px] text-[24px] sm:pt-[79px] pt-[50px] sm:ml-16 ml-8 font-semibold">
         Dashboard
       </h2>
       {userData && userData.jabatan === 'staff' && (

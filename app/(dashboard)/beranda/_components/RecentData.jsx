@@ -35,7 +35,10 @@ const RecentData = () => {
 
   const capitalizeFirstLetter = (string) => {
     return string.charAt(0).toUpperCase() + string.slice(1);
-};
+  };
+
+  // Limit data to maximum 5 entries
+  const displayedData = data ? data.slice(0, 5) : [];
 
   return (
     <div className="bg-white md:flex-row flex-col sm:ml-11 sm:mx-0 mx-5 sm:mt-10 mt-4 rounded-2xl sm:h-[350px] h-[220px] sm:w-auto w-auto ">
@@ -55,33 +58,32 @@ const RecentData = () => {
           <thead>
             <tr>
               <th className="px-5">No</th>
-              <th className="sm:px-6 px-7 sm:py-1 py-0">Nama Staff</th>
-              <th className="sm:px-6 px-7 sm:py-1 py-0">Tanggal Prospek</th>
-              <th className="sm:px-6 px-7 sm:py-1 py-0">Nama Nasabah</th>
-              <th className="sm:px-6 px-7 sm:py-1 py-0">Aktivitas</th>
+              <th className="sm:px-6 px-7 sm:text-lg text-sm sm:py-1 py-0">Nama Staff</th>
+              <th className="sm:px-6 px-7 sm:text-lg text-sm sm:py-1 py-0">Tanggal Prospek</th>
+              <th className="sm:px-6 px-7 sm:text-lg text-sm sm:py-1 py-0">Nama Nasabah</th>
+              <th className="sm:px-6 px-7 sm:text-lg text-sm sm:py-1 py-0">Aktivitas</th>
             </tr>
           </thead>
           <tbody>
-            {data && data.length > 0 ? (
-              data.map((item, index) => (
+            {displayedData.length > 0 ? (
+              displayedData.map((item, index) => (
                 <tr key={index}>
-                  <td className="px-5 text-center">{index + 1}</td>
+                  <td className="px-5 sm:py-[7px] py-0 text-center">{index + 1}</td>
                   <td style={{ whiteSpace: 'nowrap', overflow: 'hidden' }}>
                     {capitalizeFirstLetter(item.nama_user)}
                   </td>
                   <td>{item.tanggal_aktivitas}</td>
                   <td>
                     <Link href={`/profil_nasabah`}>
-                      <div className="text-black hover:text-blue-700 cursor-pointer">{item.nama_nasabah}</div>
+                      <div className="text-blue-500 hover:text-blue-700 cursor-pointer">{item.nama_nasabah}</div>
                     </Link>
                   </td>
                   <td>{capitalizeFirstLetter(item.nama_aktivitas)}</td>
-                  
                 </tr>
               ))
             ) : (
               <tr>
-                <td colSpan="7" className="text-center">Belum ada data yang ditambahkan</td>
+                <td colSpan="5" className="text-center mt-3">Belum ada data yang ditambahkan</td>
               </tr>
             )}
           </tbody>

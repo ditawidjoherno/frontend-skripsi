@@ -47,6 +47,14 @@ const TargetHarian = () => {
         }
     };
 
+    const capitalizeFirstLetter = (string) => {
+        if (string && typeof string === 'string' && string.length > 0) {
+            return string.charAt(0).toUpperCase() + string.slice(1);
+        } else {
+            return string;
+        }
+    };
+
     return (
         <div className='sm:pl-8 pl-4 sm:mt-4 mt-2 mr-5 sm:mb-2 mb-3'>
             <h2 className="sm:text-[30px] text-[22px] font-semibold">
@@ -60,9 +68,9 @@ const TargetHarian = () => {
                     value={selectedStaff}
                     onChange={(e) => setSelectedStaff(e.target.value)}
                 >
-                    <option className="sm:text-[15px] text-[12px]" value="">Select Nama Staff</option>
+                    <option className="sm:text-[17px] text-[10px]" value="">Select Nama Staff</option>
                     {namaStaff.map((staff, index) => (
-                        <option className="sm:text-[15px] text-[12px]" key={index} value={staff.nip}>{staff.nama}</option>
+                        <option className="sm:text-[17px] text-[10px]" key={index} value={staff.nip}>{staff.nama}</option>
                     ))}
                 </select>
             </div>
@@ -94,7 +102,7 @@ const TargetHarian = () => {
                         {targets.map((target, index) => (
                             <tr key={index}>
                                 <td className="border border-gray-500 p-1 text-center">{index + 1}</td>
-                                <td className="border border-gray-500 p-2">{target}</td>
+                                <td className="border border-gray-500 p-2">{capitalizeFirstLetter(target)}</td>
                             </tr>
                         ))}
                     </tbody>

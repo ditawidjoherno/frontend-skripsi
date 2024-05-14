@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import useUserStore from "@/hooks/use-data-user";
 import useGetTarget from "@/hooks/use-target-tahunan-staff1";
 import UpdateTargetTahunan from "@/hooks/update-target-tahunan";
+import { FaSpinner } from 'react-icons/fa';
+import { IoPersonSharp } from "react-icons/io5";
 
 const TableKpiMonitoring = () => {
   const { loading, error, data, getUserData } = useGetTarget();
@@ -20,9 +22,12 @@ const TableKpiMonitoring = () => {
 
   useEffect(() => {
     if (data && data.target_kpi && Array.isArray(data.target_kpi)) {
+      const capitalizeFirstLetter = (string) => {
+        return string.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+      };
       const tableRows = data.target_kpi.map((kpi, index) => ({
         No: index + 1,
-        KPI: kpi.nama_kpi,
+        KPI: capitalizeFirstLetter(kpi.nama_kpi),
         TargetJan: kpi.target.januari || '-',
         TargetFeb: kpi.target.februari || '-',
         TargetMar: kpi.target.maret || '-',
@@ -46,23 +51,31 @@ const TableKpiMonitoring = () => {
   console.log(data)
 
   if (loading) {
-    return <div>Loading</div>;
-  }
+    return (
+        <div className="fixed inset-0 flex items-center justify-center">
+            <FaSpinner className="animate-spin mr-2" /> Loading
+        </div>
+    );
+}
 
   if (error) {
-    return <div>Error: {error.message}</div>;
+    return;
   }
 
   return (
     <div>
+      <div className="flex items-center gap-4">
+      <IoPersonSharp className="sm:w-10 w-7 sm:h-10 h-7" />
       <div>
         {data && (
           <>
-            <h2 className='font-normal text-[20px]'>Nama: {data?.nama_user}</h2>
-            <h2 className='font-normal text-[20px]'>NIP: {data?.nip_user}</h2>
+            <h2 className='font-normal sm:text-[20px] text-[16px]'>Nama: {data?.nama_user}</h2>
+            <h2 className='font-normal sm:text-[20px] text-[16px]'>NIP: {data?.nip_user}</h2>
           </>
         )}
       </div>
+      </div>
+      <hr className="border-t-2 border-black my-3 mx-0" />
     <div className="overflow-x-auto">
       <table className="table-auto mr-9 mt-5 mb-5">
         <thead>

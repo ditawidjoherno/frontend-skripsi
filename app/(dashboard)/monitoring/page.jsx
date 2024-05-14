@@ -8,7 +8,7 @@ import { useEffect, useState } from 'react';
 import { IoIosArrowDropleftCircle } from "react-icons/io";
 import useAktivitasHarian from "@/hooks/use-aktivitas-harian";
 import useAktivitasBulanan from '@/hooks/use-aktivitas-bulanan';
-import useStaff from '@/hooks/use-staff-nip';
+import useStaff from '@/hooks/use-staff';
 import { useParams, useRouter } from 'next/navigation';
 import useAllBulanan from '@/hooks/use-all-bulanan';
 import useTotalMingguan from '@/hooks/use-monitoring-mingguan';
@@ -18,7 +18,7 @@ import { FaSpinner } from 'react-icons/fa';
 const page = () => {
 
   const [jumlahHarianData, setJumlahHarianData] = useState(0);
-  const {loading, data: HarianData, getUserData: getHarianData } = useAktivitasHarian();
+  const { loading, data: HarianData, getUserData: getHarianData } = useAktivitasHarian();
   const [jumlahBulananData, setJumlahBulananData] = useState(0);
   const { data: BulananData, getUserData: getBulananData } = useAllBulanan();
   const { data: MingguanData, getTotalMingguan } = useTotalMingguan();
@@ -56,10 +56,10 @@ const page = () => {
       const jumlahMingguIni = currentWeekData ? currentWeekData.jumlah : 0;
       setJumlahMingguanData(jumlahMingguIni);
     };
-  
+
     getJumlahMingguIni();
   }, [MingguanData]);
-  
+
 
 
   const handleHarianClick = () => {
@@ -80,15 +80,15 @@ const page = () => {
 
   if (loading) {
     return (
-        <div className="fixed inset-0 flex items-center justify-center">
-            <FaSpinner className="animate-spin mr-2" /> Loading
-        </div>
+      <div className="fixed inset-0 flex items-center justify-center">
+        <FaSpinner className="animate-spin mr-2" /> Loading
+      </div>
     );
-};
+  };
 
-const handleGoBack = () => {
-  router.back();
-};
+  const handleGoBack = () => {
+    router.back();
+  };
 
   return (
     <div className={`bg-[#EAEAEA] h-auto flex flex-col items-center sm:pt-[75px] pt-[60px] sm:pr-4 pr-3 sm:ml-20 ml-10`}>
@@ -97,13 +97,13 @@ const handleGoBack = () => {
           Monitoring
         </h2>
         <div>
-        <IoIosArrowDropleftCircle
-                        className="sm:h-10 sm:w-10 h-5 w-5 sm:ml-3 ml-0 transition-colors duration-300 hover:text-gray-400 focus:text-gray-400 cursor-pointer"
-                        onClick={handleGoBack}
-                    />
-                </div> 
+          <IoIosArrowDropleftCircle
+            className="sm:h-10 sm:w-10 h-5 w-5 sm:ml-3 ml-0 transition-colors duration-300 hover:text-gray-400 focus:text-gray-400 cursor-pointer"
+            onClick={handleGoBack}
+          />
+        </div>
       </div>
-      <div className="flex md:flex-row flex-col w-full px-6 gap-5">
+      <div className="flex md:flex-row flex-col w-full sm:px-6 px-3 gap-5">
         <Box
           bgColor={"bg-[#059BC7]"}
           icon={<IoPodiumSharp className="text-[#FFCD27] ml-9 mt-7" />}

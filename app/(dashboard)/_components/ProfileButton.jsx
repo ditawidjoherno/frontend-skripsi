@@ -12,13 +12,13 @@ const ProfileButton = () => {
     getUserData();
   }, []);
 
-  if (loading) {
-    return (
-        <div className="flex items-center justify-center">
-            <FaSpinner className="animate-spin mr-2" /> Loading
-        </div>
-    );
-}
+//   if (loading) {
+//     return (
+//         <div className="flex items-center justify-center">
+//             <FaSpinner className="animate-spin mr-2" /> Loading
+//         </div>
+//     );
+// }
 
   // if (error) {
   //   return <div>Error: {error}</div>;
@@ -27,11 +27,11 @@ const ProfileButton = () => {
   if (data) {
     return (
       <Link href="/profil">
-        <div className="cursor-pointer px-2 gap-[5px] sm:bg-[#EAEAEA] sm:hover:bg-gray-300 bg-transparent w-auto h-auto sm:py-1 py-[2px] mt-[2px] flex rounded-lg">
+        <div className="cursor-pointer sm:px-2 px-0 sm:gap-[5px] sm:bg-[#EAEAEA] sm:hover:bg-gray-300 bg-transparent w-auto h-auto sm:py-1 py-[2px] mt-1 sm:mt-[2px] flex rounded-lg">
           <img
             src={data.foto_profil || '/img/profil.png'}
             alt="Profil staff"
-            className="w-[35px] h-[35px] rounded-sm"
+            className="sm:w-[35px] w-[25px] h-[25px] sm:h-[35px] rounded-sm"
           />
           <div className="sm:block hidden">
             <p className="font-medium text-[13px]">

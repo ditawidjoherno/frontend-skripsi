@@ -14,7 +14,7 @@ const useStaff = (nip) => {
     const { user, setUser, clearUser } = useUserStore();
 
     const bearerToken = `Bearer ${token}`
-    const getUserData = async () => {
+    const getStaff = async () => {
         setLoading(true)
         setError(null)
         setData(null)
@@ -41,7 +41,7 @@ const useStaff = (nip) => {
         }
     }
 
-    return { loading, error, data, getUserData }
+    return { loading, error, data, getStaff }
 }
 
 export default useStaff
