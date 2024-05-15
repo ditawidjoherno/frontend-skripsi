@@ -90,6 +90,14 @@ const page = () => {
     router.back();
   };
 
+  const capitalizeFirstLetter = (string) => {
+    if (string && typeof string === 'string' && string.length > 0) {
+        return string.charAt(0).toUpperCase() + string.slice(1);
+    } else {
+        return string;
+    }
+};
+
   return (
     <div className={`bg-[#EAEAEA] h-auto flex flex-col items-center sm:pt-[75px] pt-[60px] sm:pr-4 pr-3 sm:ml-20 ml-10`}>
       <div className="flex items-center w-full">
@@ -143,7 +151,7 @@ const page = () => {
                   key={index}
                   bgColor={"bg-[#ffffff]"}
                   image={item.foto_profil || '/img/profil.png'}
-                  nama={item.nama}
+                  nama={capitalizeFirstLetter(item.nama)}
                   nip={item.nip}
                   onClick={() => router.push(`/monitoring-sales/${item.nip}`)}
                   className={"hover:bg-[#dcdcdc] transition duration-300"}
@@ -156,7 +164,7 @@ const page = () => {
                   key={index}
                   bgColor={"bg-[#ffffff]"}
                   image={item.foto_profil || '/img/profil.png'}
-                  nama={item.nama}
+                  nama={capitalizeFirstLetter(item.nama)}
                   nip={item.nip}
                   onClick={() => router.push(`/monitoring-sales/${item.nip}`)}
                   className={"hover:bg-[#dcdcdc] transition duration-300"}

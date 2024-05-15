@@ -28,7 +28,6 @@ const Page = () => {
     const [error, setError] = useState(null);
 
 
-
     const { updateData } = AddStaff();
 
     const handleSubmit = async () => {
@@ -54,6 +53,7 @@ const Page = () => {
             const response = await updateData(body);
             console.log(response)
             setSuccess(true);
+            window.location.reload();
         } catch (error) {
             setError(error.message || "Terjadi kesalahan saat mengirim data.");
         } finally {
