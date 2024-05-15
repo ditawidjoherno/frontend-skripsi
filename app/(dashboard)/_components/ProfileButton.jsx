@@ -24,6 +24,14 @@ const ProfileButton = () => {
   //   return <div>Error: {error}</div>;
   // }
 
+  const capitalizeFirstLetter = (string) => {
+    if (string && typeof string === 'string' && string.length > 0) {
+        return string.charAt(0).toUpperCase() + string.slice(1);
+    } else {
+        return string;
+    }
+};
+
   if (data) {
     return (
       <Link href="/profil">
@@ -35,7 +43,7 @@ const ProfileButton = () => {
           />
           <div className="sm:block hidden">
             <p className="font-medium text-[13px]">
-              <span className="font-medium">Nama: </span>{data?.nama}</p>
+              <span className="font-medium">Nama: </span>{capitalizeFirstLetter(data?.nama)}</p>
             <p className="font-medium text-[13px]">
               <span className="font-medium">NIP: </span>{data?.nip}</p>
           </div>

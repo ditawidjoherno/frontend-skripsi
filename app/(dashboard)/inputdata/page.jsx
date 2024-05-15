@@ -131,7 +131,7 @@ const Page = () => {
                 console.log(response)
             }
             setSuccess(true);
-            window.location.reload();
+            // window.location.reload();
         } catch (error) {
             setError(error.message || "Terjadi kesalahan saat mengirim data.");
         } finally {

@@ -40,6 +40,9 @@ const Page = () => {
         { value: 'khonghucu', label: 'Khonghucu' }
     ];
 
+    const capitalizeWords = (str) => {
+        return str.replace(/\b\w/g, (char) => char.toUpperCase());
+      };
 
 
     const handleStatusNasabah = (selectedOption) => {
@@ -137,37 +140,44 @@ const Page = () => {
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         let newValue = value;
-    
+
         if (name === "nomor_telepon") {
             newValue = value.replace(/\D/g, '');
         }
-    
+
         if (name === "estimasi_penghasilan_bulanan") {
             newValue = newValue.replace(/[^\d.]/g, '');
-    
+
             newValue = newValue.replace(/\./g, '');
-    
+
             newValue = newValue.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
-    
+
             if (!newValue.startsWith("Rp")) {
                 newValue = "Rp" + newValue;
             }
         }
-    
+
+        if (name === "nama") {
+            const capitalizeWords = (str) => {
+                return str.replace(/\b\w/g, (char) => char.toUpperCase());
+            };
+            newValue = capitalizeWords(newValue);
+        }
+
         setNasabahData({ ...nasabahData, [name]: newValue });
     };
-    
-    
+
+
 
     const handleInputJumlahAnakChange = (e) => {
         const { name, value } = e.target;
-    
+
         setNasabahData(prevData => {
             // Konversi nilai jumlah_anak menjadi tipe data number
             const numValue = parseInt(value, 10);
-    
+
             const newData = { ...prevData, [name]: numValue };
-    
+
             if (name === 'jumlah_anak') {
                 const numChildren = numValue || 0; // Jika value adalah NaN, atur ke 0
                 if (numChildren > prevData.data_anak.length) {
@@ -189,39 +199,39 @@ const Page = () => {
                     newData.data_anak = prevData.data_anak.slice(0, numChildren);
                 }
             }
-    
+
             return newData;
         });
     };
-    
-    
+
+
 
     const handleChildInputChange = (index, e) => {
         const { name, value } = e.target;
-    
+
         if (name === "nomor_telepon") {
             const newValue = value.replace(/\D/g, '');
-    
+
             const newDataAnak = [...nasabahData.data_anak];
             newDataAnak[index][name] = newValue;
             setNasabahData({ ...nasabahData, data_anak: newDataAnak });
         } else if (name === "estimasi_penghasilan_bulanan") {
             let newValue = value;
-    
+
             // Remove non-numeric characters except the decimal separator
             newValue = newValue.replace(/[^\d.]/g, '');
-    
+
             // Remove existing dots
             newValue = newValue.replace(/\./g, '');
-    
+
             // Add dots every three digits from the right
             newValue = newValue.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
-    
+
             // Add "Rp" in front if it's missing
             if (!newValue.startsWith("Rp")) {
                 newValue = "Rp" + newValue;
             }
-    
+
             const newDataAnak = [...nasabahData.data_anak];
             newDataAnak[index][name] = newValue;
             setNasabahData({ ...nasabahData, data_anak: newDataAnak });
@@ -231,30 +241,30 @@ const Page = () => {
             setNasabahData({ ...nasabahData, data_anak: newDataAnak });
         }
     };
-    
-    
-    
+
+
+
 
     const handlePasanganInputChange = (e) => {
         const { name, value } = e.target;
         let newValue = value;
-    
+
         if (name === "nomor_telepon") {
             newValue = value.replace(/\D/g, '');
         }
 
         if (name === "estimasi_penghasilan_bulanan") {
             newValue = newValue.replace(/[^\d.]/g, '');
-    
+
             newValue = newValue.replace(/\./g, '');
-    
+
             newValue = newValue.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
-    
+
             if (!newValue.startsWith("Rp")) {
                 newValue = "Rp" + newValue;
             }
         }
-    
+
         setNasabahData({
             ...nasabahData,
             data_pasangan: {
@@ -263,7 +273,7 @@ const Page = () => {
             },
         });
     };
-    
+
 
     const handleAddChild = () => {
         setNasabahData({
@@ -292,30 +302,30 @@ const Page = () => {
         setNasabahData({ ...nasabahData, data_anak: newDataAnak });
     };
 
-const handleSubmit = async () => {
-    let newData = { ...nasabahData };
+    const handleSubmit = async () => {
+        let newData = { ...nasabahData };
 
 
-    if (!nasabahData.estimasi_penghasilan_bulanan.startsWith("Rp")) {
-        newData = {
-            ...nasabahData,
-            estimasi_penghasilan_bulanan: "Rp" + nasabahData.estimasi_penghasilan_bulanan
-        };
-    }
+        if (!nasabahData.estimasi_penghasilan_bulanan.startsWith("Rp")) {
+            newData = {
+                ...nasabahData,
+                estimasi_penghasilan_bulanan: "Rp" + nasabahData.estimasi_penghasilan_bulanan
+            };
+        }
 
-    if (nasabahData.status_pernikahan !== "menikah") {
-        newData = {
-            ...newData,
-            data_pasangan: {}
-        };
-    }
+        if (nasabahData.status_pernikahan !== "menikah") {
+            newData = {
+                ...newData,
+                data_pasangan: {}
+            };
+        }
 
-    await addNasabah(newData);
-};
+        await addNasabah(newData);
+    };
 
-const handleGoBack = () => {
-    router.back();
-};
+    const handleGoBack = () => {
+        router.back();
+    };
 
     return (
         <div className={`bg-[#EAEAEA] h-full flex flex-col items-center sm:pt-[75px] pt-[60px] sm:pr-4 pr-3 sm:ml-20 ml-10`}>
@@ -324,9 +334,9 @@ const handleGoBack = () => {
                     Input Data Nasabah
                 </h2>
                 <IoIosArrowDropleftCircle
-                        className="sm:h-10 sm:w-10 h-5 w-5 sm:ml-3 ml-0 transition-colors duration-300 hover:text-gray-400 focus:text-gray-400 cursor-pointer"
-                        onClick={handleGoBack}
-                    />
+                    className="sm:h-10 sm:w-10 h-5 w-5 sm:ml-3 ml-0 transition-colors duration-300 hover:text-gray-400 focus:text-gray-400 cursor-pointer"
+                    onClick={handleGoBack}
+                />
             </div>
             <div className="bg-white rounded-2xl h-auto mt-2 sm:ml-5 ml-3 w-full sm:pt-5 pt-6">
                 <div className='sm:flex '>
