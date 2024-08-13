@@ -91,12 +91,15 @@ const page = () => {
   };
 
   const capitalizeFirstLetter = (string) => {
-    if (string && typeof string === 'string' && string.length > 0) {
-        return string.charAt(0).toUpperCase() + string.slice(1);
+    if (string && typeof string === 'string') {
+        return string.split(' ')
+                     .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+                     .join(' ');
     } else {
         return string;
     }
 };
+
 
   return (
     <div className={`bg-[#EAEAEA] h-auto flex flex-col items-center sm:pt-[75px] pt-[60px] sm:pr-4 pr-3 sm:ml-20 ml-10`}>

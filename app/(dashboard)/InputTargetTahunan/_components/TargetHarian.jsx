@@ -85,7 +85,7 @@ const TargetHarian = () => {
                         onChange={(e) => setInputTargetHarian(e.target.value)}
                     />
                     <button
-                        className="bg-blue-500 text-white px-4 py-2 rounded-r-md"
+                        className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-r-md"
                         onClick={handleSubmitTarget}
                     >
                         Tambah
@@ -110,7 +110,7 @@ const TargetHarian = () => {
             </div>
             <div className='justify-end mt-5 flex sm:mr-3 mr-0'>
                 <button
-                    className="bg-blue-500 text-white px-4 py-2 mb-10 rounded-md sm:mr-2 mr-0"
+                    className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 mb-10 rounded-md sm:mr-2 mr-0"
                     onClick={handleSubmitHarian}
                 >
                     Simpan Target Harian

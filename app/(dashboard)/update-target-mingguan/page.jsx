@@ -105,7 +105,7 @@ const TargetMingguan = () => {
                                 onChange={(e) => setInputTargetMingguan(e.target.value)}
                             />
                             <button
-                                className="bg-blue-500 text-white px-4 sm:py-2 py-0 sm:h-[45px] h-[30px] rounded-r-md sm:text-[17px] text-[12px]"
+                                className="bg-blue-500 hover:bg-blue-600 text-white px-4 sm:py-2 py-0 sm:h-[45px] h-[30px] rounded-r-md sm:text-[17px] text-[12px]"
                                 onClick={handleSubmitTarget}
                             >
                                 Tambah
@@ -130,7 +130,7 @@ const TargetMingguan = () => {
                     </div>
                     <div className='justify-end mt-5 flex'>
                         <button
-                            className="bg-blue-500 text-white sm:px-4 px-3 sm:py-2 py-2 mb-10 sm:text-[17px] text-[12px] rounded-md"
+                            className="bg-blue-500 hover:bg-blue-600 text-white sm:px-4 px-3 sm:py-2 py-2 mb-10 sm:text-[17px] text-[12px] rounded-md"
                             onClick={handleSubmitMingguan}
                         >
                             Simpan Target Mingguan

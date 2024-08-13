@@ -230,7 +230,7 @@ const Page = () => {
           )}
           <div className='flex justify-end mt-5 mr-3'>
             <button
-              className="bg-blue-500 text-white px-4 py-2 mb-10 rounded-md mr-2"
+              className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 mb-10 rounded-md mr-2"
               onClick={handleAddData}
             >
               Tambah Data
@@ -270,7 +270,7 @@ const Page = () => {
           </div>
           <div className='justify-end mt-5 flex mr-3'>
             <button
-              className="bg-blue-500 text-white px-4 py-2 mb-10 rounded-md mr-2"
+              className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 mb-10 rounded-md mr-2"
               onClick={handleSubmit}
             >
               Simpan
