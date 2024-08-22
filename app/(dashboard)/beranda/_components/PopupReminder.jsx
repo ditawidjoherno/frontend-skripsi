@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import tambahReminder from "@/hooks/add-reminder";
 
-const PopupReminder = ({ showPopup, handlePopupToggle }) => {
+const PopupReminder = ({ showPopup, handlePopupToggle, addReminder }) => {
   const { updateData } = tambahReminder();
   const [task, setTask] = useState("");
   const [deadline, setDeadline] = useState("");
@@ -15,11 +15,11 @@ const PopupReminder = ({ showPopup, handlePopupToggle }) => {
   };
 
   const handleAddReminder = () => {
-    updateData(task, deadline);
+    updateData(task, deadline); // Simpan ke database jika diperlukan
+    addReminder(task, deadline); // Tambahkan task baru ke state di TodoList
     setTask("");
     setDeadline("");
-    handlePopupToggle();
-    window.location.reload()
+    handlePopupToggle(); // Tutup popup setelah menambahkan task
   };
 
   return (
@@ -52,8 +52,18 @@ const PopupReminder = ({ showPopup, handlePopupToggle }) => {
               </div>
             </div>
             <div className="flex justify-end p-4">
-              <button onClick={handlePopupToggle} className="text-blue-500 font-semibold hover:text-blue-700 mr-2">Cancel</button>
-              <button onClick={handleAddReminder} className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600">Add</button>
+              <button
+                onClick={handlePopupToggle}
+                className="text-blue-500 font-semibold hover:text-blue-700 mr-2"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleAddReminder}
+                className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
+              >
+                Add
+              </button>
             </div>
           </div>
         </div>

@@ -63,14 +63,14 @@ const Page = () => {
         Dashboard
       </h2>
       {userData && userData.jabatan === 'staff' && (
-        <p className="sm:text-[25px] text-[24px] bg-[#92b5fb] mr-4 -mb-4 rounded-md font-normal sm:ml-16 ml-8 pl-4 py-2">
-          Selamat Datang!
+        <p className="sm:text-[25px] text-[24px] bg-[#92b5fb] text-white text- mr-4 -mb-4 rounded-md font-normal sm:ml-16 ml-8 pl-4 py-2">
+          Selamat Datang BTN Boost {userData.nama}!
         </p>
       )
       }
 
       <div className="flex md:flex-row flex-col md:justify-evenly justify-start lg:gap-0 gap-5 lg:items-start items-center px-8">
-        {userData && userData.jabatan === 'manager' && (
+        {userData && userData.jabatan !== 'unit_head' && userData.jabatan !== 'staff' && (
           <button onClick={handleSelesaiClick}>
             <Box
               bgColor={"bg-[#6EE014]"}
@@ -83,7 +83,7 @@ const Page = () => {
               />
           </button>
         )}
-        {userData && userData.jabatan === 'manager' && (
+        {userData && userData.jabatan !== 'unit_head' && userData.jabatan !== 'staff' && (
           <button onClick={handleDitundaClick}>
             <Box
               bgColor={"bg-[#F76B03]"}

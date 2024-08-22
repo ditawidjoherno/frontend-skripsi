@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { IoReceipt } from "react-icons/io5";
-import { IoAddOutline } from "react-icons/io5";
-import { FaRegCheckCircle } from "react-icons/fa";
-import { FaRegCalendarAlt } from "react-icons/fa";
-import Popup from "./PopupReminder";
+import { IoReceipt, IoAddOutline } from "react-icons/io5";
+import { FaRegCheckCircle, FaRegCalendarAlt } from "react-icons/fa";
+import PopupReminder from "./PopupReminder";
 import useReminder from "@/hooks/use-reminder";
 import useDeleteReminder from "@/hooks/delete-reminder";
 
@@ -12,17 +10,25 @@ const TodoList = () => {
   const { deleteReminder } = useDeleteReminder();
 
   const [showPopup, setShowPopup] = useState(false);
+  const [tasks, setTasks] = useState([]);
   const [isDone, setIsDone] = useState([]);
 
   useEffect(() => {
     getUserData();
   }, []);
 
+  useEffect(() => {
+    if (data) {
+      setTasks(data);
+    }
+  }, [data]);
+
   const handleSetIsDone = async (id) => {
     try {
       await deleteReminder(id);
+      const updatedTasks = tasks.filter((task) => task.id !== id);
+      setTasks(updatedTasks);
       setIsDone([...isDone, id]);
-      window.location.reload();
     } catch (error) {
       console.error("Failed to delete reminder:", error);
     }
@@ -33,6 +39,16 @@ const TodoList = () => {
   };
 
   const addReminder = (reminderText, reminderDate) => {
+    const newReminder = {
+      id: new Date().getTime(), // Anda bisa mengganti dengan ID unik dari server jika diperlukan
+      reminder: {
+        task: reminderText,
+        deadline: reminderDate,
+        done: false,
+      },
+    };
+
+    setTasks([...tasks, newReminder]);
   };
 
   return (
@@ -43,31 +59,27 @@ const TodoList = () => {
           <p className="sm:text-[26px] text-[16px] font-semibold">Reminder</p>
         </div>
         <div className="sm:mt-2 flex gap-4">
-          <button>
-            <IoAddOutline
-              className="sm:text-4xl text-2xl"
-              onClick={handlePopupToggle}
-            />
+          <button onClick={handlePopupToggle}>
+            <IoAddOutline className="sm:text-4xl text-2xl" />
           </button>
         </div>
       </div>
       <hr className="border-t border-black my-2 mx-6" />
       <div className="bg-white rounded-b-2xl sm:h-[200px] h-[160px] overflow-y-scroll">
-        {data && data.length > 0 ? (
+        {tasks && tasks.length > 0 ? (
           <ul className="space-y-2 px-8 py-3 sm:text-base text-xs">
-            {data.filter(item => !isDone.includes(item.id)).map((item) => (
+            {tasks.filter(item => !isDone.includes(item.id)).map((item) => (
               <li
                 key={item.id}
-                className={`flex items-center pl-4 h-12 transition-all rounded-xl  duration-1000 ${isDone.includes(item.id) ? "bg-green-600" : "bg-red-600"
+                className={`flex items-center pl-4 h-12 transition-all rounded-xl duration-1000 ${isDone.includes(item.id) ? "bg-green-600" : "bg-red-600"
                   } ${isDone.includes(item.id) ? "opacity-0" : "opacity-100"}`}
               >
                 <div className="w-full h-full bg-gray-200 flex px-2 gap-3 rounded-r-xl items-center">
                   <FaRegCheckCircle
-                    htmlFor="checklist"
                     onClick={() => handleSetIsDone(item.id)}
                     className="w-6 h-6"
                   />
-                  <div className="">
+                  <div>
                     <p className={item.reminder.done ? "line-through" : ""}>
                       {item.reminder.task}
                     </p>
@@ -86,7 +98,7 @@ const TodoList = () => {
           <p className="text-center text-gray-500">Belum ada kegiatan</p>
         )}
       </div>
-      <Popup
+      <PopupReminder
         showPopup={showPopup}
         handlePopupToggle={handlePopupToggle}
         addReminder={addReminder}
