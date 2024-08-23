@@ -10,7 +10,7 @@ import axios from 'axios';
 import { getCookie } from '@/lib/cookieFunction';
 import { FaSpinner } from 'react-icons/fa';
 
-const page = () => {
+const Page = () => {
 
   const router = useRouter()
   const { nip } = useParams()
@@ -78,19 +78,19 @@ const page = () => {
 
   if (loading) {
     return (
-        <div className="fixed inset-0 flex items-center justify-center">
-            <FaSpinner className="animate-spin mr-2" /> Loading
-        </div>
+      <div className="fixed inset-0 flex items-center justify-center">
+        <FaSpinner className="animate-spin mr-2" /> Loading
+      </div>
     );
-}
+  }
 
   const capitalizeFirstLetter = (string) => {
     if (string && typeof string === 'string' && string.length > 0) {
-        return string.charAt(0).toUpperCase() + string.slice(1);
+      return string.charAt(0).toUpperCase() + string.slice(1);
     } else {
-        return string;
+      return string;
     }
-};
+  };
 
   return (
     <div className={`bg-[#EAEAEA] h-full flex flex-col items-center sm:pt-[75px] pt-[60px] sm:pr-4 pr-3 sm:ml-20 ml-10`}>
@@ -260,4 +260,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;

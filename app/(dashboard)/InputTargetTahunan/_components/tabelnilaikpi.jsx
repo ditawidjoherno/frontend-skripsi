@@ -279,7 +279,7 @@ const TableKpi = () => {
           </tr>
           <tr>
             <td className="border border-gray-400 px-4 py-2">17</td>
-            <td className="border border-gray-400 px-4 py-2">VOA E'BATARAPOS</td>
+            <td className="border border-gray-400 px-4 py-2">VOA E&apos;BATARAPOS</td>
             <td className="border border-gray-400 px-4 py-2">q</td>
             <td className="border border-gray-400 px-4 py-2">r</td>
             <td className="border border-gray-400 px-4 py-2">y</td>

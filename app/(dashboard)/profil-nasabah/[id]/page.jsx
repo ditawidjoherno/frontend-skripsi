@@ -9,7 +9,7 @@ import { useParams } from 'next/navigation';
 import { useRouter } from 'next/navigation';
 
 
-const page = () => {
+const Page = () => {
     const { id } = useParams();
     const router = useRouter();
     const { loading, error, data, getUserData } = useProfileNasabah(id);
@@ -49,7 +49,7 @@ const page = () => {
                     Profil Nasabah
                 </h2>
                 <div>
-                <IoIosArrowDropleftCircle
+                    <IoIosArrowDropleftCircle
                         className="sm:h-10 sm:w-10 h-5 w-5 sm:ml-3 ml-0 transition-colors duration-300 hover:text-gray-400 focus:text-gray-400 cursor-pointer"
                         onClick={handleGoBack}
                     />
@@ -150,4 +150,4 @@ const page = () => {
     )
 }
 
-export default page;
+export default Page;

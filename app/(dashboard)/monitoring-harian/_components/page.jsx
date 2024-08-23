@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import Search from "./_components/search";
 import Button from "./_components/button";
 
-const page = () => {
+const Page = () => {
 
   const [searchResults, setSearchResults] = useState([]);
 
@@ -257,4 +257,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;

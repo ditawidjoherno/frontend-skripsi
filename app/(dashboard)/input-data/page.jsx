@@ -1,7 +1,7 @@
 "use client";
 import React, { useState } from 'react';
 import { IoIosArrowDropleftCircle } from "react-icons/io";
-import SuccessMessage from '../_components/popup';
+// import SuccessMessage from '../_components/popup';
 
 
 
@@ -15,7 +15,7 @@ const page = () => {
                 <IoIosArrowDropleftCircle className="sm:h-10 sm:w-10 h-5 w-5 sm:ml-3 ml-1" />
             </div>
             <div className="bg-white rounded-2xl h-auto mb-6 sm:ml-5 ml-3 w-full sm:pt-5 pt-6">
-                
+
             </div>
 
         </div>

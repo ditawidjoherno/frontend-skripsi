@@ -10,7 +10,7 @@ import useAktivitasBulanan from "@/hooks/use-aktivitas-bulan";
 import { FaSpinner } from 'react-icons/fa';
 
 
-const page = () => {
+const Page = () => {
   const router = useRouter()
   const [searchTerm, setSearchTerm] = useState('');
   const [tableData, setTableData] = useState([]);
@@ -215,4 +215,4 @@ const page = () => {
   );
 }
 
-export default page;
+export default Page;

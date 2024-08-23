@@ -57,7 +57,7 @@ const Sidebar = ({ isCollapse, setIsCollapse }) => {
             icon: <IoCreate />,
             text: "Input Data",
             route: "/data_aktivitas",
-            visible: jabatan !== 'manager'
+            visible: jabatan !== 'manager' && jabatan !== 'admin'
         },
         {
             icon: <IoIosPeople />,

@@ -15,7 +15,7 @@ import useTotalMingguan from '@/hooks/use-monitoring-mingguan';
 import { FaSpinner } from 'react-icons/fa';
 
 
-const page = () => {
+const Page = () => {
 
   const [jumlahHarianData, setJumlahHarianData] = useState(0);
   const { loading, data: HarianData, getUserData: getHarianData } = useAktivitasHarian();
@@ -92,13 +92,13 @@ const page = () => {
 
   const capitalizeFirstLetter = (string) => {
     if (string && typeof string === 'string') {
-        return string.split(' ')
-                     .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-                     .join(' ');
+      return string.split(' ')
+        .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+        .join(' ');
     } else {
-        return string;
+      return string;
     }
-};
+  };
 
 
   return (
@@ -182,4 +182,4 @@ const page = () => {
   );
 }
 
-export default page;
+export default Page;

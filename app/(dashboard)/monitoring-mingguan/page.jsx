@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import MonitoringMingguan from "./_components/monitoringMingguan";
 
-const page = () => {
+const Page = () => {
     const router = useRouter();
 
     const handleGoBack = () => {
@@ -42,5 +42,5 @@ const page = () => {
     );
 };
 
-export default page;
+export default Page;
 

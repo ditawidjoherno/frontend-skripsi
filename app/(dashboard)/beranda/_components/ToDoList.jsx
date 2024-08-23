@@ -40,7 +40,7 @@ const TodoList = () => {
 
   const addReminder = (reminderText, reminderDate) => {
     const newReminder = {
-      id: new Date().getTime(), // Anda bisa mengganti dengan ID unik dari server jika diperlukan
+      id: new Date().getTime(),
       reminder: {
         task: reminderText,
         deadline: reminderDate,
@@ -60,7 +60,7 @@ const TodoList = () => {
         </div>
         <div className="sm:mt-2 flex gap-4">
           <button onClick={handlePopupToggle}>
-            <IoAddOutline className="sm:text-4xl text-2xl" />
+            <IoAddOutline className="sm:text-4xl text-2xl hover:text-gray-400 cursor-pointer" />
           </button>
         </div>
       </div>
@@ -77,7 +77,7 @@ const TodoList = () => {
                 <div className="w-full h-full bg-gray-200 flex px-2 gap-3 rounded-r-xl items-center">
                   <FaRegCheckCircle
                     onClick={() => handleSetIsDone(item.id)}
-                    className="w-6 h-6"
+                    className="w-6 h-6 hover:text-gray-400 cursor-pointer"
                   />
                   <div>
                     <p className={item.reminder.done ? "line-through" : ""}>

@@ -6,7 +6,7 @@ import Link from "next/link";
 import Search from "./_components/search";
 import Button from "./_components/button";
 
-const page = () => {
+const Page = () => {
 
   const [searchTerm, setSearchTerm] = useState('');
   const [isSearchActive, setIsSearchActive] = useState(false);
@@ -85,7 +85,7 @@ const page = () => {
 
   const handleGoBack = () => {
     router.back();
-};
+  };
 
   return (
     <div className={`bg-[#EAEAEA] h-full pb-4 flex flex-col items-center sm:pt-[75px] pt-[60px] sm:pr-5 pr-3 sm:ml-20 ml-10`}>
@@ -95,11 +95,11 @@ const page = () => {
             Monitoring Harian
           </h2>
           <div>
-                    <IoIosArrowDropleftCircle
-                        className="sm:h-10 sm:w-10 h-5 w-5 sm:ml-3 ml-0 transition-colors duration-300 hover:text-gray-400 focus:text-gray-400"
-                        onClick={handleGoBack}
-                    />
-                </div>
+            <IoIosArrowDropleftCircle
+              className="sm:h-10 sm:w-10 h-5 w-5 sm:ml-3 ml-0 transition-colors duration-300 hover:text-gray-400 focus:text-gray-400"
+              onClick={handleGoBack}
+            />
+          </div>
         </div>
         <div className='flex gap-1 sm:mr-5'>
           <div className="flex sm:mr-5 mr-3">
@@ -166,15 +166,15 @@ const page = () => {
                   <td>{data.closing}</td>
                   <td>{data.KeyPerson}</td>
                   <td>
-                  <div className="w-full justify-center flex flex-col items-center">
-                    <Button
-                      text={"Lihat Dokumentasi"}
-                    />
-                    <Button
-                      text={"Lihat Detail"}
-                    />
-                  </div>
-                </td>
+                    <div className="w-full justify-center flex flex-col items-center">
+                      <Button
+                        text={"Lihat Dokumentasi"}
+                      />
+                      <Button
+                        text={"Lihat Detail"}
+                      />
+                    </div>
+                  </td>
                 </tr>
               ))}
             </tbody>
@@ -186,4 +186,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;

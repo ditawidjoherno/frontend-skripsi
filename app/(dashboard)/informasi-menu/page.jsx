@@ -4,7 +4,7 @@ import Link from "next/link";
 import MenuItem from "./_components/menu";
 import { useRouter } from 'next/navigation';
 
-const page = () => {
+const Page = () => {
     const router = useRouter();
 
     const handleGoBack = () => {
@@ -50,4 +50,4 @@ const page = () => {
     );
 };
 
-export default page;
+export default Page;

@@ -173,13 +173,12 @@ const Page = () => {
         const { name, value } = e.target;
 
         setNasabahData(prevData => {
-            // Konversi nilai jumlah_anak menjadi tipe data number
             const numValue = parseInt(value, 10);
 
             const newData = { ...prevData, [name]: numValue };
 
             if (name === 'jumlah_anak') {
-                const numChildren = numValue || 0; // Jika value adalah NaN, atur ke 0
+                const numChildren = numValue || 0; 
                 if (numChildren > prevData.data_anak.length) {
                     const diff = numChildren - prevData.data_anak.length;
                     const newDataAnak = Array.from({ length: diff }, () => ({
@@ -218,16 +217,12 @@ const Page = () => {
         } else if (name === "estimasi_penghasilan_bulanan") {
             let newValue = value;
 
-            // Remove non-numeric characters except the decimal separator
             newValue = newValue.replace(/[^\d.]/g, '');
 
-            // Remove existing dots
             newValue = newValue.replace(/\./g, '');
 
-            // Add dots every three digits from the right
             newValue = newValue.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
 
-            // Add "Rp" in front if it's missing
             if (!newValue.startsWith("Rp")) {
                 newValue = "Rp" + newValue;
             }
@@ -404,7 +399,7 @@ const Page = () => {
                         <Input text={"Estimasi Penghasilan Bulanan"} placeholder={"Masukkan Estimasi Penghasilan Bulanan"} name="estimasi_penghasilan_bulanan" value={nasabahData.estimasi_penghasilan_bulanan} onChange={handleInputChange} />
                         <Input text={"Key Person"} placeholder={"Masukkan Key Person"} name="key_person" value={nasabahData.key_person} onChange={handleInputChange} />
 
-                        {nasabahData.status_pernikahan === "menikah" || nasabahData.status_pernikahan === "bercerai" ? (
+                        {nasabahData.status_pernikahan === "menikah" ? (
                             <div className='sm:px-10 pt-4 sm:mr-0 mr-1 items-center'>
                                 <label htmlFor="hasChildren" className='text-black sm:text-[20px] text-[20px] font-medium mb-1'>Memiliki Anak?</label>
                                 <br />

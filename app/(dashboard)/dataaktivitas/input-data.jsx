@@ -8,7 +8,7 @@ import useNamaNasabah from '@/hooks/use-nama-nasabah';
 import AddDokumentasi from '@/hooks/add-dokumentasi';
 import Link from "next/link";
 
-const inputdata = () => {
+const InputData = () => {
     const [aktivitas, setAktivitas] = useState('');
     const [namaNasabah, setNamaNasabah] = useState('');
     const [alamat, setAlamat] = useState('');
@@ -45,7 +45,7 @@ const inputdata = () => {
         }
     };
 
-    // Di inputdata Component
+    // Di InputData Component
     const handleSubmit = async () => {
         setLoading(true);
         setError(null);
@@ -109,7 +109,7 @@ const inputdata = () => {
                     Input Data Harian
                 </h2>
                 <Link href="/data_aktivitas">
-                <IoIosArrowDropleftCircle className="sm:h-10 h-6 sm:w-10 w-10 sm:ml-3 ml-1" />
+                    <IoIosArrowDropleftCircle className="sm:h-10 h-6 sm:w-10 w-10 sm:ml-3 ml-1" />
                 </Link>
             </div>
             <div className="bg-white rounded-2xl h-auto mb-6 sm:ml-5 ml-3 w-full sm:pt-5 pt-4">
@@ -243,4 +243,4 @@ const inputdata = () => {
     );
 };
 
-export default inputdata;
+export default InputData;

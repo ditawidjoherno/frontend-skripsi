@@ -15,11 +15,11 @@ const PopupReminder = ({ showPopup, handlePopupToggle, addReminder }) => {
   };
 
   const handleAddReminder = () => {
-    updateData(task, deadline); // Simpan ke database jika diperlukan
-    addReminder(task, deadline); // Tambahkan task baru ke state di TodoList
+    updateData(task, deadline); 
+    addReminder(task, deadline); 
     setTask("");
     setDeadline("");
-    handlePopupToggle(); // Tutup popup setelah menambahkan task
+    handlePopupToggle(); 
   };
 
   return (

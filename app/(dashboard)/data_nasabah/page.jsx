@@ -128,7 +128,7 @@ const Page = () => {
           <div className='flex'>
             <h1 className="font-bold text-white sm:text-3xl text-[16px] sm:pl-5 pl-2 sm:pt-4 pt-4">Jumlah Nasabah: {filteredData.length} </h1>
           </div>
-          {jabatan !== 'manager' && (
+          {jabatan !== 'manager' && jabatan !== 'admin' && (
             <button
               className="bg-blue-500 hover:bg-[#77c9ff] text-white sm:text-[20px] text-[10px] font-semibold sm:px-4 px-3 sm:py-2 py-0 sm:my-3 my-[10px] rounded-md mr-3"
               onClick={() => router.push("/inputdata-nasabah")}

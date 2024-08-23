@@ -1,7 +1,8 @@
 import React from 'react'
 import { useState } from 'react';
+import { IoSearchOutline } from 'react-icons/io5';
 
-const search = () => {
+const Search = () => {
 
     const [searchTerm, setSearchTerm] = useState('');
     const [searchResults, setSearchResults] = useState([]);
@@ -35,4 +36,4 @@ const search = () => {
   )
 }
 
-export default search
+export default Search
