@@ -5,7 +5,6 @@ import React, { useState, useEffect } from 'react';
 import Link from "next/link";
 import Search from "../_components/search";
 import useAktivitasBulanan from "@/hooks/use-aktivitas-bulanan";
-import useDataPerbulan from "@/hooks/use-data-perbulan";
 import { useParams } from "next/navigation";
 
 const page = () => {

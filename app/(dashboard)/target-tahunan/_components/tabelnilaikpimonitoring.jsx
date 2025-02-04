@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import Dropdown from './dropdown';
 import useStaff from "@/hooks/use-staff";
 import useTargetTahunanBM from "@/hooks/use-target-tahunan-bm";
-import TabelKpiBulan from './TabelKpiBulan';
+import TabelKpiBulan from "./tabelkpibulan";
 
 const TableKpiMonitoring = () => {
   const [tableData, setTableData] = useState([]);

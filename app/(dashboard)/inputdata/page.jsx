@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { IoIosArrowDropleftCircle } from "react-icons/io";
 import Input from './_components/Input';
-import Dropdown from './_components/Dropdown';
+import Dropdown from './_components/dropdown';
 import AddAktivitas from '@/hooks/add-aktivitas';
 import useNamaNasabah from '@/hooks/use-nama-nasabah';
 import useNamaKpi from '@/hooks/use-nama-kpi';
