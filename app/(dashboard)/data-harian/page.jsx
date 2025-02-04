@@ -15,7 +15,7 @@ import { FaFileExcel } from "react-icons/fa";
 import { IoMdPrint } from "react-icons/io";
 
 
-const page = () => {
+const Page = () => {
   const router = useRouter()
 
   const [searchTerm, setSearchTerm] = useState('');
@@ -301,4 +301,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;

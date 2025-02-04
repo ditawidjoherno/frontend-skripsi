@@ -7,7 +7,7 @@ import Search from "../_components/search";
 import useAktivitasBulanan from "@/hooks/use-aktivitas-bulanan";
 import { useParams } from "next/navigation";
 
-const page = () => {
+const Page = () => {
 
   const [selectedMonth, setSelectedMonth] = useState("");
 
@@ -131,4 +131,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;

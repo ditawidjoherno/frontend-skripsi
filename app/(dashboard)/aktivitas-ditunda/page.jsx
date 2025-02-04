@@ -10,7 +10,7 @@ import { IoIosArrowDropleft, IoIosArrowDropright, IoIosArrowDropleftCircle } fro
 import { FaSpinner } from 'react-icons/fa';
 import { useRouter } from 'next/navigation';
 
-const page = () => {
+const Page = () => {
     const router = useRouter();
     const [searchTerm, setSearchTerm] = useState('');
     const [tableData, setTableData] = useState([]);
@@ -208,4 +208,4 @@ const page = () => {
     )
 }
 
-export default page
+export default Page

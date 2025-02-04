@@ -12,7 +12,7 @@ import { FaSpinner } from 'react-icons/fa';
 import axios from 'axios';
 import { getCookie } from '@/lib/cookieFunction';
 
-const page = () => {
+const Page = () => {
     const { nip } = useParams();
     const router = useRouter()
     const [searchTerm, setSearchTerm] = useState('');
@@ -227,4 +227,4 @@ const page = () => {
     )
 }
 
-export default page
+export default Page
