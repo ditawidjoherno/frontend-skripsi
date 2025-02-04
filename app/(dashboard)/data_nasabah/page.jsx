@@ -5,9 +5,10 @@ import { IoIosArrowDropleft, IoIosArrowDropright, IoIosArrowDropleftCircle } fro
 import { ImProfile } from "react-icons/im";
 import { FaEdit } from "react-icons/fa";
 import useDataNasabah from "@/hooks/use-data-nasabah";
+import useDeleteNasabah from '@/hooks/delete-nasabah';
 import { useParams, useRouter } from 'next/navigation';
 import useUser from "@/hooks/use-user";
-import Link from "next/link";
+import { MdDeleteForever } from "react-icons/md";
 import { FaSpinner } from 'react-icons/fa';
 
 const Page = () => {
@@ -17,7 +18,10 @@ const Page = () => {
   const [tableData, setTableData] = useState([]);
   const { loading: dataLoading, error: dataError, data, getUserData } = useDataNasabah();
   const { loading, error, data: userData, getUserData: getDataUser } = useUser();
+  const { loading: deleteLoading, data: deleteData, error: deleteError, deleteNasabah } = useDeleteNasabah();
   const [searchTerm, setSearchTerm] = useState('');
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [activityToDelete, setActivityToDelete] = useState(null);
 
   useEffect(() => {
     getDataUser();
@@ -73,6 +77,24 @@ const Page = () => {
     startPage = Math.max(1, endPage - maxPages + 1);
   }
 
+  const handleDeleteClick = (id) => {
+    setActivityToDelete(id);
+    setShowDeleteConfirm(true);
+  };
+
+  const confirmDelete = async () => {
+    if (activityToDelete) {
+      await deleteNasabah(activityToDelete);
+      setTableData(tableData.filter(item => item.id !== activityToDelete));
+      setShowDeleteConfirm(false);
+    }
+  };
+
+  const cancelDelete = () => {
+    setShowDeleteConfirm(false);
+    setActivityToDelete(null);
+  };
+
   const capitalizeFirstLetter = (string) => {
     if (string && typeof string === 'string' && string.length > 0) {
       return string.charAt(0).toUpperCase() + string.slice(1);
@@ -81,7 +103,8 @@ const Page = () => {
     }
   };
 
-  if (dataLoading) {
+
+  if (dataLoading || deleteLoading) {
     return (
       <div className="fixed inset-0 flex items-center justify-center">
         <FaSpinner className="animate-spin mr-2" /> Loading
@@ -128,7 +151,7 @@ const Page = () => {
           <div className='flex'>
             <h1 className="font-bold text-white sm:text-3xl text-[16px] sm:pl-5 pl-2 sm:pt-4 pt-4">Jumlah Nasabah: {filteredData.length} </h1>
           </div>
-          {jabatan !== 'manager' && jabatan !== 'admin' && (
+          {jabatan == 'staff' && (
             <button
               className="bg-blue-500 hover:bg-[#77c9ff] text-white sm:text-[20px] text-[10px] font-semibold sm:px-4 px-3 sm:py-2 py-0 sm:my-3 my-[10px] rounded-md mr-3"
               onClick={() => router.push("/inputdata-nasabah")}
@@ -159,12 +182,34 @@ const Page = () => {
                     <td style={{ paddingRight: '10px', maxWidth: '150px', overflow: 'hidden', textOverflow: 'ellipsis' }}>{capitalizeFirstLetter(item.alamat)}</td>
                     <td style={{ paddingLeft: '20px', maxWidth: '150px', overflow: 'hidden', textOverflow: 'ellipsis' }}>{capitalizeFirstLetter(item.pekerjaan)}</td>
                     <td>
-                      <div className="w-full justify-center gap-3 flex items-center">
-                        <div className="bg-[#ffe946] hover:bg-[#f9ee98] py-2 px-2 my-1 rounded-md items-center flex cursor-pointer" onClick={() => router.push(`/profil-nasabah/${item.id}`)}>
+                      <div className="w-full justify-center gap-3 flex items-center py-1">
+                        <div
+                          className="bg-[#ffe946] hover:bg-[#f9ee98] py-2 px-2 rounded-md items-center flex cursor-pointer"
+                          onClick={() => router.push(`/profil-nasabah/${item.id}`)}
+                        >
                           <ImProfile className="sm:h-5 sm:w-5 h-3 w-3" />
                         </div>
+
+                        {userData && (userData.jabatan === 'staff' || userData.jabatan === 'admin') && (
+                          <>
+                            <div
+                              className="bg-[#ffe946] hover:bg-[#f9ee98] py-2 px-2 rounded-md items-center flex cursor-pointer"
+                              onClick={() => router.push(`/update-data-nasabah/${item.id}`)}
+                            >
+                              <FaEdit className="sm:h-5 sm:w-5 h-3 w-3" />
+                            </div>
+
+                            <div
+                              className="cursor-pointer bg-[#ff4646] hover:bg-[#f99898] py-2 px-2 rounded-md items-center flex"
+                              onClick={() => handleDeleteClick(item.id)}
+                            >
+                              <MdDeleteForever className="sm:h-5 sm:w-5 h-3 w-3" />
+                            </div>
+                          </>
+                        )}
                       </div>
                     </td>
+
                   </tr>
                 ))
               ) : (
@@ -198,6 +243,27 @@ const Page = () => {
           </div>
         </div>
       </div>
+      {showDeleteConfirm && (
+        <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white p-6 rounded-lg shadow-lg w-1/3">
+            <h3 className="text-lg font-bold mb-4">Apakah Anda Yakin Untuk Menghapus Data Nasabah ini?</h3>
+            <div className="flex justify-end gap-3">
+              <button
+                onClick={cancelDelete}
+                className="px-4 py-2 bg-gray-300 text-black rounded-md hover:bg-gray-400"
+              >
+                Batal
+              </button>
+              <button
+                onClick={confirmDelete}
+                className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700"
+              >
+                Ya
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

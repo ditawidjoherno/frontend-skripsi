@@ -20,7 +20,7 @@ const useUser = () => {
         setData(null)
 
         try {
-            const response = await axios.get("https://back-btn-boost.vercel.app/user", {
+            const response = await axios.get("http://localhost:8000/api/user", {
                 headers: {
                     Authorization: bearerToken
                 }

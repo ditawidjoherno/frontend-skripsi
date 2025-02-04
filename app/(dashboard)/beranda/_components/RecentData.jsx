@@ -34,14 +34,15 @@ const RecentData = () => {
   }, []);
 
   const capitalizeFirstLetter = (string) => {
+    if (!string) return "";
     return string.charAt(0).toUpperCase() + string.slice(1);
   };
+  
 
-  // Limit data to maximum 5 entries
-  const displayedData = data ? data.slice(0, 5) : [];
+  const displayedData = data ? data.slice(0, 8) : [];
 
   return (
-    <div className="bg-white md:flex-row flex-col sm:ml-11 sm:mx-0 mx-5 sm:mt-10 mt-4 rounded-2xl sm:h-[350px] h-[220px] sm:w-auto w-auto ">
+    <div className="bg-white md:flex-row flex-col sm:ml-11 sm:mx-0 mx-5 sm:mt-7 mt-4 rounded-lg sm:h-[435px] h-[220px] sm:w-auto w-auto ">
       <div className="flex sm:mx-9 items-center mx-5 pt-4 justify-between ">
         <Link href="/recentdata">
           <div className="flex gap-2 items-center transition-colors duration-300 hover:text-gray-400 focus:text-gray-400 cursor-pointer">
@@ -53,7 +54,7 @@ const RecentData = () => {
         </Link>
       </div>
       <hr className="border-t border-black my-3 mx-6 " />
-      <div className="bg-white rounded-b-2xl sm:h-[250px] h-[150px] overflow-x-scroll">
+      <div className="bg-white rounded-b-2xl sm:h-[360px] h-[150px] overflow-x-scroll">
         <table className="table-auto border-collapse w-full text-center" style={{ whiteSpace: 'nowrap', overflow: 'hidden' }}>
           <thead>
             <tr>
@@ -74,10 +75,10 @@ const RecentData = () => {
                   </td>
                   <td>{item.tanggal_aktivitas}</td>
                   <td>
-                    <Link href={`/profil_nasabah`}>
-                      <div className="text-blue-500 hover:text-blue-700 cursor-pointer">{item.nama_nasabah}</div>
-                    </Link>
-                  </td>
+                      <Link href={`/profil-nasabah/${item.id_nasabah}`}>
+                        <div className="text-blue-500 hover:text-blue-700 cursor-pointer">{capitalizeFirstLetter(item.nama_nasabah)}</div>
+                      </Link>
+                    </td>
                   <td>{capitalizeFirstLetter(item.nama_aktivitas)}</td>
                 </tr>
               ))

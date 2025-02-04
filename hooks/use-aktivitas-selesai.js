@@ -20,7 +20,7 @@ const useAktivitasSelesai = () => {
         setData(null)
 
         try {
-            const response = await axios.get("https://back-btn-boost.vercel.app/aktivitas-selesai", {
+            const response = await axios.get("http://localhost:8000/api/aktivitas-selesai", {
                 headers: {
                     Authorization: bearerToken
                 }

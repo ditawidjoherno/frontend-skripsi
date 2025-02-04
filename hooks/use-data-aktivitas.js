@@ -21,7 +21,7 @@ const useDataAktivitas = (nip) => {
         console.log(nip)
 
         try {
-            const response = await axios.get(`https://back-btn-boost.vercel.app/aktivitas-sales/${nip}`, {
+            const response = await axios.get(`http://localhost:8000/api/aktivitas-staff/${nip}`, {
                 headers: {
                     Authorization: bearerToken
                 }

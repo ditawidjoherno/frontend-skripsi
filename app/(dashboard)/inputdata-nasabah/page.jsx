@@ -16,9 +16,16 @@ const Page = () => {
     const [numberOfChildren, setNumberOfChildren] = useState(0);
     const [showSpouseData, setShowSpouseData] = useState(false);
     const [childrenData, setChildrenData] = useState([]);
-    const { loading, error, data, addNasabah } = useAddNasabah();
+    const { data, addNasabah } = useAddNasabah();
+    const [modalVisible, setModalVisible] = useState(false);
+    const [modalMessage, setModalMessage] = useState("");
+    const [modalType, setModalType] = useState("");
+    const [error, setError] = useState(null);
+    const [success, setSuccess] = useState(false);
+    const [loading, setLoading] = useState(false);
 
-    const [selectedOptions1, setSelectedOptions1] = useState('option1'); // inisialisasi selectedOptions1
+
+    const [selectedOptions1, setSelectedOptions1] = useState('option1'); 
 
     const statusnasabah = [
         { value: 'option1', label: 'Pilih Status Nasabah' },
@@ -32,17 +39,14 @@ const Page = () => {
     ];
 
     const agama = [
-        { value: 'islam', label: 'Islam' },
-        { value: 'kristen', label: 'Kristen' },
-        { value: 'katolik', label: 'Katolik' },
-        { value: 'hindu', label: 'Hindu' },
-        { value: 'budha', label: 'Budha' },
-        { value: 'khonghucu', label: 'Khonghucu' }
+        { value: "Islam", label: "Islam" },
+        { value: "Kristen", label: "Kristen" },
+        { value: "Katolik", label: "Katolik" },
+        { value: "Hindu", label: "Hindu" },
+        { value: "Buddha", label: "Budha" },
+        { value: "Khonghucu", label: "Khonghucu" },
     ];
 
-    const capitalizeWords = (str) => {
-        return str.replace(/\b\w/g, (char) => char.toUpperCase());
-      };
 
 
     const handleStatusNasabah = (selectedOption) => {
@@ -83,17 +87,6 @@ const Page = () => {
         }
     };
 
-    const handleNumberOfChildrenChange = (event) => {
-        const count = parseInt(event.target.value);
-        setNumberOfChildren(count);
-        const children = [];
-        for (let i = 0; i < count; i++) {
-            children.push({
-                name: "",
-            });
-        }
-        setChildrenData(children);
-    };
 
     const handleHasChildrenChange = (event) => {
         setNasabahData({
@@ -178,7 +171,7 @@ const Page = () => {
             const newData = { ...prevData, [name]: numValue };
 
             if (name === 'jumlah_anak') {
-                const numChildren = numValue || 0; 
+                const numChildren = numValue || 0;
                 if (numChildren > prevData.data_anak.length) {
                     const diff = numChildren - prevData.data_anak.length;
                     const newDataAnak = Array.from({ length: diff }, () => ({
@@ -270,52 +263,101 @@ const Page = () => {
     };
 
 
-    const handleAddChild = () => {
-        setNasabahData({
-            ...nasabahData,
-            data_anak: [
-                ...nasabahData.data_anak,
-                {
-                    nama: '',
-                    nomor_telepon: '',
-                    alamat: '',
-                    jenis_kelamin: '',
-                    agama: '',
-                    tempat_lahir: '',
-                    tanggal_lahir: '',
-                    pekerjaan: '',
-                    alamat_pekerjaan: '',
-                    estimasi_penghasilan_bulanan: '',
-                }
-            ]
-        })
-    }
-
-    const handleRemoveChild = (index) => {
-        const newDataAnak = [...nasabahData.data_anak];
-        newDataAnak.splice(index, 1);
-        setNasabahData({ ...nasabahData, data_anak: newDataAnak });
-    };
-
     const handleSubmit = async () => {
-        let newData = { ...nasabahData };
-
-
-        if (!nasabahData.estimasi_penghasilan_bulanan.startsWith("Rp")) {
-            newData = {
-                ...nasabahData,
-                estimasi_penghasilan_bulanan: "Rp" + nasabahData.estimasi_penghasilan_bulanan
-            };
+        try {
+          setLoading(true); 
+          setError(null); 
+      
+          const requiredNasabahFields = [
+            "nama",
+            "nomor_telepon",
+            "alamat",
+            "jenis_kelamin",
+            "agama",
+            "tempat_lahir",
+            "tanggal_lahir",
+            "pekerjaan",
+            "alamat_pekerjaan",
+            "estimasi_penghasilan_bulanan",
+            "status_pernikahan"
+          ];
+      
+          const requiredPasanganFields = nasabahData.status_pernikahan === "menikah" 
+            ? [
+                "nama",
+                "nomor_telepon",
+                "alamat",
+                "jenis_kelamin",
+                "agama",
+                "tempat_lahir",
+                "tanggal_lahir",
+              ]
+            : [];  
+      
+          const requiredAnakFields = nasabahData.memiliki_anak
+            ? [
+                "nama",
+                "tempat_lahir",
+                "tanggal_lahir"
+              ]
+            : [];  
+      
+          const emptyNasabahFields = requiredNasabahFields.filter(
+            (field) => !nasabahData[field] || nasabahData[field] === ""
+          );
+      
+          const emptyPasanganFields = nasabahData.data_pasangan
+            ? requiredPasanganFields.filter(
+                (field) => !nasabahData.data_pasangan[field] || nasabahData.data_pasangan[field] === ""
+              )
+            : [];
+      
+          const emptyAnakFields = nasabahData.data_anak?.some((anak) => 
+            requiredAnakFields.some((field) => !anak[field] || anak[field] === "")
+          )
+            ? ["Ada anak yang belum terisi dengan lengkap."]
+            : [];
+      
+          const emptyFields = [
+            ...emptyNasabahFields,
+            ...emptyPasanganFields,
+            ...emptyAnakFields
+          ];
+      
+          if (emptyFields.length > 0) {
+            setModalMessage("Harap mengisi semua data.");
+            setModalType("error");
+            setModalVisible(true);
+            setLoading(false);
+            return;
+          }
+      
+          let newData = { ...nasabahData };
+      
+      
+          await addNasabah(newData);
+      
+          setModalMessage("Berhasil menambahkan nasabah!");
+          setModalType("success");
+          setModalVisible(true);
+        } catch (error) {
+          setError(error.message || "Terjadi kesalahan saat mengirim data.");
+          setModalMessage("Gagal menambahkan nasabah!");
+          setModalType("error");
+          setModalVisible(true);
+        } finally {
+          setLoading(false); 
         }
+      };
+      
+      
+      
 
-        if (nasabahData.status_pernikahan !== "menikah") {
-            newData = {
-                ...newData,
-                data_pasangan: {}
-            };
+    const handleCloseModal = () => {
+        setModalVisible(false);
+        if (modalType === "success") {
+            router.push("/inputdata-nasabah");
         }
-
-        await addNasabah(newData);
     };
 
     const handleGoBack = () => {
@@ -429,7 +471,7 @@ const Page = () => {
                     <div className="bg-white sm:pl-0 pl-5 rounded-2xl h-auto mb-6 mt-2 sm:ml-5 ml-5 w-full sm:pt-5 pt-1 ">
                         <div className='sm:flex sm:ml-0 -ml-[12px] sm:mr-0 -mr-2'>
                             <div className='sm:w-1/2 w-full'>
-                                <Input text={"Nama Nasabah"} placeholder={"Masukkan Nama Nasabah"} name="nama" value={nasabahData.data_pasangan.nama} onChange={handlePasanganInputChange} />
+                                <Input text={"Nama Pasangan Nasabah"} placeholder={"Masukkan Nama Nasabah"} name="nama" value={nasabahData.data_pasangan.nama} onChange={handlePasanganInputChange} />
                                 <Input text={"Alamat"} placeholder={"Masukkan Alamat"} name="alamat" value={nasabahData.data_pasangan.alamat} onChange={handlePasanganInputChange} />
                                 <label htmlFor="maritalStatus" className="flex items-center text-black sm:text-[20px] text-[20px] font-medium sm:mb-1 -mb-3 sm:px-10 sm:pt-3 pt-4">Jenis Kelamin</label>
                                 <div className='sm:px-10 pt-3 sm:mr-0 mr-3'>
@@ -477,7 +519,7 @@ const Page = () => {
                             <div key={index} className="bg-white rounded-2xl h-auto mb-2 mt-2 sm:ml-5 ml-5 w-full sm:pt-5 pt-1">
                                 <div className='sm:flex'>
                                     <div className='sm:w-1/2 w-full sm:ml-0 ml-2'>
-                                        <Input text={"Nama Nasabah"} placeholder={"Masukkan Nama Nasabah"} name="nama" value={child.nama} onChange={(e) => handleChildInputChange(index, e)} />
+                                        <Input text={"Nama Anak Nasabah"} placeholder={"Masukkan Nama Nasabah"} name="nama" value={child.nama} onChange={(e) => handleChildInputChange(index, e)} />
                                         <Input text={"Alamat"} placeholder={"Masukkan Alamat"} name="alamat" value={child.alamat} onChange={(e) => handleChildInputChange(index, e)} />
                                         <label htmlFor="maritalStatus" className="flex items-center text-black sm:text-[20px] text-[20px] font-medium sm:mb-1 -mb-3 sm:px-10 sm:pt-3 pt-4">Jenis Kelamin</label>
                                         <div className='sm:px-10 pt-3 sm:mr-0 mr-3'>
@@ -528,6 +570,22 @@ const Page = () => {
                     disabled={loading}
                 />
             </div>
+            {modalVisible && (
+                <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
+                    <div className="bg-white p-6 rounded-lg shadow-lg w-[90%] sm:w-[400px] text-center">
+                        <h3 className={`text-xl font-semibold ${modalType === "success" ? "text-green-600" : "text-red-600"}`}>
+                            {modalType === "success" ? "Berhasil!" : "Gagal"}
+                        </h3>
+                        <p className="mt-4 text-lg">{modalMessage}</p>
+                        <button
+                            className="mt-6 bg-blue-500 text-white px-4 py-2 rounded"
+                            onClick={handleCloseModal}
+                        >
+                            OK
+                        </button>
+                    </div>
+                </div>
+            )}
         </div>
     )
 }

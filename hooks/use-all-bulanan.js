@@ -19,7 +19,7 @@ const useAllBulanan = () => {
     setData(null);
 
     try {
-      const response = await axios.get(`https://back-btn-boost.vercel.app/aktivitas-bulanan`, {
+      const response = await axios.get(`http://localhost:8000/api/total-aktivitas-bulan-ini`, {
         headers: {
           Authorization: `Bearer ${token}`
         }

@@ -6,38 +6,28 @@ import useUser from "@/hooks/use-user";
 import { useRouter } from 'next/navigation';
 import { ImProfile } from "react-icons/im";
 import { IoSearchOutline } from "react-icons/io5";
+import { MdDeleteForever } from "react-icons/md";
 import useAktivitasBulanan from "@/hooks/use-aktivitas-bulan";
 import { FaSpinner } from 'react-icons/fa';
-
+import useDeleteAktivitas from "@/hooks/delete-aktivitas";
 
 const Page = () => {
-  const router = useRouter()
+  const router = useRouter();
   const [searchTerm, setSearchTerm] = useState('');
   const [tableData, setTableData] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1)
+  const [currentPage, setCurrentPage] = useState(1);
   const [isSearchActive, setIsSearchActive] = useState(false);
   const { loading, data, getUserData } = useAktivitasBulanan();
   const { data: userData, getUserData: userGetData } = useUser();
+  const { loading: deleteLoading, data: deleteData, error: deleteError, deleteAktivitas } = useDeleteAktivitas();
 
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [activityToDelete, setActivityToDelete] = useState(null);
 
   useEffect(() => {
     getUserData();
     userGetData();
   }, []);
-
-
-  const handleSearch = (event) => {
-    const { value } = event.target;
-    setSearchTerm(value);
-    setCurrentPage(1);
-  };
-
-  console.log(data)
-
-  useEffect(() => {
-    const jumlahAktivitas = tableData.length;
-    console.log("Jumlah Nasabah:", jumlahAktivitas);
-  }, [tableData]);
 
   useEffect(() => {
     if (data) {
@@ -45,17 +35,24 @@ const Page = () => {
     }
   }, [data]);
 
-  if (!userData) {
-    return;
-  }
+  const handleSearch = (event) => {
+    const { value } = event.target;
+    setSearchTerm(value);
+    setCurrentPage(1);
+  };
+
+  useEffect(() => {
+    const jumlahAktivitas = tableData.length;
+    console.log("Jumlah Nasabah:", jumlahAktivitas);
+  }, [tableData]);
 
   const filteredData = tableData.filter(item =>
-    item.nama_user.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    item.nama_aktivitas.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    item.nama_nasabah.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    item.prospek.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    item.aktivitas_sales.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    item.keterangan_aktivitas.toLowerCase().includes(searchTerm.toLowerCase())
+    (item.nama_user?.toLowerCase() || "").includes(searchTerm.toLowerCase()) ||
+    (item.aktivitas?.toLowerCase() || "").includes(searchTerm.toLowerCase()) ||
+    (item.nama_nasabah?.toLowerCase() || "").includes(searchTerm.toLowerCase()) ||
+    (item.prospek?.toLowerCase() || "").includes(searchTerm.toLowerCase()) ||
+    (item.aktivitas_sales?.toLowerCase() || "").includes(searchTerm.toLowerCase()) ||
+    (item.keterangan_aktivitas?.toLowerCase() || "").includes(searchTerm.toLowerCase())
   );
 
   const itemsPerPage = 10;
@@ -84,13 +81,36 @@ const Page = () => {
     startPage = Math.max(1, endPage - maxPages + 1);
   }
 
-  if (loading) {
+  const handleDeleteClick = (id) => {
+    setActivityToDelete(id);
+    setShowDeleteConfirm(true);
+  };
+
+  const confirmDelete = async () => {
+    if (activityToDelete) {
+      await deleteAktivitas(activityToDelete);
+      setTableData(tableData.filter(item => item.id !== activityToDelete));
+      setShowDeleteConfirm(false);
+    }
+  };
+
+  const cancelDelete = () => {
+    setShowDeleteConfirm(false);
+    setActivityToDelete(null);
+  };
+
+  if (!userData) {
+    return;
+  }
+
+  if (loading || deleteLoading) {
     return (
       <div className="fixed inset-0 flex items-center justify-center">
         <FaSpinner className="animate-spin mr-2" /> Loading
       </div>
     );
   }
+
   const capitalizeFirstLetter = (string) => {
     return string.charAt(0).toUpperCase() + string.slice(1);
   };
@@ -100,11 +120,10 @@ const Page = () => {
   };
 
   return (
-    <div className={`bg-[#EAEAEA] h-auto flex flex-col items-center sm:pt-[75px] pt-[60px] sm:pr-4 pr-3 sm:ml-20 ml-10`}>
-      <div className="sm:flex items-center w-full sm:justify-between">
-        <div className="sm:ml-5 ml-3 flex items-center sm:gap-3 gap-1 ">
-          <h2 className="sm:text-4xl text-[24px] sm:pt-2 pt-7 font-bold sm:-mt-2 -mt-7 ">
-            Data Aktivitas
+    <div className={'bg-[#EAEAEA] h-auto flex flex-col items-center sm:pt-[75px] pt-[60px] sm:pr-4 pr-3 sm:ml-20 ml-10'}>
+      <div className="sm:flex items-center w-full sm:mt-3 mt-0 sm:justify-between">
+        <div className="sm:ml-5 ml-3 flex items-center  sm:gap-3 gap-1 ">
+          <h2 className="sm:text-4xl text-[24px] sm:pt-2 pt-7 font-bold sm:-mt-2 -mt-7">           Data Aktivitas
           </h2>
           <div>
             <IoIosArrowDropleftCircle
@@ -149,7 +168,7 @@ const Page = () => {
                 <th className="sm:px-5 px-2 sm:py-4 py-2">No</th>
                 <th className="sm:px-14 px-6  sm:py-4 py-2">Nama Nasabah</th>
                 <th className="sm:px-14 px-6  sm:py-4 py-2">Tipe Nasabah</th>
-                <th className="sm:px-10 px-6 sm:text-lg text-sm  sm:py-4 py-2">Aktivitas Sales</th>
+                <th className="sm:px-10 px-6 sm:text-lg text-sm  sm:py-4 py-2">Aktivitas</th>
                 <th className="sm:px-14 px-6  sm:py-4 py-2">Status Aktivitas</th>
                 <th className="sm:px-14 px-6  sm:py-4 py-2">Detail</th>
               </tr>
@@ -160,10 +179,10 @@ const Page = () => {
                   <tr key={index} className={index % 2 === 0 ? 'bg-gray-200' : 'bg-white'}>
                     <td>{offset + index + 1}</td>
                     <td>
-                      <div className="text-blue-500 hover:text-blue-700 cursor-pointer" onClick={() => router.push(`/profil-nasabah/${item.id_nasabah}`)}>{item.nama_nasabah}</div>
+                      <div className="text-blue-500 hover:text-blue-700 cursor-pointer" onClick={() => router.push(`/profil-nasabah/${item.nasabah_id}`)}>{item.nama_nasabah}</div>
                     </td>
                     <td>{capitalizeFirstLetter(item.tipe_nasabah)}</td>
-                    <td className="sm:text-lg text-sm">{capitalizeFirstLetter(item.aktivitas_sales)}</td>
+                    <td className="sm:text-lg text-sm">{capitalizeFirstLetter(item.aktivitas)}</td>
                     <td>
                       <div className={`py-1 rounded-md sm:mx-6 mx-2 my-1 text-white font-semibold ${item.status_aktivitas === 'selesai' ? 'bg-green-500 ' : item.status_aktivitas === 'ditunda' ? 'bg-orange-500' : ''}`}>
                         {capitalizeFirstLetter(item.status_aktivitas)}
@@ -177,13 +196,17 @@ const Page = () => {
                         <div className="bg-[#ffe946] hover:bg-[#f9ee98] py-2 px-2 rounded-md items-center flex cursor-pointer" onClick={() => router.push(`/update-data/${item.id}`)}>
                           <FaEdit className="sm:h-5 sm:w-5 h-3 w-3" />
                         </div>
+                        <div className="cursor-pointer bg-[#ff4646] hover:bg-[#f99898] py-2 px-2 rounded-md items-center flex" onClick={() => handleDeleteClick(item.id)}>
+                          <MdDeleteForever className="sm:h-5 sm:w-5 h-3 w-3" />
+                        </div>
                       </div>
+
                     </td>
                   </tr>
                 ))
               ) : (
                 <tr>
-                  <td colSpan="6">Belum ada data yang ditambahkan</td>
+                  <td colSpan="6" className="py-6 text-lg">No Data Available</td>
                 </tr>
               )}
             </tbody>
@@ -211,8 +234,29 @@ const Page = () => {
           </div>
         </div>
       </div>
+      {showDeleteConfirm && (
+        <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white p-6 rounded-lg shadow-lg w-1/3">
+            <h3 className="text-lg font-bold mb-4">Apakah Anda Yakin Untuk Menghapus Data Aktivitas ini?</h3>
+            <div className="flex justify-end gap-3">
+              <button
+                onClick={cancelDelete}
+                className="px-4 py-2 bg-gray-300 text-black rounded-md hover:bg-gray-400"
+              >
+                Batal
+              </button>
+              <button
+                onClick={confirmDelete}
+                className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700"
+              >
+                Ya
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
-}
+};
 
 export default Page;

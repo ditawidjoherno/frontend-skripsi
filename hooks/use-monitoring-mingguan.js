@@ -19,7 +19,7 @@ const useTotalMingguan = () => {
         setData(null)
 
         try {
-            const response = await axios.get(`https://back-btn-boost.vercel.app/aktivitas-mingguan`, {
+            const response = await axios.get(`http://localhost:8000/api/total-aktivitas-mingguan`, {
                 headers: {
                     Authorization: bearerToken
                 }

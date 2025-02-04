@@ -20,13 +20,17 @@ const useLogin = () => {
         setError(null);
         setData(null);
 
+        if (!nip || !password) {
+            setError("Harap isi NIP dan password.");
+            setLoading(false);
+            return;
+        }
+
         try {
-            const response = await axios.post("https://back-btn-boost.vercel.app/auth/login", {
+            const response = await axios.post("https://backend-monitoring-btn-production.up.railway.app/api/login", {
                 nip: parseInt(nip),
                 password: String(password)
             });
-
-            console.log(response);
 
             if (response.status !== 200) {
                 throw new Error(response.data.message || "Gagal Login");
@@ -42,9 +46,13 @@ const useLogin = () => {
             router.push("/beranda");
         } catch (error) {
             console.error('Error:', error.response ? error.response.data : error.message);
-            setError(error.response ? error.response.data.message : error.message);
-            toast.error("Invalid email or password."); 
-        } finally {
+            const message = error.response && error.response.data && error.response.data.error === 'invalid_credentials'
+                            ? "NIP atau password salah"
+                            : error.message;
+            setError(message);
+            toast.error(message);
+        }
+         finally {
             setLoading(false);
         }
     };
@@ -52,32 +60,31 @@ const useLogin = () => {
     return { loading, error, data, login };
 };
 
+
 const LoginForm = () => {
     const [nip, setNip] = useState('');
     const [password, setPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false);
-    const [error, setError] = useState('');
-    const passwordInputRef = useRef(null);
     const { loading, error: loginError, data, login } = useLogin();
+    const passwordInputRef = useRef(null);
+    const [error, setError] = useState('');
+ 
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+    
         try {
-            const loginResult = await login(nip, password);
-            console.log("Login Result:", loginResult);
-
-            if (loginResult && loginResult.status === 200) {
-                setError('');
-                console.log("Login Successful!");
-            } else {
-                setError(loginResult && loginResult.message ? loginResult.message : 'Terjadi kesalahan saat login');
-                console.log("Login Failed!");
+            await login(nip, password);
+            if (!nip || !password) {
+                setError("Harap isi NIP dan password.");
+                return;
             }
         } catch (error) {
             console.error("Login Error:", error);
             setError('Terjadi kesalahan saat login');
         }
-    }
+    };
+    
 
     const handleKeyPressNIP = (e) => {
         if (e.key === 'Enter') {

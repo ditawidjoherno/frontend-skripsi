@@ -21,7 +21,7 @@ const useTargetStaff = () => {
 
 
         try {
-            const response = await axios.get(`https://back-btn-boost.vercel.app/target-tahunan`, {
+            const response = await axios.get(`http://localhost:8000/api/target-tahunan`, {
                 headers: {
                     Authorization: bearerToken
                 }

@@ -20,7 +20,7 @@ const useReminder = () => {
         setData(null)
 
         try {
-            const response = await axios.get("https://back-btn-boost.vercel.app/reminder", {
+            const response = await axios.get("http://localhost:8000/api/reminders", {
                 headers: {
                     Authorization: bearerToken
                 }

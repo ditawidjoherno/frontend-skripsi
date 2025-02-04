@@ -52,7 +52,6 @@ const ProfileButton = () => {
     );
   }
 
-  // Jika tidak ada data, tampilkan null atau pesan bahwa data tidak tersedia
   return null;
 };
 

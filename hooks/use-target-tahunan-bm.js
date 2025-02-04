@@ -19,7 +19,7 @@ const useTargetTahunanBM = () => {
         setError(null);
         try {
             console.log()
-            const response = await axios.get(`https://back-btn-boost.vercel.app/nilai-kpi`, {
+            const response = await axios.get(`http://localhost:8000/api/target-tahunan`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },

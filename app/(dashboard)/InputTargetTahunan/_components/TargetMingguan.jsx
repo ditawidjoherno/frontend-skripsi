@@ -1,3 +1,4 @@
+"use client"
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import addTargetMingguan from '@/hooks/add-target-mingguan';
@@ -5,30 +6,33 @@ import { getCookie } from '@/lib/cookieFunction';
 
 const TargetMingguan = () => {
     const cookie = process.env.NEXT_PUBLIC_COOKIE_NAME;
-    const token = getCookie(cookie)
-    const bearerToken = `Bearer ${token}`
+    const token = getCookie(cookie);
+    const bearerToken = `Bearer ${token}`;
     const [inputTargetMingguan, setInputTargetMingguan] = useState('');
     const [selectedStaff, setSelectedStaff] = useState('');
     const [namaStaff, setNamaStaff] = useState([]);
     const [targets, setTargets] = useState([]);
-    const { loading, error, data, storeTargetMingguan } = addTargetMingguan();
+    const [modalMessage, setModalMessage] = useState('');
+    const [modalType, setModalType] = useState('');
+    const [showModal, setShowModal] = useState(false);
+    const { loading, storeTargetMingguan } = addTargetMingguan();
 
     useEffect(() => {
         const fetchNamaStaff = async () => {
             try {
-                const response = await axios.get(`https://back-btn-boost.vercel.app/nama-staff`, {
+                const response = await axios.get(`http://localhost:8000/api/nama-staff`, {
                     headers: {
-                        Authorization: bearerToken
-                    }
+                        Authorization: bearerToken,
+                    },
                 });
                 setNamaStaff(response.data.data);
             } catch (error) {
-                console.error("Error fetching staff names: ", error);
+                console.error('Error fetching staff names:', error);
             }
         };
 
         fetchNamaStaff();
-    }, [bearerToken, selectedStaff]);
+    }, [bearerToken]);
 
     const handleSubmitTarget = () => {
         if (inputTargetMingguan.trim() !== '') {
@@ -38,12 +42,38 @@ const TargetMingguan = () => {
     };
 
     const handleSubmitMingguan = async () => {
+        if (!selectedStaff) {
+            setModalMessage('Silakan pilih nama staff terlebih dahulu.');
+            setModalType('error');
+            setShowModal(true);
+            return;
+        }
+
+        if (targets.length === 0) {
+            setModalMessage('Silakan tambahkan target mingguan terlebih dahulu.');
+            setModalType('error');
+            setShowModal(true);
+            return;
+        }
+
         try {
-            await storeTargetMingguan(selectedStaff, { target_mingguan: targets });
-            alert("Data target Mingguan berhasil disimpan");
+            const result = await storeTargetMingguan(selectedStaff, { target_mingguan: targets });
+
+            if (result.success) {
+                setModalMessage(result.message);
+                setModalType('success');
+                setShowModal(true);
+                setTargets([]);
+            } else {
+                setModalMessage(result.message);
+                setModalType('error');
+                setShowModal(true);
+            }
         } catch (error) {
-            console.error("Error: ", error);
-            alert("Gagal menyimpan data target Mingguan");
+            console.error('Error:', error);
+            setModalMessage('Gagal menyimpan data target mingguan.');
+            setModalType('error');
+            setShowModal(true);
         }
     };
 
@@ -55,22 +85,26 @@ const TargetMingguan = () => {
         }
     };
 
+    const handleDeleteTarget = (indexToRemove) => {
+        const updatedTargets = targets.filter((_, index) => index !== indexToRemove);
+        setTargets(updatedTargets);
+    };
+
+
     return (
-        <div className='sm:pl-8 pl-4 sm:mt-4 mt-2 mr-5 sm:mb-2 mb-3'>
-            <h2 className="sm:text-[30px] text-[20px] font-semibold">
-                Input Target Mingguan
-            </h2>
-            <div className=''>
+        <div className="sm:pl-8 pl-4 sm:mt-4 mt-2 mr-5 sm:mb-2 mb-3">
+            <h2 className="sm:text-[30px] text-[22px] font-semibold">Input Target Mingguan</h2>
+            <div>
                 <label htmlFor="staffSelect" className="block sm:mb-2 mb-3">Nama Staff:</label>
                 <select
                     id="staffSelect"
-                    className="border border-gray-300 sm:mb-2 mb-3 sm:w-[200px] w-[190px] p-2 rounded-md bg-white"
+                    className="border border-gray-300 sm:w-[200px] w-[190px] p-2 rounded-md bg-white"
                     value={selectedStaff}
                     onChange={(e) => setSelectedStaff(e.target.value)}
                 >
-                    <option className="sm:text-[17px] text-[10px]" value="">Select Nama Staff</option>
+                    <option value="">Pilih Nama Staff</option>
                     {namaStaff.map((staff, index) => (
-                        <option className="sm:text-[17px] text-[10px]" key={index} value={staff.nip}>{capitalizeFirstLetter(staff.nama)}</option>
+                        <option key={index} value={staff.nip}>{capitalizeFirstLetter(staff.nama)}</option>
                     ))}
                 </select>
             </div>
@@ -96,6 +130,7 @@ const TargetMingguan = () => {
                         <tr>
                             <th className="border border-gray-500 p-1">No</th>
                             <th className="border border-gray-500 p-2">Target Mingguan</th>
+                            <th className="border border-gray-500 p-2">Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -103,19 +138,46 @@ const TargetMingguan = () => {
                             <tr key={index}>
                                 <td className="border border-gray-500 p-1 text-center">{index + 1}</td>
                                 <td className="border border-gray-500 p-2">{capitalizeFirstLetter(target)}</td>
+                                <td className="border border-gray-500 p-2 text-center">
+                                    <button
+                                        className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded-md"
+                                        onClick={() => handleDeleteTarget(index)}
+                                    >
+                                        Hapus
+                                    </button>
+                                </td>
                             </tr>
                         ))}
                     </tbody>
                 </table>
+
             </div>
-            <div className='justify-end mt-5 flex m:mr-3 mr-0'>
+            <div className="justify-end mt-5 flex">
                 <button
-                    className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 mb-10 rounded-md sm:mr-2 mr-0"
+                    className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md"
                     onClick={handleSubmitMingguan}
+                    disabled={loading}
                 >
                     Simpan Target Mingguan
                 </button>
             </div>
+
+            {showModal && (
+                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+                    <div className="bg-white p-5 rounded-md shadow-lg">
+                        <h3 className={`text-lg font-bold ${modalType === 'success' ? 'text-green-600' : 'text-red-600'}`}>
+                            {modalType === 'success' ? 'Berhasil' : 'Gagal'}
+                        </h3>
+                        <p className="mt-2">{modalMessage}</p>
+                        <button
+                            className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 mt-4 rounded-md"
+                            onClick={() => setShowModal(false)}
+                        >
+                            Tutup
+                        </button>
+                    </div>
+                </div>
+            )}
         </div>
     );
 };

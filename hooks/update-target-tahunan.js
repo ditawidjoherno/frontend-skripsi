@@ -1,47 +1,59 @@
-"use client"
+"use client";
+
 import { getCookie } from "@/lib/cookieFunction";
 import axios from "axios";
 import { useState } from "react";
-import { create } from "zustand";
 import useUserStore from "./use-data-user";
 
 const updateTargetTahunan = () => {
-    const [loading, setLoading] = useState(false)
-    const [error, setError] = useState(null)
-    const [data, setData] = useState(null)
-    const cookie = process.env.NEXT_PUBLIC_COOKIE_NAME;
-    const token = getCookie(cookie)
-    const { user, setUser, clearUser } = useUserStore();
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [data, setData] = useState(null);
+  const cookie = process.env.NEXT_PUBLIC_COOKIE_NAME; // Retrieve the cookie name
+  const token = getCookie(cookie); // Fetch the token from the cookie
+  const { user } = useUserStore(); // Store user info from Zustand
 
-    const bearerToken = `Bearer ${token}`
-    const storeTargetTahunan = async (nip, body) => {
-        setLoading(true);
-        setError(null);
-        setData(null);
+  // Ensure the bearerToken is only created if token is available
+  const bearerToken = token ? `Bearer ${token}` : null;
 
-        try {
-            const response = await axios.put(
-                `https://back-btn-boost.vercel.app/target-tahunan/${nip}`,
-                body,
-                { headers: { Authorization: bearerToken } }
-            );
+  const storeTargetTahunan = async (user_id, kpi_name, body) => {
+    setLoading(true);
+    setError(null);
+    setData(null);
 
-            if (response.status !== 200) {
-                throw new Error(response.data.message || "Gagal Mengirim Target Tahunan");
-            }
+    // Ensure that the bearerToken exists before making the request
+    if (!bearerToken) {
+      setError("Authorization token is missing");
+      return;
+    }
 
-            return (response.data.message);
-            setData(response.data.message);
-        } catch (error) {
-            setError(error.response.data.message);
-            alert(error.response.data.message);
-        } finally {
-            setLoading(false);
-        }
-    };
+    try {
+      // API request to the endpoint
+      const response = await axios.patch(
+        `http://localhost:8000/api/update-target-tahunan/${user_id}/${kpi_name}`,
+        body, // Body containing the new target value
+        { headers: { Authorization: bearerToken } }
+      );
 
+      // Check if the response status is successful
+      if (response.status !== 200) {
+        throw new Error(response.data.message || "Failed to send target data");
+      }
 
-    return { loading, error, data, storeTargetTahunan }
-}
+      // Set the response data to state if successful
+      setData(response.data.message);
+      return response.data.message; // Returning message for further use
 
-export default updateTargetTahunan
+    } catch (error) {
+      // Handle error if request fails
+      setError(error.response?.data?.message || error.message);
+      alert(error.response?.data?.message || error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return { loading, error, data, storeTargetTahunan };
+};
+
+export default updateTargetTahunan;

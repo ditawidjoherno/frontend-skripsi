@@ -45,7 +45,7 @@ const Sidebar = ({ isCollapse, setIsCollapse }) => {
             icon: <IoDesktop />,
             text: "Monitoring",
             route: "/monitoring",
-            visible: jabatan !== 'staff' && jabatan !== 'unit head'
+            visible: jabatan !== 'staff'
         },
         {
             icon: <HiUserAdd />,
@@ -55,9 +55,9 @@ const Sidebar = ({ isCollapse, setIsCollapse }) => {
         },
         {
             icon: <IoCreate />,
-            text: "Input Data",
+            text: "Data Aktivitas",
             route: "/data_aktivitas",
-            visible: jabatan !== 'manager' && jabatan !== 'admin'
+            visible: jabatan == "staff"
         },
         {
             icon: <IoIosPeople />,
@@ -69,12 +69,25 @@ const Sidebar = ({ isCollapse, setIsCollapse }) => {
             icon: <HiUserAdd />,
             text: "Input Target",
             route: "/InputTargetTahunan",
-            visible: jabatan == 'admin'
+            visible: jabatan !== 'manager' && jabatan !== 'staff'
         },
         {
             icon: <IoPieChartSharp />,
             text: "Lihat Target",
-            route: jabatan === 'staff' ? "/target-tahunan-staff" : "/target-tahunan"
+            route: "/target-tahunan-staff",
+            visible: jabatan == 'staff'
+        },
+        {
+            icon: <IoPieChartSharp />,
+            text: "Lihat Target",
+            route: "/target-tahunan",
+            visible: jabatan == 'manager'
+        },
+        {
+            icon: <IoPieChartSharp />,
+            text: "Ubah Target",
+            route: "/target-tahunan",
+            visible: jabatan == 'unit head' || jabatan == "admin"
         },
         {
             icon: <IoDocument />,

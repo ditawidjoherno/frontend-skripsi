@@ -21,7 +21,7 @@ const useDataNasabah = (nasabah) => {
         console.log(nasabah)
 
         try {
-            const response = await axios.get(`https://back-btn-boost.vercel.app/nasabah/300`, {
+            const response = await axios.get(`http://localhost:8000/api/nasabah`, {
                 headers: {
                     Authorization: `Bearer ${token}`
                   }

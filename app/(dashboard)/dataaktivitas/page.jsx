@@ -6,6 +6,7 @@ import useUser from "@/hooks/use-user";
 import { useRouter } from 'next/navigation';
 import { ImProfile } from "react-icons/im";
 import { IoSearchOutline } from "react-icons/io5";
+import { MdDeleteForever } from "react-icons/md";
 import useAktivitasBulanan from "@/hooks/use-aktivitas-bulan";
 import Link from "next/link";
 
@@ -128,6 +129,9 @@ const Page = () => {
                       <div className="w-full justify-center gap-3 flex items-center">
                         <div className="bg-[#ffe946] hover:bg-[#f9ee98] py-2 px-2 rounded-md items-center flex cursor-pointer" onClick={() => router.push(`/detail-aktivitas/${item.id}`)}>
                           <ImProfile className="sm:h-5 sm:w-5 h-3 w-3" />
+                        </div>
+                        <div className="bg-[#ffe946] hover:bg-[#f9ee98] py-2 px-2 rounded-md items-center flex cursor-pointer" onClick={() => router.push(`/update-data/${item.id}`)}>
+                          <FaEdit className="sm:h-5 sm:w-5 h-3 w-3" />
                         </div>
                         <div className="bg-[#ffe946] hover:bg-[#f9ee98] py-2 px-2 rounded-md items-center flex cursor-pointer" onClick={() => router.push(`/update-data/${item.id}`)}>
                           <FaEdit className="sm:h-5 sm:w-5 h-3 w-3" />

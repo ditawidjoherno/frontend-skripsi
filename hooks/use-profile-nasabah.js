@@ -1,46 +1,51 @@
-"use client"
+"use client";
 import { getCookie } from "@/lib/cookieFunction";
 import axios from "axios";
-import { useState } from "react";
-import { create } from "zustand";
-import useUserStore from "./use-data-user";
+import { useState, useEffect } from "react";
 
 const useProfileNasabah = (id) => {
-    const [loading, setLoading] = useState(false)
-    const [error, setError] = useState(null)
-    const [data, setData] = useState(null)
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
+    const [data, setData] = useState(null);
     const cookie = process.env.NEXT_PUBLIC_COOKIE_NAME;
-    const token = getCookie(cookie)
-    const { user, setUser, clearUser } = useUserStore();
+    const token = getCookie(cookie);
 
-    const bearerToken = `Bearer ${token}`
+    const bearerToken = `Bearer ${token}`;
+
     const getUserData = async () => {
-        setLoading(true)
-        setError(null)
-        setData(null)
-        console.log(id)
+        if (!token) {
+            setError("Token tidak ditemukan.");
+            return;
+        }
+
+        setLoading(true);
+        setError(null);
+        setData(null);
 
         try {
-            const response = await axios.get(`https://back-btn-boost.vercel.app/profile-nasabah/${id}`, {
+            const response = await axios.get(`http://localhost:8000/api/nasabah/${id}`, {
                 headers: {
-                    Authorization: bearerToken
-                }
+                    Authorization: bearerToken,
+                },
             });
 
-            if (!response.status === 200) {
-                throw new Error(response.data.message || "Gagal Mendapat User")
+            if (response.status !== 200) {
+                throw new Error(response.data.message || "Gagal Mendapatkan Data Nasabah");
             }
 
-            setData(response.data.data)
-            console.log(response.data.data)
+            setData(response.data);
         } catch (error) {
-            setError(error.message)
+            setError(error.message);
         } finally {
-            setLoading(false)
+            setLoading(false);
         }
-    }
+    };
 
-    return { loading, error, data, getUserData }
-}
+    useEffect(() => {
+        getUserData();
+    }, [id]);
 
-export default useProfileNasabah
+    return { loading, error, data, getUserData };
+};
+
+export default useProfileNasabah;

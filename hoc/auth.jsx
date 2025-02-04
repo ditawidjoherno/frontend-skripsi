@@ -21,14 +21,13 @@ export default function withAuth(WrappedComponent, LoadingComponent) {
                 console.log(cookie)
                 console.log(decodedToken)
                 if (!decodedToken) {
-                    router.replace('/')
+                    router.push('/')
                 } else {
                     const isExpired = isTokenExpired(data);
                     console.log(isExpired)
                     if (isExpired) {
                         deleteCookie(cookie)
-                        console.log("test")
-                        router.replace("/test")
+                        router.push("/")
                     }
                 }
                 setLoading(false)

@@ -1,24 +1,40 @@
-"use client"
-import { IoIosArrowDropleft, IoIosArrowDropright, IoIosArrowDropleftCircle } from "react-icons/io";
-import React, { useState, useEffect } from 'react';
-import Link from "next/link";
+"use client";
+import React, { useState, useEffect } from "react";
+import { FaSpinner } from "react-icons/fa";
 import { IoSearchOutline } from "react-icons/io5";
-import useAktivitasBulanan from "@/hooks/use-aktivitas-bulanan";
-import { useRouter } from 'next/navigation';
-import { FaSpinner } from 'react-icons/fa';
+import { IoIosArrowDropleft, IoIosArrowDropright, IoIosArrowDropleftCircle } from "react-icons/io";
+import { useRouter } from "next/navigation";
 import { ImProfile } from "react-icons/im";
+import useAktivitasBulanan from "@/hooks/use-aktivitas-bulanan";
+import { jsPDF } from "jspdf";
+import * as XLSX from "xlsx";
+import "jspdf-autotable";
+import { FaFilePdf } from "react-icons/fa";
+import { FaFileExcel } from "react-icons/fa";
+import { IoMdPrint } from "react-icons/io";
 
-const page = () => {
-  const router = useRouter()
-  const [searchTerm, setSearchTerm] = useState('');
+
+const Page = () => {
+  const [searchTerm, setSearchTerm] = useState("");
   const [tableData, setTableData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [searchResults, setSearchResults] = useState([])
   const [bulanNama, setBulanNama] = useState("");
+  const [tahun, setTahun] = useState('');
   const { loading, error, data, getUserData } = useAktivitasBulanan();
+  const router = useRouter();
 
   useEffect(() => {
-    getUserData();
+    if (typeof window !== "undefined") {
+      const urlParams = new URLSearchParams(window.location.search);
+      const bulan = urlParams.get("bulan");
+      const tahun = urlParams.get("tahun");
+
+      if (bulan && tahun) {
+        setBulanNama(bulan);
+        setTahun(tahun);
+        getUserData(bulan, tahun);
+      }
+    }
   }, []);
 
   useEffect(() => {
@@ -33,59 +49,15 @@ const page = () => {
     setCurrentPage(1);
   };
 
-  useEffect(() => {
-    const urlParams = new URLSearchParams(window.location.search);
-    const bulan = urlParams.get('bulan');
-
-    if (bulan) {
-      setBulanNama(bulan);
-      getUserData(bulan);
-    }
-  }, []);
-
-  useEffect(() => {
-    if (data && data.length > 0) {
-      const tanggalPertama = new Date(data[0].tanggal_aktivitas);
-      const namaBulan = new Intl.DateTimeFormat('id-ID', { month: 'long' }).format(tanggalPertama);
-      setBulanNama(namaBulan);
-    }
-  }, [data]);
-
-  if (loading) {
-    return (
-      <div className="fixed inset-0 flex items-center justify-center">
-        <FaSpinner className="animate-spin mr-2" /> Loading
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div>Error: {error.message}</div>
-    );
-  }
-
-  if (data) {
-    console.log(data)
-  }
-
-  const capitalizeFirstLetter = (string) => {
-    if (string && typeof string === 'string' && string.length > 0) {
-      return string.charAt(0).toUpperCase() + string.slice(1);
-    } else {
-      return string;
-    }
-  };
-
-
-  const filteredData = tableData.filter(item =>
-    item.nama_user.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    item.nama_aktivitas.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    item.nama_nasabah.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    item.prospek.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    item.aktivitas_sales.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    item.tipe_nasabah.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    item.keterangan_aktivitas.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredData = tableData.filter(
+    (item) =>
+      item.nama_user.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      item.aktivitas.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      item.nama_nasabah.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      item.prospek.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      item.aktivitas_sales.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      item.tipe_nasabah.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      item.keterangan_aktivitas.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   const itemsPerPage = 10;
@@ -118,19 +90,131 @@ const page = () => {
     router.back();
   };
 
+
+  const capitalizeFirstLetter = (string) => {
+    if (string && typeof string === 'string' && string.length > 0) {
+      return string.charAt(0).toUpperCase() + string.slice(1);
+    } else {
+      return string;
+    }
+  };
+
+  const PrintButton = ({ currentItems, offset }) => {
+    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
+    const handlePrintPDF = () => {
+      const doc = new jsPDF();
+      doc.autoTable({
+        head: [
+          ["No", "Tanggal Prospek", "Nama Staff", "Aktivitas", "Nama Nasabah", "Tipe Nasabah", , "Prospek", "Nominal Prospek"],
+        ],
+        body: tableData.map((item, index) => [
+          index + 1,
+          item.created_at,
+          item.nama_user,
+          item.aktivitas,
+          item.nama_nasabah,
+          item.tipe_nasabah,
+          item.nominal_prospek,
+          item.prospek,
+        ]),
+      });
+
+      doc.save("aktivitas_bulanan.pdf");
+    };
+
+    const handleDownloadExcel = () => {
+      const worksheetData = [
+        ["No", "Tanggal Prospek", "Nama Staff", "Aktivitas", "Nama Nasabah", "Tipe Nasabah", , "Prospek", "Nominal Prospek"],
+        ...tableData.map((item, index) => [
+          index + 1,
+          item.created_at,
+          item.nama_user,
+          item.aktivitas,
+          item.nama_nasabah,
+          item.tipe_nasabah,
+          item.nominal_prospek,
+          item.prospek,
+        ]),
+      ];
+
+      const worksheet = XLSX.utils.aoa_to_sheet(worksheetData);
+      const workbook = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(workbook, worksheet, "Aktivitas Bulanan");
+      XLSX.writeFile(workbook, "aktivitas_bulanan.xlsx");
+    };
+
+
+    return (
+      <div className="relative mr-5">
+        <button
+          className="bg-blue-500 text-white px-5 py-2 mt-3 rounded-md hover:bg-blue-600"
+          onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+        >
+          <div className="flex">
+            <IoMdPrint className="mr-2" size={24} />
+            Cetak
+          </div>
+        </button>
+
+        {isDropdownOpen && (
+          <div className="absolute bg-white shadow-lg rounded-md mt-2 right-0 z-10">
+            <div className="flex">
+              <button
+                className="flex items-center w-full text-md px-5 py-2 text-black hover:bg-gray-100 whitespace-nowrap"
+                onClick={() => {
+                  handlePrintPDF();
+                  setIsDropdownOpen(false);
+                }}
+              >
+                <FaFilePdf className="mr-2" size={18} />
+                Cetak PDF
+              </button>
+
+            </div>
+            <div className="flex">
+              <button
+                className="flex items-center w-full text-md px-5 py-2 text-black hover:bg-gray-100 whitespace-nowrap"
+                onClick={() => {
+                  handleDownloadExcel();
+                  setIsDropdownOpen(false);
+                }}
+              >
+                <FaFileExcel className="mr-2" size={18} />
+                Cetak Excel
+              </button>
+            </div>
+          </div>
+        )}
+      </div>
+    );
+  };
+
+  if (loading) {
+    return (
+      <div className="fixed inset-0 flex items-center justify-center">
+        <FaSpinner className="animate-spin mr-2" /> Loading
+      </div>
+    );
+  }
+
+  if (error) {
+    return <div>Error: {error.message}</div>;
+  }
+
   return (
-    <div className={`bg-[#EAEAEA] h-full pb-4 flex flex-col items-center sm:pt-[75px] pt-[55px] sm:pr-5 pr-3 sm:ml-20 ml-10`}>
+    <div
+      className={`bg-[#EAEAEA] h-full pb-4 flex flex-col items-center sm:pt-[75px] pt-[55px] sm:pr-5 pr-3 sm:ml-20 ml-10`}
+    >
       <div className="sm:flex items-center w-full sm:justify-between">
         <div className="sm:ml-5 ml-3 sm:mt-3 mt-0 flex items-center sm:gap-3 gap-1 ">
-          <h2 className="sm:text-4xl text-[24px] font-bold ">
-            Monitoring Bulanan
-          </h2>
-            <IoIosArrowDropleftCircle
-              className="sm:h-10 sm:w-10 h-5 w-5 sm:ml-3 ml-0 transition-colors duration-300 hover:text-gray-400 focus:text-gray-400 cursor-pointer"
-              onClick={handleGoBack}
-            />
+          <h2 className="sm:text-4xl text-[24px] font-bold">Monitoring Bulanan</h2>
+          <IoIosArrowDropleftCircle
+            className="sm:h-10 sm:w-10 h-5 w-5 sm:ml-3 ml-0 transition-colors duration-300 hover:text-gray-400 focus:text-gray-400 cursor-pointer"
+            onClick={handleGoBack}
+          />
         </div>
-        <div className='flex justify-center gap-1 sm:mr-5 sm:mt-2'>
+        <div className="flex justify-center gap-1 sm:mr-5 sm:mt-2">
           <div className="flex items-center">
             <input
               type="text"
@@ -139,56 +223,60 @@ const page = () => {
               onChange={handleSearch}
               className="border-2 border-gray-300 px-4 py-2 sm:rounded-l-2xl rounded-l-lg focus:outline-none focus:border-blue-500 sm:w-[270px] w-full sm:h-[40px] h-[30px]"
             />
-            <button type="submit" className="bg-[#FFE500] text-black border-black px-1 py-1 sm:rounded-r-2xl rounded-r-lg hover:bg-[#f6f0ba] sm:w-[40px] w-[30px] sm:h-[40px] h-[30px] focus:outline-none">
+            <button
+              type="submit"
+              className="bg-[#FFE500] text-black border-black px-1 py-1 sm:rounded-r-2xl rounded-r-lg hover:bg-[#f6f0ba] sm:w-[40px] w-[30px] sm:h-[40px] h-[30px] focus:outline-none"
+            >
               <IoSearchOutline className="sm:w-6 w-4 sm:h-6 h-4" />
             </button>
           </div>
         </div>
       </div>
-      <div className="sm:ml-5 ml-3 w-full gap-9 mt-5 ">
+      <div className="sm:ml-5 ml-3 w-full gap-9 mt-5">
         <div className="bg-[#1D2B53] rounded-t-2xl sm:h-[65px] h-[45px] flex justify-between">
-          <h1 className="font-bold text-white sm:text-3xl text-[20px] pl-5 sm:pt-4 pt-2">{bulanNama} 2024</h1>
-          <h1 className="font-bold text-white sm:text-2xl text-[14px] pl-5 sm:pt-4 pt-3 sm:mr-3 mr-2">Jumlah Aktivitas: {tableData.length} </h1>
+          <h1 className="font-bold text-white sm:text-3xl text-[20px] pl-5 sm:pt-4 pt-2">{bulanNama} {tahun}</h1>
+          <div className="flex">
+            <h1 className="font-bold mr-4 text-white sm:text-3xl text-[18px] pl-5 sm:pt-4 pt-3">Jumlah Aktivitas: {tableData.length} </h1>
+            <PrintButton currentItems={currentItems} offset={offset} />
+          </div>
         </div>
         <div className="bg-white rounded-b-2xl sm:h-[520px] h-[400px] sm:overflow-hidden overflow-x-scroll">
-          <table className="table-auto border-collapse w-full text-center overflow-x-scroll" style={{ whiteSpace: 'nowrap', overflow: 'hidden' }}>
-            <thead>
+          <table
+            className="table-auto border-collapse w-full text-center overflow-x-scroll"
+            style={{ whiteSpace: "nowrap", tableLayout: "auto" }}
+          >
+            <thead className="text-xs sm:text-base text-[#1D2B53] font-semibold">
               <tr>
-                <th className="sm:px-5 sm:text-lg text-sm px-3 sm:py-4 py-2">No</th>
-                <th className="sm:px-10 px-6 sm:text-lg text-sm  sm:py-4 py-2">Tanggal Prospek</th>
-                <th className="sm:px-10 px-6 sm:text-lg text-sm  sm:py-4 py-2">Nama Staff</th>
-                <th className="sm:px-10 px-6 sm:text-lg text-sm  sm:py-4 py-2">Aktivitas</th>
-                <th className="sm:px-10 px-6 sm:text-lg text-sm  sm:py-4 py-2">Nama Nasabah</th>
-                {/* <th className="sm:px-10 px-6 sm:text-lg text-sm  sm:py-4 py-2">Tipe Nasabah</th>
-                <th className="sm:px-10 px-6 sm:text-lg text-sm  sm:py-4 py-2">Prospek</th>
-                <th className="sm:px-10 px-6 sm:text-lg text-sm  sm:py-4 py-2">Nominal Prospek</th> */}
-                {/* <th className="sm:px-10 px-6 sm:text-lg text-sm  sm:py-4 py-2">Aktivitas Sales</th> */}
-                {/* <th className="sm:px-10 px-6 sm:text-lg text-sm  sm:py-4 py-2">Closing</th> */}
-                <th className="sm:px-8 px-6 sm:text-lg text-sm  sm:py-4 py-2">Detail</th>
+                <th className="px-3 py-2">No</th>
+                <th className="px-3 py-2">Tanggal</th>
+                <th className="px-3 py-2">Nama Staff</th>
+                <th className="px-3 py-2">Aktivitas</th>
+                <th className="px-3 py-2">Nama Nasabah</th>
+                <th className="px-3 py-2">Detail</th>
               </tr>
             </thead>
             <tbody>
               {currentItems.length > 0 ? (
                 currentItems.map((item, index) => (
                   <tr key={index} className={index % 2 === 0 ? 'bg-gray-200' : 'bg-white'}>
-                    <td className="sm:text-lg text-sm">{offset + index + 1}</td>
-                    <td className="sm:text-lg text-sm">{item.tanggal_aktivitas}</td>
-                    <td className="sm:text-lg text-sm">{capitalizeFirstLetter(item.nama_user)}</td>
-                    <td className="sm:text-lg text-sm">{capitalizeFirstLetter(item.nama_aktivitas)}</td>
-                    <td className="sm:text-lg text-sm">
-                      <div className="text-blue-500 hover:text-blue-700 cursor-pointer" onClick={() => router.push(`/profil-nasabah/${item.id_nasabah}`)}>{capitalizeFirstLetter(item.nama_nasabah)}</div>
+                    <td>{offset + index + 1}</td>
+                    <td>{item.created_at}</td>
+                    <td>{capitalizeFirstLetter(item.nama_user)}</td>
+                    <td>{capitalizeFirstLetter(item.aktivitas)}</td>
+                    <td>
+                      <div className="text-blue-500 hover:text-blue-700 cursor-pointer" onClick={() => router.push(`/profil-nasabah/${item.nasabah_id}`)}>{capitalizeFirstLetter(item.nama_nasabah)}</div>
                     </td>
                     {/* <td>{capitalizeFirstLetter(item.tipe_nasabah)}</td>
                     <td>{capitalizeFirstLetter(item.prospek)}</td>
                     <td>{capitalizeFirstLetter(item.nominal_prospek)}</td> */}
-                    {/* <td className="sm:text-lg text-sm">{capitalizeFirstLetter(item.aktivitas_sales)}</td> */}
+                    {/* <td>{capitalizeFirstLetter(item.aktivitas_sales)}</td> */}
                     {/* <td>{capitalizeFirstLetter(item.closing)}</td> */}
-
                     <div className="w-full justify-center gap-3 flex items-center">
                       <div className="bg-[#ffe946] hover:bg-[#f9ee98] py-2 px-2 rounded-md items-center flex cursor-pointer my-1" onClick={() => router.push(`/detail-aktivitas/${item.id}`)}>
                         <ImProfile className="sm:h-5 sm:w-5 h-3 w-3" />
                       </div>
-                    </div>                  </tr>
+                    </div>
+                  </tr>
                 ))
               ) : (
                 <tr>
@@ -199,7 +287,7 @@ const page = () => {
           </table>
         </div>
         <div className="mt-5">
-          <div className='flex items-center justify-center gap-4 mb-5 '>
+          <div className='flex items-center justify-center gap-4 sm:mb-5 mb-3'>
             <button onClick={prevPage} disabled={currentPage === 1}>
               <IoIosArrowDropleft className="text-blue-500 text-3xl" />
             </button>
@@ -221,9 +309,7 @@ const page = () => {
         </div>
       </div>
     </div>
-
   );
 };
 
-export default page;
-
+export default Page;

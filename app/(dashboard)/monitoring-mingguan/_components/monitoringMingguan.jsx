@@ -7,6 +7,7 @@ import { FaSpinner } from 'react-icons/fa';
 
 const MonitoringMingguan = ({ title, description }) => {
     const [openStates, setOpenStates] = useState({});
+    const [tahun, setTahun] = useState(new Date().getFullYear());  // Get current year
     const { loading, error, data, getTotalMingguan } = useTotalMingguan();
 
     const toggleDropdown = (bulan) => {
@@ -17,8 +18,8 @@ const MonitoringMingguan = ({ title, description }) => {
     };
 
     useEffect(() => {
-        getTotalMingguan();
-    }, []);
+        getTotalMingguan(tahun);  // Fetch data for the current year
+    }, [tahun]);  // Re-run when tahun changes
 
     const weekColors = ["bg-blue-500", "bg-blue-600"];
 
@@ -49,7 +50,7 @@ const MonitoringMingguan = ({ title, description }) => {
                         {openStates[bulan] && (
                             <div className=" grid-cols-2 gap-4 transition-opacity ${isOpen ? 'opacity-100' : 'opacity-0'}">
                                 {data[bulan] && Object.keys(data[bulan]).map((minggu, index) => (
-                                    <Link key={index} href={`/data-mingguan?bulan=${monthIndex}&minggu=${minggu.substring(7)}`}>
+                                    <Link key={index} href={`/data-mingguan?bulan=${monthIndex}&minggu=${minggu.substring(7)}&tahun=${tahun}`}>
                                         <div className={`text-white p-2 hover:bg-blue-700 transition duration-300 cursor-pointer ${weekColors[index % weekColors.length]}`}>
                                             <p>Minggu ke-{minggu.substring(7)}</p>
                                             <p>Jumlah: {data[bulan][minggu].jumlah}</p>

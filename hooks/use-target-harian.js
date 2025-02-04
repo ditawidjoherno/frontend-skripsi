@@ -21,7 +21,7 @@ const useTargetHarianStaff = () => {
 
 
         try {
-            const response = await axios.get(`https://back-btn-boost.vercel.app/target-harian`, {
+            const response = await axios.get(`http://localhost:8000/api/target-harian`, {
                 headers: {
                     Authorization: bearerToken
                 }

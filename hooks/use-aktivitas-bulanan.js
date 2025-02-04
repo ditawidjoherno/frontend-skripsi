@@ -12,13 +12,13 @@ const useAktivitasBulanan = () => {
   const token = getCookie(cookie);
   const { user, setUser, clearUser } = useUserStore();
 
-  const getUserData = async (bulan) => {
+  const getUserData = async (bulan, tahun) => {
     setLoading(true);
     setError(null);
     setData(null);
 
     try {
-      const response = await axios.get(`https://back-btn-boost.vercel.app/aktivitas-bulanan?bulan=${bulan}`, {
+      const response = await axios.get(`http://localhost:8000/api/aktivitas-bulanan?bulan=${bulan}&tahun=${tahun}`, {
         headers: {
           Authorization: `Bearer ${token}`
         }

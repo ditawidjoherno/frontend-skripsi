@@ -1,47 +1,50 @@
-"use client"
+"use client";
 import { getCookie } from "@/lib/cookieFunction";
 import axios from "axios";
 import { useState } from "react";
-import { create } from "zustand";
 import useUserStore from "./use-data-user";
 
 const addTargetHarian = () => {
-    const [loading, setLoading] = useState(false)
-    const [error, setError] = useState(null)
-    const [data, setData] = useState(null)
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
+    const [data, setData] = useState(null);
     const cookie = process.env.NEXT_PUBLIC_COOKIE_NAME;
-    const token = getCookie(cookie)
+    const token = getCookie(cookie);
     const { user, setUser, clearUser } = useUserStore();
 
-    const bearerToken = `Bearer ${token}`
+    const bearerToken = `Bearer ${token}`;
+
     const storeTargetHarian = async (nip, body) => {
         setLoading(true);
         setError(null);
         setData(null);
-
+    
         try {
             const response = await axios.post(
-                `https://back-btn-boost.vercel.app/target-harian/${nip}`,
+                `http://localhost:8000/api/add-target-harian/${nip}`,
                 body,
                 { headers: { Authorization: bearerToken } }
             );
-
-            if (response.status !== 200) {
-                throw new Error(response.data.message || "Gagal Mengirim Target Tahunan");
+    
+            if (response.status === 201) {
+                // Sukses menyimpan target mingguan
+                setData(response.data);
+                return { success: true, message: response.data.message };
+            } else {
+                throw new Error(response.data.message || "Gagal Mengirim Target Harian");
             }
-
-            return (response.data.message);
-            setData(response.data.message);
         } catch (error) {
-            setError(error.response.data.message);
-            alert(error.response.data.message);
+            // Tangani error yang dikirimkan backend atau error lainnya
+            const errorMessage = error.response?.data?.message || error.message;
+            setError(errorMessage);
+            return { success: false, message: errorMessage };
         } finally {
             setLoading(false);
         }
     };
+    
 
+    return { loading, error, data, storeTargetHarian };
+};
 
-    return { loading, error, data, storeTargetHarian }
-}
-
-export default addTargetHarian
+export default addTargetHarian;

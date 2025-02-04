@@ -20,7 +20,7 @@ const page = () => {
     const { loading, error, data, getUserData } = useDataAktivitas(nip);
     const [tableData, setTableData] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
-    const [ setLoading] = useState(false)
+    const [setLoading] = useState(false)
     const cookie = process.env.NEXT_PUBLIC_COOKIE_NAME;
     const token = getCookie(cookie)
     const bearerToken = `Bearer ${token}`
@@ -28,17 +28,17 @@ const page = () => {
 
     useEffect(() => {
         const fetchNamaStaff = async () => {
-          const response = await axios.get(`https://back-btn-boost.vercel.app/nama-staff?nip=${nip}`, {
-            headers: {
-              Authorization: bearerToken
-            }
-          })
-    
-          setNamaStaff(response.data.data)
+            const response = await axios.get(`http://localhost:8000/api/nama-staff-nip?nip=${nip}`, {
+                headers: {
+                    Authorization: bearerToken
+                }
+            })
+
+            setNamaStaff(response.data)
         }
-    
+
         fetchNamaStaff();
-      }, [bearerToken, nip])
+    }, [bearerToken, nip])
 
     // const handleGetDataUser = async () => {
     //     await getStaff();
@@ -62,11 +62,10 @@ const page = () => {
     };
 
     const filteredData = tableData.filter(item =>
-        item.nama_user.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        item.nama_aktivitas.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        item.aktivitas.toLowerCase().includes(searchTerm.toLowerCase()) ||
         item.nama_nasabah.toLowerCase().includes(searchTerm.toLowerCase()) ||
         item.prospek.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        item.aktivitas_sales.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        // item.aktivitas_sales.toLowerCase().includes(searchTerm.toLowerCase()) ||
         item.keterangan_aktivitas.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
@@ -99,7 +98,7 @@ const page = () => {
     const capitalizeFirstLetter = (string) => {
         return string.charAt(0).toUpperCase() + string.slice(1);
     };
-      
+
     if (loading) {
         return (
             <div className="fixed inset-0 flex items-center justify-center">
@@ -143,7 +142,7 @@ const page = () => {
             <div className='sm:ml-5 ml-3 w-full gap-9 mt-4'>
                 <div className="bg-white rounded-t-2xl sm:h-[80px] h-[72px] pt-3">
                     <div className='flex justify-between'>
-                        {Staff && 
+                        {Staff &&
                             <div className='flex items-center gap-2 ml-5'>
                                 <IoPersonSharp className="sm:w-10 w-7 sm:h-10 h-7" />
                                 <h2 className='font-semibold am:text-[20px] text-[18px]'>{Staff.nama}</h2>
@@ -163,8 +162,8 @@ const page = () => {
                                 <th className="sm:px-14 px-7 sm:py-4 py-0">Aktivitas</th>
                                 <th className="sm:px-14 px-7 sm:py-4 py-0">Nama Nasabah</th>
 
-                                <th className="sm:px-14 px-7 sm:py-4 py-0">Prospek</th>
-                                <th className="sm:px-14 px-7 sm:py-4 py-0">Aktivitas Sales</th>
+                                {/* <th className="sm:px-14 px-7 sm:py-4 py-0">Prospek</th> */}
+                                {/* <th className="sm:px-14 px-7 sm:py-4 py-0">Aktivitas Sales</th> */}
                                 <th className="sm:px-14 px-7 sm:py-4 py-0">Keterangan Aktivitas</th>
                             </tr>
                         </thead>
@@ -174,21 +173,24 @@ const page = () => {
                                     <tr key={index} className={index % 2 === 0 ? 'bg-gray-200' : 'bg-white'}>
                                         <td>{index + 1}</td>
                                         {/* <td>{item.nama_user}</td> */}
-                                        <td>{item.tanggal_aktivitas}</td>
-                                        <td>{capitalizeFirstLetter(item.nama_aktivitas)}</td>
+                                        <td>{item.created_at}</td>
+                                        <td>{capitalizeFirstLetter(item.aktivitas)}</td>
                                         <td><Link href={`/profil_nasabah`}>
                                             <div className="text-black hover:text-blue-700 cursor-pointer">{capitalizeFirstLetter(item.nama_nasabah)}</div>
                                         </Link>
                                         </td>
-                                        <td>{capitalizeFirstLetter(item.prospek)}</td>
+                                        {/* <td>{capitalizeFirstLetter(item.prospek)}</td> */}
 
-                                        <td>{capitalizeFirstLetter(item.aktivitas_sales)}</td>
+                                        {/* <td>{capitalizeFirstLetter(item.aktivitas_sales)}</td> */}
                                         <td>
-                                            <div className={`py-1 rounded-md mx-6 my-1 text-white font-semibold ${item.keterangan_aktivitas === 'diterima' ? 'bg-green-500 ' : item.keterangan_aktivitas === 'ditolak' ? 'bg-red-500' : ''}`}>
-                                            {capitalizeFirstLetter(item.keterangan_aktivitas)}
+                                            <div className={`py-1 rounded-md mx-6 my-1 text-white font-semibold 
+        ${item.keterangan_aktivitas.toLowerCase() === 'diterima' ? 'bg-green-500'
+                                                    : item.keterangan_aktivitas.toLowerCase() === 'ditolak' ? 'bg-red-500'
+                                                        : item.keterangan_aktivitas.toLowerCase() === 'belum diproses' ? 'bg-orange-500'
+                                                            : ''}`}>
+                                                {capitalizeFirstLetter(item.keterangan_aktivitas)}
                                             </div>
                                         </td>
-
                                     </tr>
                                 ))
                             ) : (

@@ -26,15 +26,44 @@ const Page = () => {
     const [loading, setLoading] = useState(false);
     const [success, setSuccess] = useState(false);
     const [error, setError] = useState(null);
+    const [modalVisible, setModalVisible] = useState(false);
+    const [modalMessage, setModalMessage] = useState("");
+    const [modalType, setModalType] = useState("");
+
+
+    const [modalOpen, setModalOpen] = useState(false);
 
 
     const { updateData } = AddStaff();
 
     const handleSubmit = async () => {
-        console.log("test");
         setLoading(true);
         setError(null);
-        setSuccess(false);
+        setSuccess(false); 
+
+        const requiredFields = [
+            { name: 'nama', value: namaStaff },
+            { name: 'nip', value: NIP },
+            { name: 'jabatan', value: jabatan },
+            { name: 'password', value: kataSandi },
+            { name: 'nomor_hp', value: nomorTelepon },
+            { name: 'alamat', value: alamat },
+            { name: 'tanggal_lahir', value: tanggalLahir },
+            { name: 'tempat_lahir', value: tempatLahir },
+            { name: 'jenis_kelamin', value: jenisKelamin },
+            { name: 'email', value: email },
+
+        ];
+
+        const emptyFields = requiredFields.filter(field => !field.value);
+
+        if (emptyFields.length > 0) {
+            setModalMessage("Harap mengisi semua data.");
+            setModalType("error");
+            setModalVisible(true);
+            setLoading(false);
+            return;
+        }
 
         try {
             const body = {
@@ -42,25 +71,36 @@ const Page = () => {
                 nip: NIP,
                 jabatan: jabatan,
                 password: kataSandi,
+                nomor_hp: nomorTelepon,
                 alamat: alamat,
                 tanggal_lahir: tanggalLahir,
                 tempat_lahir: tempatLahir,
-                // nomor_hp: nomorTelepon,
                 jenis_kelamin: jenisKelamin,
                 email: email,
             };
-            console.log(body)
+            console.log(body);
             const response = await updateData(body);
-            console.log(response)
-            setSuccess(true);
-            window.location.reload();
+            console.log(response);
+
+            setModalMessage("Berhasil menambahkan User");
+            setModalType("success");
+            setModalVisible(true);
         } catch (error) {
             setError(error.message || "Terjadi kesalahan saat mengirim data.");
+            setModalType("error");
+            setModalVisible(true);
         } finally {
             setLoading(false);
+            setModalOpen(true); 
         }
     };
 
+    const handleCloseModal = () => {
+        setModalVisible(false);
+        if (modalType === "success") {
+            router.push("/input-staff");
+        }
+    };
 
     const handleGoBack = () => {
         router.back();
@@ -73,7 +113,7 @@ const Page = () => {
                     Input Data Staff
                 </h2>
                 <div>
-                <IoIosArrowDropleftCircle
+                    <IoIosArrowDropleftCircle
                         className="sm:h-10 sm:w-10 h-5 w-5 sm:ml-3 ml-0 transition-colors duration-300 hover:text-gray-400 focus:text-gray-400 cursor-pointer"
                         onClick={handleGoBack}
                     />
@@ -101,7 +141,7 @@ const Page = () => {
                                 onChange={(e) => setJabatan(e.value)}
                                 options={[
                                     { value: 'manager', label: 'Manager' },
-                                    { value: 'unit_head', label: 'Unit Head' },
+                                    { value: 'unit head', label: 'Unit Head' },
                                     { value: 'staff', label: 'Staff' }
                                 ]}
                                 placeholder="Pilih Jabatan"
@@ -111,7 +151,7 @@ const Page = () => {
                             <Input text={"Email"} placeholder={"Masukkan Email"} />
                         </div> */}
                         <div className="flex flex-col ">
-                        <Input
+                            <Input
                                 text={"Nomor Telepon"}
                                 value={nomorTelepon}
                                 onChange={(e) => {
@@ -159,8 +199,8 @@ const Page = () => {
                                 value={jenisKelamin}
                                 onChange={(e) => setJenisKelamin(e.value)}
                                 options={[
-                                    { value: 'wanita', label: 'Wanita' },
-                                    { value: 'pria', label: 'Pria' }
+                                    { value: 'Perempuan', label: 'Wanita' },
+                                    { value: 'Laki-laki', label: 'Pria' }
                                 ]}
                                 placeholder="Pilih Jenis Kelamin"
                             />
@@ -181,8 +221,7 @@ const Page = () => {
                                 <button onClick={handleClick} className='bg-red-600'>Unggah Foto</button>
                                 <DokumentasiButton onClick={handleClick} />
                             </div> */}
-                            <div className='flex gap-3 sm:justify-end justify-center mt-8 sm:mr-5'>
-
+                            <div className='flex gap-3 sm:justify-end justify-center mt-1 sm:mr-5'>
                                 <button onClick={handleSubmit} disabled={loading}>
                                     <div className="sm:mt-10 mt-1 sm:mb-6 mb-5 flex justify-center">
                                         <div className="cursor-pointer hover:bg-[#467bac] bg-[#5293CE] items-center justify-center sm:w-[170px] w-[150px] sm:h-[40px] h-[35px] flex rounded-lg">
@@ -195,6 +234,23 @@ const Page = () => {
                     </div>
                 </div>
             </div>
+            {modalVisible && (
+                <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
+                    <div className="bg-white p-6 rounded-lg shadow-lg w-[90%] sm:w-[400px] text-center">
+                        <h3 className={`text-xl font-semibold ${modalType === "success" ? "text-green-600" : "text-red-600"}`}>
+                            {modalType === "success" ? "Berhasil!" : "Gagal"}
+                        </h3>
+                        <p className="mt-4 text-lg">{modalMessage}</p>
+                        <button
+                            className="mt-6 bg-blue-500 text-white px-4 py-2 rounded"
+                            onClick={handleCloseModal}
+                        >
+                            OK
+                        </button>
+                    </div>
+                </div>
+            )}
+
         </div>
     )
 }

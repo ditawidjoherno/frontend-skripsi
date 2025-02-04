@@ -5,18 +5,21 @@ import { getCookie } from '@/lib/cookieFunction';
 
 const TargetHarian = () => {
     const cookie = process.env.NEXT_PUBLIC_COOKIE_NAME;
-    const token = getCookie(cookie)
-    const bearerToken = `Bearer ${token}`
+    const token = getCookie(cookie);
+    const bearerToken = `Bearer ${token}`;
     const [inputTargetHarian, setInputTargetHarian] = useState('');
     const [selectedStaff, setSelectedStaff] = useState('');
     const [namaStaff, setNamaStaff] = useState([]);
     const [targets, setTargets] = useState([]);
-    const { loading, error, data, storeTargetHarian } = addTargetHarian();
+    const [modalMessage, setModalMessage] = useState('');
+    const [modalType, setModalType] = useState('');
+    const [showModal, setShowModal] = useState(false);
+    const { storeTargetHarian } = addTargetHarian();
 
     useEffect(() => {
         const fetchNamaStaff = async () => {
             try {
-                const response = await axios.get(`https://back-btn-boost.vercel.app/nama-staff`, {
+                const response = await axios.get(`http://localhost:8000/api/nama-staff`, {
                     headers: {
                         Authorization: bearerToken
                     }
@@ -28,7 +31,7 @@ const TargetHarian = () => {
         };
 
         fetchNamaStaff();
-    }, [bearerToken, selectedStaff]);
+    }, [bearerToken]);
 
     const handleSubmitTarget = () => {
         if (inputTargetHarian.trim() !== '') {
@@ -38,14 +41,40 @@ const TargetHarian = () => {
     };
 
     const handleSubmitHarian = async () => {
-        try {
-            await storeTargetHarian(selectedStaff, { target_harian: targets });
-            alert("Data target harian berhasil disimpan");
-        } catch (error) {
-            console.error("Error: ", error);
-            alert("Gagal menyimpan data target harian");
+        if (!selectedStaff) {
+            setModalMessage("Silakan pilih nama staff terlebih dahulu.");
+            setModalType("error");
+            setShowModal(true);
+            return;
+        }
+
+        if (targets.length === 0) {
+            setModalMessage("Silakan tambahkan target harian terlebih dahulu.");
+            setModalType("error");
+            setShowModal(true);
+            return;
+        }
+
+        const result = await storeTargetHarian(selectedStaff, { target_harian: targets });
+
+        if (result.success) {
+            setModalMessage(result.message);
+            setModalType("success");
+            setShowModal(true);
+            setTargets([]);
+        } else {
+            setModalMessage(result.message);
+            setModalType("error");
+            setShowModal(true);
         }
     };
+
+    const handleDeleteTarget = (indexToRemove) => {
+        const updatedTargets = targets.filter((_, index) => index !== indexToRemove);
+        setTargets(updatedTargets);
+    };
+
+
 
     const capitalizeFirstLetter = (string) => {
         if (string && typeof string === 'string' && string.length > 0) {
@@ -68,7 +97,7 @@ const TargetHarian = () => {
                     value={selectedStaff}
                     onChange={(e) => setSelectedStaff(e.target.value)}
                 >
-                    <option className="sm:text-[17px] text-[10px]" value="">Select Nama Staff</option>
+                    <option className="sm:text-[17px] text-[10px]" value="">Pilih Nama Staff</option>
                     {namaStaff.map((staff, index) => (
                         <option className="sm:text-[17px] text-[10px]" key={index} value={staff.nip}>{staff.nama}</option>
                     ))}
@@ -96,6 +125,7 @@ const TargetHarian = () => {
                         <tr>
                             <th className="border border-gray-500 p-1">No</th>
                             <th className="border border-gray-500 p-2">Target Harian</th>
+                            <th className="border border-gray-500 p-2">Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -103,10 +133,19 @@ const TargetHarian = () => {
                             <tr key={index}>
                                 <td className="border border-gray-500 p-1 text-center">{index + 1}</td>
                                 <td className="border border-gray-500 p-2">{capitalizeFirstLetter(target)}</td>
+                                <td className="border border-gray-500 p-2 text-center">
+                                    <button
+                                        className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded-md"
+                                        onClick={() => handleDeleteTarget(index)}
+                                    >
+                                        Hapus
+                                    </button>
+                                </td>
                             </tr>
                         ))}
                     </tbody>
                 </table>
+
             </div>
             <div className='justify-end mt-5 flex sm:mr-3 mr-0'>
                 <button
@@ -116,6 +155,25 @@ const TargetHarian = () => {
                     Simpan Target Harian
                 </button>
             </div>
+
+            {showModal && (
+                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+                    <div className="bg-white p-5 rounded-md shadow-lg">
+                        <h3 className={`text-lg font-bold ${modalType === 'success' ? 'text-green-600' : 'text-red-600'}`}>
+                            {modalType === 'success' ? 'Berhasil' : 'Gagal'}
+                        </h3>
+                        <p className="mt-2">{modalMessage}</p>
+                        <button
+                            className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 mt-4 rounded-md"
+                            onClick={() => setShowModal(false)}
+                        >
+                            Tutup
+                        </button>
+                    </div>
+                </div>
+            )}
+
+
         </div>
     );
 };

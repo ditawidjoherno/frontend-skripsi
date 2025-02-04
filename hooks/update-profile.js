@@ -16,7 +16,7 @@ const UpdateProfile = () => {
         setData(null);
 
         try {
-            const response = await axios.patch("https://back-btn-boost.vercel.app/user", body, {
+            const response = await axios.put("http://localhost:8000/api/profile/update", body, {
                 headers: {
                     Authorization: bearerToken
                 }
@@ -29,7 +29,7 @@ const UpdateProfile = () => {
             setData(response.data);
             console.log(response);
         } catch (error) {
-            setError(error.message);
+            setError(error.response?.data?.message || error.message);
         } finally {
             setLoading(false);
         }
@@ -41,7 +41,7 @@ const UpdateProfile = () => {
         setData(null);
 
         try {
-            const response = await axios.patch("https://back-btn-boost.vercel.app/user", body, {
+            const response = await axios.put("http://localhost:8000/api/password/change", body, {
                 headers: {
                     Authorization: bearerToken
                 }
@@ -54,7 +54,7 @@ const UpdateProfile = () => {
             setData(response.data);
             console.log(response);
         } catch (error) {
-            setError(error.message);
+            setError(error.response?.data?.message || error.message);
         } finally {
             setLoading(false);
         }
@@ -64,30 +64,32 @@ const UpdateProfile = () => {
         setLoading(true);
         setError(null);
         setData(null);
-
+    
         try {
             const formData = new FormData();
-            formData.append('image', imageFile);
-
-            const response = await axios.post("https://back-btn-boost.vercel.app/profile-image", formData, {
+            formData.append('foto_profil', imageFile);
+    
+            const response = await axios.post("http://localhost:8000/api/update-profile-image", formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                     Authorization: bearerToken
                 }
             });
-
+    
             if (response.status !== 200) {
                 throw new Error(response.data.message || "Gagal Mengupload Foto Profil");
             }
-
+    
             setData(response.data);
             console.log(response);
         } catch (error) {
-            setError(error.message);
+            console.error('Error:', error.response ? error.response.data : error.message);
+            setError(error.response?.data?.message || error.message); 
         } finally {
             setLoading(false);
         }
     };
+    
 
     return { loading, error, data, updateData, updatePassword, updateProfileImage };
 };

@@ -25,13 +25,13 @@ const Page = () => {
 
   useEffect(() => {
     const fetchNamaStaff = async () => {
-      const response = await axios.get(`https://back-btn-boost.vercel.app/nama-staff?nip=${nip}`, {
+      const response = await axios.get(`http://localhost:8000/api/nama-staff-nip?nip=${nip}`, {
         headers: {
           Authorization: bearerToken
         }
       })
 
-      setNamaStaff(response.data.data)
+      setNamaStaff(response.data)
     }
 
     fetchNamaStaff();
@@ -123,9 +123,9 @@ const Page = () => {
           <div className="sm:w-1/2 w-full h-auto sm:ml-10 ml-0 sm:mb-1 mb-29 sm:mt-[-2px] mt-6">
             <TeksProfil label="Sales Productivity" />
             <div className="w-full bg-red-600b">
-              <button className="bg-[#6EE014] transition-all transform hover:bg-[#FFE500]  h-[35px] pt-30 mt-[px] ml-8 font-semibold" style={{ width: `${data ? (rataRataNilaiKpi / 130 * 400) : 0}px` }} >
+              <button className="bg-[#6EE014] transition-all transform hover:bg-[#FFE500]  h-[35px] pt-30 mt-[px] ml-8 font-semibold" style={{ width: `${data ? (data.rata_rata_kpi / 130 * 400) : 0}px` }} >
               </button>
-              <span className="top-[0%] text-sm transform translate-y(-100%) font-semibold">{data && rataRataNilaiKpi}%</span>
+              <span className="top-[0%] text-sm transform translate-y(-100%) font-semibold">{data && data.rata_rata_kpi}%</span>
               <TeksProfil value="Ket:" />
               <TeksProfil value="Istimewa 110%-130%" />
               <TeksProfil value="Sangat Baik 100%-109%" />
@@ -135,12 +135,12 @@ const Page = () => {
           </div>
         </div>
         <div className="flex flex-col mt-[15px] sm:mr-[85px] mr-[70px]">
-          {jabatan !== 'admin' && (
+          {/* {jabatan !== 'admin' && (
 
             <button className="bg-[#d9d9d9] transition-all transform hover:bg-[#a9a7a7] sm:w-[220px] w-[200px] h-[35px] ml-auto px-10 pt-30 mt-[25px] font-medium sm:mr-20 mr-middle shadow-md" onClick={() => router.push(`/target-tahunan-staff?nip=${nip}`)}>
               Lihat Target
             </button>
-          )}
+          )} */}
           <button
             className="bg-[#d9d9d9] transition-all transform hover:bg-[#a9a7a7] sm:w-[220px] w-[200px] h-[35px] ml-auto px-10 pt-30 mt-[25px] font-medium sm:mr-20 mr-middle shadow-md"
             onClick={() => {
@@ -151,106 +151,106 @@ const Page = () => {
           </button>
 
         </div>
-        <div className="w-full sm:pl-14 pl-[20px] flex justify-between sm:px-9 px-0">
+        <div className="w-full sm:pl-14 pl-[20px] mb-5 flex justify-between sm:px-9 px-0">
           <div className="flex flex-col gap-1 sm:w-[350px] w-full border border-gray-500 border-solid sm:border-3 border-10 sm:pr-0 pr-23 pt-[5px] sm:-mt-[90px] mt-[30px] sm:ml-0 -ml-[10px]">
             <TeksProfil label="Sales Productivity Bulanan" />
             <div className="relative pr-50">
               <button className={`bg-[#F8DE22] text-black text-left transition-all transform hover:bg-[#9ebfea] h-[35px] px-2 pt-30 mt-[25px] mr-[60px] rounded-r-xl font-semibold `} style={{
-                width: `${Math.max(50, data ? (data.total_nilai_kpi.januari / 130 * 300) : 50)}px`
+                width: `${Math.max(50, data ? (data.total_nilai_kpi[0] / 130 * 300) : 50)}px`
               }}
               >
                 JAN
-                <text className="absolute left-[100%] top-[50%] transform -translate-y-1/2 font-semibold">{data && data.total_nilai_kpi.januari}%</text>
+                <text className="absolute left-[100%] top-[50%] transform -translate-y-1/2 font-semibold">{data && data.total_nilai_kpi[0]}%</text>
               </button>
             </div>
             <div className="relative">
               <button className="bg-[#f8c322] text-black text-left transition-all transform hover:bg-[#9ebfea] h-[35px] px-2 pt-30  rounded-r-xl font-semibold" style={{
-                width: `${Math.max(50, data ? (data.total_nilai_kpi.februari / 130 * 300) : 50)}px`
+                width: `${Math.max(50, data ? (data.total_nilai_kpi[1] / 130 * 300) : 50)}px`
               }}
               >
                 FEB
-                <tex className="absolute left-[100%] top-[50%] transform -translate-y-1/2 font-semibold">{data && data.total_nilai_kpi.februari}%</tex>
+                <tex className="absolute left-[100%] top-[50%] transform -translate-y-1/2 font-semibold">{data && data.total_nilai_kpi[1]}%</tex>
               </button>
             </div>
             <div className="relative">
               <button className="bg-[#FD8D14] text-black text-left transition-all transform hover:bg-[#9ebfea] h-[35px] px-2 pt-30  rounded-r-xl font-semibold" style={{
-                width: `${Math.max(50, data ? (data.total_nilai_kpi.maret / 130 * 300) : 50)}px`
+                width: `${Math.max(50, data ? (data.total_nilai_kpi[2] / 130 * 300) : 50)}px`
               }}>
                 MAR
-                <text className="absolute left-[100%] top-[50%] transform -translate-y-1/2 font-semibold">{data && data.total_nilai_kpi.maret}%</text>
+                <text className="absolute left-[100%] top-[50%] transform -translate-y-1/2 font-semibold">{data && data.total_nilai_kpi[2]}%</text>
               </button>
             </div>
             <div className="relative">
               <button className="bg-[#E3651D] text-black text-left transition-all transform hover:bg-[#9ebfea] h-[35px] px-2 pt-30  rounded-r-xl font-semibold"
                 style={{
-                  width: `${Math.max(50, data ? (data.total_nilai_kpi.april / 130 * 300) : 50)}px`
+                  width: `${Math.max(50, data ? (data.total_nilai_kpi[3] / 130 * 300) : 50)}px`
                 }}>
                 APR
-                <text className="absolute left-[100%] top-[50%] transform -translate-y-1/2 font-semibold">{data && data.total_nilai_kpi.april}%</text>
+                <text className="absolute left-[100%] top-[50%] transform -translate-y-1/2 font-semibold">{data && data.total_nilai_kpi[3]}%</text>
               </button>
             </div>
             <div className="relative">
               <button className="bg-[#BE3144] text-black text-left transition-all transform hover:bg-[#9ebfea] h-[35px] px-2 pt-30  rounded-r-xl font-semibold" style={{
-                width: `${Math.max(50, data ? (data.total_nilai_kpi.mei / 130 * 300) : 50)}px`
+                width: `${Math.max(50, data ? (data.total_nilai_kpi[4] / 130 * 300) : 50)}px`
               }}>
                 MEI
-                <text className="absolute left-[100%] top-[50%] transform -translate-y-1/2 font-semibold">{data && data.total_nilai_kpi.mei}%</text>
+                <text className="absolute left-[100%] top-[50%] transform -translate-y-1/2 font-semibold">{data && data.total_nilai_kpi[4]}%</text>
               </button>
             </div>
             <div className="relative">
               <button className="bg-[#872341] text-black text-left transition-all transform hover:bg-[#9ebfea] h-[35px] px-2 pt-30 rounded-r-xl font-semibold" style={{
-                width: `${Math.max(50, data ? (data.total_nilai_kpi.juni / 130 * 300) : 50)}px`
+                width: `${Math.max(50, data ? (data.total_nilai_kpi[5] / 130 * 300) : 50)}px`
               }}>
                 JUN
-                <text className="absolute left-[100%] top-[50%] transform -translate-y-1/2 font-semibold">{data && data.total_nilai_kpi.juni}%</text>
+                <text className="absolute left-[100%] top-[50%] transform -translate-y-1/2 font-semibold">{data && data.total_nilai_kpi[5]}%</text>
               </button>
             </div>
             <div className="relative">
               <button className="bg-[#631c7f] text-black text-left transition-all transform hover:bg-[#9ebfea] w-[70px] h-[35px] px-2 pt-30 rounded-r-xl font-semibold" style={{
-                width: `${Math.max(50, data ? (data.total_nilai_kpi.juli / 130 * 300) : 50)}px`
+                width: `${Math.max(50, data ? (data.total_nilai_kpi[6] / 130 * 300) : 50)}px`
               }}>
                 JUL
-                <text className="absolute left-[100%] top-[50%] transform -translate-y-1/2 font-semibold">{data && data.total_nilai_kpi.juli}%</text>
+                <text className="absolute left-[100%] top-[50%] transform -translate-y-1/2 font-semibold">{data && data.total_nilai_kpi[6]}%</text>
               </button>
             </div>
             <div className="relative">
               <button className="bg-[#24366d] text-black text-left transition-all transform hover:bg-[#9ebfea] h-[35px] px-2 pt-30 rounded-r-xl font-semibold" style={{
-                width: `${Math.max(50, data ? (data.total_nilai_kpi.agustus / 130 * 300) : 50)}px`
+                width: `${Math.max(50, data ? (data.total_nilai_kpi[7] / 130 * 300) : 50)}px`
               }}>
                 AGS
-                <text className="absolute left-[100%] top-[50%] transform -translate-y-1/2 font-semibold">{data && data.total_nilai_kpi.agustus}%</text>
+                <text className="absolute left-[100%] top-[50%] transform -translate-y-1/2 font-semibold">{data && data.total_nilai_kpi[7]}%</text>
               </button>
             </div>
             <div className="relative">
               <button className="bg-[#315888] text-black text-left transition-all transform hover:bg-[#9ebfea] w-[270px] h-[35px] px-2 pt-30 rounded-r-xl font-semibold" style={{
-                width: `${Math.max(50, data ? (data.total_nilai_kpi.september / 130 * 300) : 50)}px`
+                width: `${Math.max(50, data ? (data.total_nilai_kpi[8] / 130 * 300) : 50)}px`
               }}>
                 SEP
-                <text className="absolute left-[100%] top-[50%] transform -translate-y-1/2 font-semibold">{data && data.total_nilai_kpi.september}%</text>
+                <text className="absolute left-[100%] top-[50%] transform -translate-y-1/2 font-semibold">{data && data.total_nilai_kpi[8]}%</text>
               </button>
             </div>
             <div className="relative">
               <button className="bg-[#4b6bd6] text-black text-left transition-all transform hover:bg-[#9ebfea] h-[35px] px-2 pt-30 rounded-r-xl font-semibold" style={{
-                width: `${Math.max(50, data ? (data.total_nilai_kpi.oktober / 130 * 300) : 50)}px`
+                width: `${Math.max(50, data ? (data.total_nilai_kpi[9] / 130 * 300) : 50)}px`
               }}>
                 OKT
-                <text className="absolute left-[100%] top-[50%] transform -translate-y-1/2 font-semibold">{data && data.total_nilai_kpi.oktober}%</text>
+                <text className="absolute left-[100%] top-[50%] transform -translate-y-1/2 font-semibold">{data && data.total_nilai_kpi[9]}%</text>
               </button>
             </div>
             <div className="relative">
               <button className="bg-[#488a48] text-black text-left transition-all transform hover:bg-[#9ebfea] h-[35px] px-2 pt-30 rounded-r-xl font-semibold" style={{
-                width: `${Math.max(50, data ? (data.total_nilai_kpi.november / 130 * 300) : 50)}px`
+                width: `${Math.max(50, data ? (data.total_nilai_kpi[10] / 130 * 300) : 50)}px`
               }}>
                 NOV
-                <text className="absolute left-[100%] top-[50%] transform -translate-y-1/2 font-semibold">{data && data.total_nilai_kpi.november}%</text>
+                <text className="absolute left-[100%] top-[50%] transform -translate-y-1/2 font-semibold">{data && data.total_nilai_kpi[10]}%</text>
               </button>
             </div>
             <div className="relative">
               <button className="bg-[#62c162] text-black text-left transition-all transform hover:bg-[#9ebfea] h-[35px] px-2 pt-30 rounded-r-xl font-semibold" style={{
-                width: `${Math.max(50, data ? (data.total_nilai_kpi.desember / 130 * 300) : 50)}px`
+                width: `${Math.max(50, data ? (data.total_nilai_kpi[11] / 130 * 300) : 50)}px`
               }}>
                 DES
-                <text className="absolute left-[100%] top-[50%] transform -translate-y-1/2 font-semibold">{data && data.total_nilai_kpi.desember}%</text>
+                <text className="absolute left-[100%] top-[50%] transform -translate-y-1/2 font-semibold">{data && data.total_nilai_kpi[11]}%</text>
               </button>
             </div>
           </div>

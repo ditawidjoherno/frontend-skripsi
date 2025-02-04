@@ -11,20 +11,21 @@ const useAktivitasMingguan = () => {
   const cookie = process.env.NEXT_PUBLIC_COOKIE_NAME;
   const token = getCookie(cookie);
   const { user, setUser, clearUser } = useUserStore();
-  
-  const defaultBulan = 1; 
-  const defaultMinggu = 1; 
 
-  const getUserData = async (bulan = defaultBulan, minggu = defaultMinggu) => {
+  const defaultBulan = 1;
+  const defaultMinggu = 1;
+  const defaultTahun = new Date().getFullYear(); // Get current year
+
+  const getUserData = async (bulan = defaultBulan, minggu = defaultMinggu, tahun = defaultTahun) => {
     setLoading(true);
     setError(null);
     setData(null);
 
     try {
-      const response = await axios.get(`https://back-btn-boost.vercel.app/aktivitas-mingguan?bulan=${bulan}&minggu=${minggu}`, {
+      const response = await axios.get(`http://localhost:8000/api/aktivitas-mingguan?bulan=${bulan}&minggu=${minggu}&tahun=${tahun}`, {
         headers: {
-          Authorization: `Bearer ${token}`
-        }
+          Authorization: `Bearer ${token}`,
+        },
       });
 
       if (response.status !== 200) {

@@ -60,7 +60,12 @@ const UserData = (userData) => {
                     <div className="sm:flex  sm:text-start text-center">
                         <div className="sm:mr-6 sm:flex">
                             <div className="sm:ml-6 ml-0 flex justify-center items-center">
-                                <img src={data.foto_profil || '/img/profil.png'} alt="Foto Profil" className="sm:w-[250px] w-[100px] sm:h-[250px] h-[100px]" />
+                                <img
+                                    src={data.foto_profil || '/img/profil.png'}
+                                    alt="Foto Profil"
+                                    className="sm:w-[250px] w-[100px] sm:h-[250px] h-[100px]"
+                                />
+
                             </div>
                             <div>
                                 <TeksProfil label="NIP:" value={data?.nip} />
@@ -73,7 +78,7 @@ const UserData = (userData) => {
                                 <TeksProfil label="Alamat:" value={capitalizeFirstLetter(data?.alamat || "-")} />
                                 <TeksProfil label="Jabatan:" value={capitalizeFirstLetter(data?.jabatan || "-")} />
                                 <TeksProfil label="Email:" value={capitalizeFirstLetter(data?.email || "-")} />
-                                <TeksProfil label="Nomor Telepon:" value={capitalizeFirstLetter(data?.nomor_telepon || "-")} />
+                                <TeksProfil label="Nomor Telepon:" value={capitalizeFirstLetter(data?.nomor_hp || "-")} />
                             </div>
                         </div>
                     </div>

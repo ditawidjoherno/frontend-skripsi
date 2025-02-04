@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import { getCookie } from "@/lib/cookieFunction";
 import axios from "axios";
 import { useState } from "react";
@@ -8,32 +8,32 @@ const AddStaff = () => {
     const [data, setData] = useState(null);
     const [error, setError] = useState(null);
     const cookie = process.env.NEXT_PUBLIC_COOKIE_NAME;
-    const token = getCookie(cookie)
+    const token = getCookie(cookie);
 
+    const bearerToken = `Bearer ${token}`;
 
-    const bearerToken = `Bearer ${token}`
     const updateData = async (body) => {
         setLoading(true);
         setError(null);
         setData(null);
 
-        console.log(body)
         try {
-            const response = await axios.post("https://back-btn-boost.vercel.app/create-user", body, {
+            const response = await axios.post("http://localhost:8000/api/addUser", body, {
                 headers: {
-                    Authorization: bearerToken
-                }
+                    Authorization: bearerToken,
+                },
             });
-            console.log(response)
-            if (response.status !== 200) {
+
+            if (response.status !== 200 && response.status !== 201) {
                 throw new Error(response.data.message || "Gagal Menambahkan Aktivitas");
             }
 
             setData(response.data);
-            console.log(response);
+            return response.data;
         } catch (error) {
-            setError(error.message);
-            alert(`${error.response.data.message}`)
+            const errorMessage = error.response ? error.response.data.message : error.message;
+            setError(errorMessage || "Terjadi kesalahan saat mengirim data.");
+            return { message: errorMessage || "Terjadi kesalahan saat mengirim data." };
         } finally {
             setLoading(false);
         }

@@ -10,21 +10,33 @@ const AddAktivitas = () => {
     const cookie = process.env.NEXT_PUBLIC_COOKIE_NAME;
     const token = getCookie(cookie)
 
+    const bearerToken = `Bearer ${token}`;
 
-    const bearerToken = `Bearer ${token}`
-    const updateData = async (body) => {
+    const updateData = async (body, files) => {
         setLoading(true);
         setError(null);
         setData(null);
 
-        console.log(body)
+        const formData = new FormData();
+        
+        for (let key in body) {
+            formData.append(key, body[key]);
+        }
+
+        if (files && files.length > 0) {
+            files.forEach(file => {
+                formData.append('dokumentasi[]', file);
+            });
+        }
+
         try {
-            const response = await axios.post("https://back-btn-boost.vercel.app/aktivitas", body, {
+            const response = await axios.post("http://localhost:8000/api/aktivitas", formData, {
                 headers: {
+                    "Content-Type": "multipart/form-data",
                     Authorization: bearerToken
                 }
             });
-            console.log(response)
+
             if (response.status !== 200) {
                 throw new Error(response.data.message || "Gagal Menambahkan Aktivitas");
             }
@@ -33,7 +45,7 @@ const AddAktivitas = () => {
             console.log(response.data);
         } catch (error) {
             setError(error.message);
-            alert(`${error.response.data.message}`)
+            alert(`${error.response?.data?.message || 'Terjadi kesalahan'}`);
         } finally {
             setLoading(false);
         }

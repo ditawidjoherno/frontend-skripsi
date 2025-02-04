@@ -3,7 +3,6 @@ import { IoIosArrowDropleftCircle } from "react-icons/io";
 import TeksProfil from '../_components/TeksProfil';
 import Button from '../_components/button';
 import useProfileNasabah from '@/hooks/use-profile-nasabah';
-import useDataAktivitas from "@/hooks/use-data-aktivitas";
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
 import { useRouter } from 'next/navigation';
@@ -13,17 +12,19 @@ const Page = () => {
     const { id } = useParams();
     const router = useRouter();
     const { loading, error, data, getUserData } = useProfileNasabah(id);
-    const { data: dataAktivitas, getUserData: GetDataAktivitas } = useDataAktivitas();
-    const handleGetDataUser = async () => {
-        await getUserData();
-    }
+    // const handleGetDataUser = async () => {
+    //     await getUserData();
+    // }
 
     console.log("id:", id);
 
-    useEffect(() => {
-        getUserData();
-        GetDataAktivitas();
-    }, []);
+    console.log("Data:", data);
+    console.log("Error:", error);
+
+    // useEffect(() => {
+    //     getUserData();
+    //     GetDataAktivitas();
+    // }, []);
 
     if (!data) {
         return <div>Data not found</div>;

@@ -21,7 +21,7 @@ const useDetailAktivitas = (id) => {
         console.log(id)
 
         try {
-            const response = await axios.get(`https://back-btn-boost.vercel.app/detail-aktivitas/${id}`, {
+            const response = await axios.get(`http://localhost:8000/api/detail-aktivitas/${id}`, {
                 headers: {
                     Authorization: bearerToken
                 }

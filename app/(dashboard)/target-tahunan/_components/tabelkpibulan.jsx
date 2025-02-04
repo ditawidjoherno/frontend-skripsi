@@ -3,13 +3,13 @@ import Dropdown from './dropdown';
 
 const TabelKpiBulan = ({ selectedStaffData }) => {
   const [tableData, setTableData] = useState([]);
-  const [selectedBulan, setSelectedBulan] = useState("januari");
+  const [selectedBulan, setSelectedBulan] = useState("Januari");
 
   useEffect(() => {
-    if (selectedStaffData && selectedStaffData.aktivitas_kpi) {
+    if (selectedStaffData && selectedStaffData.target_kpi) {
       console.log("Data masuk:", selectedStaffData);
 
-      const kpiData = selectedStaffData.aktivitas_kpi.filter(kpi => kpi.target[selectedBulan]); 
+      const kpiData = selectedStaffData.target_kpi.filter(kpi => kpi.target[selectedBulan]); 
       console.log("Data yang difilter:", kpiData);
 
       const capitalizeFirstLetter = (string) => {
@@ -21,8 +21,8 @@ const TabelKpiBulan = ({ selectedStaffData }) => {
         KPI: capitalizeFirstLetter(kpi.nama_kpi),
         Target: kpi.target[selectedBulan],
         Realisasi: kpi.realisasi[selectedBulan],
-        Pencapaian: kpi.pencapaian[selectedBulan], 
-        NilaiKPI: kpi.nilai_kpi[selectedBulan]
+        Pencapaian: `${kpi.pencapaian[selectedBulan]}%`, 
+        NilaiKPI: `${kpi.nilai_kpi[selectedBulan]}%`
       }));
       console.log("Data yang akan ditampilkan:", tableRows);
 
@@ -37,18 +37,18 @@ const TabelKpiBulan = ({ selectedStaffData }) => {
   };
 
   const bulanOptions = [
-    { value: "januari", label: "Januari" },
-    { value: "februari", label: "Februari" },
-    { value: "maret", label: "Maret" },
-    { value: "april", label: "April" },
-    { value: "mei", label: "Mei" },
-    { value: "juni", label: "Juni" },
-    { value: "juli", label: "Juli" },
-    { value: "agustus", label: "Agustus" },
-    { value: "september", label: "September" },
-    { value: "oktober", label: "Oktober" },
-    { value: "november", label: "November" },
-    { value: "desember", label: "Desember" },
+    { value: "Januari", label: "Januari" },
+    { value: "Februari", label: "Februari" },
+    { value: "Maret", label: "Maret" },
+    { value: "April", label: "April" },
+    { value: "Mei", label: "Mei" },
+    { value: "Juni", label: "Juni" },
+    { value: "Juli", label: "Juli" },
+    { value: "Agustus", label: "Agustus" },
+    { value: "September", label: "September" },
+    { value: "Oktober", label: "Oktober" },
+    { value: "November", label: "November" },
+    { value: "Desember", label: "Desember" },
   ];
 
   return (

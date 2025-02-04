@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 
 const TargetMingguanMonitoring = () => {
   const router = useRouter();
-  const [foundStaffData, setFoundStaffData] = useState(null);
+  const [foundStaffData, setFoundStaffData] = useState([]);
   const { data: dataStaff, getUserData: getNamaStaff } = useStaff();
   const { data: dataTargetMingguan, getUserData: getTargetMingguan } = useTargetMingguanStaff();
   const [selectedStaff, setSelectedStaff] = useState("");
@@ -18,12 +18,8 @@ const TargetMingguanMonitoring = () => {
 
   useEffect(() => {
     if (dataTargetMingguan && selectedStaff) {
-      const foundStaffData = dataTargetMingguan.find(staff => staff.nip_staff === parseInt(selectedStaff));
-      if (foundStaffData) {
-        setFoundStaffData(foundStaffData);
-      } else {
-        setFoundStaffData(null);
-      }
+      const foundStaffData = dataTargetMingguan.filter(staff => staff.nip === selectedStaff);
+      setFoundStaffData(foundStaffData);
     }
   }, [dataTargetMingguan, selectedStaff]);
 
@@ -38,30 +34,27 @@ const TargetMingguanMonitoring = () => {
 
   const capitalizeFirstLetter = (string) => {
     return string.charAt(0).toUpperCase() + string.slice(1);
-};
+  };
 
   return (
     <div>
       <div className="flex justify-between mb-3">
-      <h2 className="sm:text-[30px] text-[21px]  font-semibold">
-          Target Mingguan
-        </h2>
+        <h2 className="sm:text-[30px] text-[21px] font-semibold">Target Mingguan</h2>
         <button
-              className="bg-blue-500 hover:bg-[#77c9ff] sm:w-[200px] w-[100px] sm:h-[55px] h-[37px] text-white font-semibold sm:px-4 px-2 rounded-md mr-3 sm:text-[16px] text-[10px]"
-              onClick={() => router.push("/update-target-mingguan")}
-
-            >
-              Ubah Target Mingguan
-            </button>
+          className="bg-blue-500 hover:bg-[#77c9ff] sm:w-[200px] w-[100px] sm:h-[55px] h-[37px] text-white font-semibold sm:px-4 px-2 rounded-md mr-3 sm:text-[16px] text-[10px]"
+          onClick={() => router.push("/update-target-mingguan")}
+        >
+          Ubah Target Mingguan
+        </button>
       </div>
-      <div className='w-full'>
+      <div className="w-full">
         {dataStaff && (
           <Dropdown
             value={selectedStaff}
             onChange={handleChange}
             options={dataStaff.map((staff) => ({
               value: staff.nip,
-              label: staff.nama
+              label: staff.nama,
             }))}
             placeholder={"Pilih Nama Staff"}
           />
@@ -76,16 +69,19 @@ const TargetMingguanMonitoring = () => {
             </tr>
           </thead>
           <tbody>
-            {foundStaffData && foundStaffData.target_mingguan && foundStaffData.target_mingguan.length > 0 ? (
-              foundStaffData.target_mingguan.map((target, index) => (
+            {foundStaffData && foundStaffData.length > 0 ? (
+              foundStaffData.map((staff, index) => (
                 <tr key={index}>
                   <td className="border border-gray-400 px-4 py-2">{index + 1}</td>
-                  <td className="border border-gray-400 px-4 py-2">{capitalizeFirstLetter(target)}</td>
+                  <td className="border border-gray-400 px-4 py-2">{capitalizeFirstLetter(staff.target)}</td>
                 </tr>
               ))
             ) : (
               <tr>
-                <td colSpan="2" className="border border-gray-400 px-4 py-2 sm:text-[17px] text-[12px] text-center">
+                <td
+                  colSpan="3"
+                  className="border border-gray-400 px-4 py-2 sm:text-[17px] text-[12px] text-center"
+                >
                   Belum ada data target Mingguan untuk staf yang dipilih
                 </td>
               </tr>

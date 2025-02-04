@@ -51,10 +51,10 @@ const Page = () => {
 
     const filteredData = tableData.filter(item =>
         item.nama_user.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        item.nama_aktivitas.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        item.aktivitas.toLowerCase().includes(searchTerm.toLowerCase()) ||
         item.nama_nasabah.toLowerCase().includes(searchTerm.toLowerCase()) ||
         item.prospek.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        item.aktivitas_sales.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        // item.aktivitas_sales.toLowerCase().includes(searchTerm.toLowerCase()) ||
         item.keterangan_aktivitas.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
@@ -143,10 +143,10 @@ const Page = () => {
                                 <th className="sm:px-8 px-7 sm:py-3 py-0">No</th>
                                 <th className="sm:px-14 px-7 sm:py-3 py-0">Nama Staff</th>
                                 <th className="sm:px-14 px-7 sm:py-3 py-0">Tanggal Prospek</th>
-                                <th className="sm:px-14 px-7 sm:py-3 py-0">Aktivitas</th>
+                                <th className="sm:px-14 px-7 sm:py-3 py-0"> Aktivitas</th>
                                 <th className="sm:px-14 px-7 sm:py-3 py-0">Nama Nasabah</th>
-                                <th className="sm:px-14 px-7 sm:py-3 py-0">Prospek</th>
-                                <th className="sm:px-14 px-7 sm:py-3 py-0">Aktivitas Sales</th>
+                                {/* <th className="sm:px-14 px-7 sm:py-3 py-0">Prospek</th> */}
+                                {/* <th className="sm:px-14 px-7 sm:py-3 py-0">Aktivitas Sales</th> */}
                                 <th className="sm:px-14 px-7 sm:py-3 py-0">Keterangan Aktivitas</th>
                             </tr>
                         </thead>
@@ -156,17 +156,21 @@ const Page = () => {
                                     <tr key={index} className={index % 2 === 0 ? 'bg-gray-200' : 'bg-white'}>
                                         <td>{offset + index + 1}</td>
                                         <td>{capitalizeFirstLetter(item.nama_user)}</td>
-                                        <td>{item.tanggal_aktivitas}</td>
-                                        <td>{capitalizeFirstLetter(item.nama_aktivitas)}</td>
+                                        <td>{item.created_at}</td>
+                                        <td>{capitalizeFirstLetter(item.aktivitas)}</td>
                                         <td>
-                                            <Link href={`/profil-nasabah/${item.id_nasabah}`}>
+                                            <Link href={`/profil-nasabah/${item.nasabah_id}`}>
                                                 <div className="text-black hover:text-blue-700 cursor-pointer">{item.nama_nasabah}</div>
                                             </Link>
                                         </td>
-                                        <td>{capitalizeFirstLetter(item.prospek)}</td>
-                                        <td>{capitalizeFirstLetter(item.aktivitas_sales)}</td>
+                                        {/* <td>{capitalizeFirstLetter(item.prospek)}</td> */}
+                                        {/* <td>{capitalizeFirstLetter(item.aktivitas_sales)}</td> */}
                                         <td>
-                                            <div className={`sm:text-lg text-sm py-[2px] rounded-md mx-6 my-1 text-white font-semibold ${item.keterangan_aktivitas === 'diterima' ? 'bg-green-500 ' : item.keterangan_aktivitas === 'ditolak' ? 'bg-red-500' : ''}`}>
+                                            <div className={`py-1 rounded-md mx-6 my-1 text-white font-semibold 
+        ${item.keterangan_aktivitas.toLowerCase() === 'diterima' ? 'bg-green-500'
+                                                    : item.keterangan_aktivitas.toLowerCase() === 'ditolak' ? 'bg-red-500'
+                                                        : item.keterangan_aktivitas.toLowerCase() === 'belum diproses' ? 'bg-orange-500'
+                                                            : ''}`}>
                                                 {capitalizeFirstLetter(item.keterangan_aktivitas)}
                                             </div>
                                         </td>

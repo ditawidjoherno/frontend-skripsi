@@ -1,15 +1,17 @@
 "use client";
 import { useRouter } from 'next/navigation';
 
-const Box = ({ bgColor, icon, text, number, bulan, className }) => {
-    const router = useRouter()
-    const lowerCaseBulan = bulan.toLowerCase();
+const Box = ({ bgColor, icon, text, number, bulan, selectedYear, className }) => {
+    const router = useRouter();
+    
     const handleClick = () => {
-        window.location.href = `/data-bulan?bulan=${bulan}`;
+        // Menavigasi ke halaman /data-bulan dengan parameter bulan dan tahun
+        router.push(`/data-bulan?bulan=${bulan}&tahun=${selectedYear}`);
     }
+
     return (
-        <button onClick={() => router.push(`/data-bulan?bulan=${bulan}`)} className={`${bgColor} sm:h-[180px] sm:w-full h-[90px]  w-full flex rounded-lg ${className}`}>
-            <div className="w-full h-full flex-col sm:py-4 py-1 sm:pb-8 pb-4 ">
+        <button onClick={handleClick} className={`${bgColor} sm:h-[180px] sm:w-full h-[90px] w-full flex rounded-lg ${className}`}>
+            <div className="w-full h-full flex-col sm:py-4 py-1 sm:pb-8 pb-4">
                 <p className="text-white sm:text-3xl text-base flex justify-start sm:px-10 px-5 sm:pt-2 pt-1 font-semibold h-1/4">
                     {text}
                 </p>

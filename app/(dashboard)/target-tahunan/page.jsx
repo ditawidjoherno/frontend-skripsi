@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import React, { useEffect, useState } from 'react';
 import { IoIosArrowDropleftCircle } from "react-icons/io";
 import InputPopup from './_components/popup';
@@ -18,8 +18,7 @@ const Page = () => {
   const router = useRouter();
   const { loading, error, data: userData, getUserData } = useUser();
   const [inputData, setInputData] = useState([]);
-
-
+  const [selectedTarget, setSelectedTarget] = useState('tahunan'); 
   useEffect(() => {
     getUserData();
   }, []);
@@ -46,6 +45,10 @@ const Page = () => {
     router.back();
   };
 
+  const handleTargetChange = (event) => {
+    setSelectedTarget(event.target.value);
+  };
+
   return (
     <div className={`bg-[#EAEAEA] h-full flex flex-col items-center sm:pt-[75px] pt-[40px] sm:pr-4 pr-3 sm:ml-20 ml-10`}>
       <div className="flex items-center w-full">
@@ -66,20 +69,38 @@ const Page = () => {
           </div>
         )}
 
-        {(jabatan === 'staff') && (
+        {jabatan === 'staff' && (
           <TableKpi data={inputData} />
         )}
 
         {(jabatan === 'admin') && (
           <div className='sm:mx-9 mx-3'>
-            <TargetHarianMonitoring />
-            <TargetMingguanMonitoring />
             <TargetTahunanMonitoring />
           </div>
+        )}
 
+        {jabatan === 'unit head' && (
+          <div className='sm:mx-9 mx-3'>
+            <div className="mb-4">
+              <label htmlFor="targetSelect" className="block text-lg font-semibold mb-2">Pilih Target:</label>
+              <select
+                id="targetSelect"
+                className="border border-gray-300 p-2 rounded-md"
+                value={selectedTarget}
+                onChange={handleTargetChange}
+              >
+                <option value="tahunan">Target Tahunan</option>
+                <option value="mingguan">Target Mingguan</option>
+                <option value="harian">Target Harian</option>
+              </select>
+            </div>
+            {selectedTarget === 'tahunan' && <TargetTahunanMonitoring />}
+            {selectedTarget === 'mingguan' && <TargetMingguanMonitoring />}
+            {selectedTarget === 'harian' && <TargetHarianMonitoring />}
+          </div>
         )}
       </div>
-    </div>
+    </div >
   );
 };
 

@@ -41,18 +41,16 @@ const TodoList = () => {
   const addReminder = (reminderText, reminderDate) => {
     const newReminder = {
       id: new Date().getTime(),
-      reminder: {
-        task: reminderText,
-        deadline: reminderDate,
-        done: false,
-      },
+      task: reminderText,
+      deadline: reminderDate,
+      done: false,
     };
 
     setTasks([...tasks, newReminder]);
   };
 
   return (
-    <div className="bg-white md:flex-row flex-col sm:ml-11 sm:mx-0 mx-5 sm:mt-10 mt-4 rounded-2xl sm:h-[350px] h-[220px] sm:w-auto w-auto sm:mb-5 mb-0">
+    <div className="bg-white md:flex-row flex-col sm:ml-6 mx-5 sm:mt-5 mt-4 rounded-lg sm:h-[350px] h-[220px] sm:w-auto w-auto sm:mb-5 mb-0 sm:-mr-1">
       <div className="flex sm:mx-9 mx-5 pt-4 justify-between">
         <div className="flex gap-2">
           <IoReceipt className="sm:text-4xl text-2xl" />
@@ -80,13 +78,13 @@ const TodoList = () => {
                     className="w-6 h-6 hover:text-gray-400 cursor-pointer"
                   />
                   <div>
-                    <p className={item.reminder.done ? "line-through" : ""}>
-                      {item.reminder.task}
+                    <p className={item.done ? "line-through" : ""}>
+                      {item.task}
                     </p>
                     <div className="flex gap-2 mb-2">
                       <div className="text-xs text-gray-500 flex">
                         <FaRegCalendarAlt className="mr-1" />
-                        <p>{item.reminder.deadline}</p>
+                        <p>{item.deadline}</p>
                       </div>
                     </div>
                   </div>

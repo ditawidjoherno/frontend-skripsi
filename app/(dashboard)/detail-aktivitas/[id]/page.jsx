@@ -24,7 +24,7 @@ const Page = () => {
 
     useEffect(() => {
         getUserData();
-        GetDataAktivitas();
+        // GetDataAktivitas();
     }, []);
 
     if (!data) {
@@ -33,8 +33,8 @@ const Page = () => {
     console.log(data)
 
     const handleGoBack = () => {
-        router.back();
-    };
+            router.push('/data_aktivitas');
+   };
 
 
     const capitalizeFirstLetter = (string) => {
@@ -60,7 +60,7 @@ const Page = () => {
                     Detail Aktivitas
                 </h2>
                 <div>
-                <IoIosArrowDropleftCircle
+                    <IoIosArrowDropleftCircle
                         className="sm:h-10 sm:w-10 h-5 w-5 sm:ml-3 ml-0 transition-colors duration-300 hover:text-gray-400 focus:text-gray-400 cursor-pointer"
                         onClick={handleGoBack}
                     />
@@ -75,7 +75,7 @@ const Page = () => {
                             <TeksProfil label="Nama Nasabah" value={capitalizeFirstLetter(data.nama_nasabah)} />
                             <TeksProfil label="Alamat" value={capitalizeFirstLetter(data.alamat)} />
                             <TeksProfil label="Nomor Telepon Nasabah" value={capitalizeFirstLetter(data.nomor_hp_nasabah)} />
-                            <TeksProfil label="Aktivitas" value={capitalizeFirstLetter(data.nama_aktivitas)} />
+                            <TeksProfil label="Aktivitas" value={capitalizeFirstLetter(data.aktivitas)} />
                             <TeksProfil label="Tipe Nasabah" value={capitalizeFirstLetter(data.tipe_nasabah)} />
                             <TeksProfil label="Prospek" value={capitalizeFirstLetter(data.prospek)} />
                         </div>
@@ -86,7 +86,6 @@ const Page = () => {
                             <TeksProfil label="Keterangan AKtivitas" value={capitalizeFirstLetter(data.keterangan_aktivitas)} />
                             <TeksProfil label="Aktivitas Sales" value={capitalizeFirstLetter(data.aktivitas_sales)} />
                         </div>
-
                     </div>
                 </div>
             </div>
@@ -94,9 +93,23 @@ const Page = () => {
                 <div className="bg-white max-w-full  min-w-[50%] rounded-2xl h-auto sm:ml-5 ml-3 w-full sm:py-3 sm:pt-6 pt- ">
                     <h2 className='font-medium sm:text-[28px] text-[20px] sm:ml-11 ml-7'>Dokumentasi</h2>
                     <hr className="my-3 mx-6  border-t-2 justify-center items-center border-black mt-1" />
-                    <div className='flex md:flex-row flex-col items-center justify-center mb-5'>
-                        <img src={data.dokumentasi} alt={`Foto`} className="sm:w-[250px] w-[100px] sm:h-[250px] h-[100px] mx-9 sm:mb-0 mb-3" />
+                    <div className='flex flex-wrap justify-center mb-5'>
+                        {data.dokumentasi && Array.isArray(data.dokumentasi) && data.dokumentasi.length > 0 ? (
+                            data.dokumentasi.map((file, index) => (
+                                <div key={index} className="flex-shrink-0 w-1/3 sm:w-[250px]  sm:h-[250px] h-[100px] mx-5 mb-3">
+                                    <img
+                                        src={`/storage/${file.file_path}`}
+                                        alt={`Dokumentasi ${index + 1}`}
+                                        className="w-full h-full object-cover"
+                                    />
+                                </div>
+                            ))
+                        ) : (
+                            <p>Tidak ada dokumentasi yang ditambahkan</p>
+                        )}
                     </div>
+
+
                 </div>
             </div>
             {/* <div className='w-full flex justify-end items-start h-full'>
@@ -105,7 +118,6 @@ const Page = () => {
                 />
             </div> */}
         </div>
-
     )
 }
 

@@ -19,7 +19,7 @@ const useDeleteReminder = () => {
         throw new Error("Token is null or invalid");
       }
 
-      const response = await axios.delete(`https://back-btn-boost.vercel.app/reminder/${id}`, {
+      const response = await axios.delete(`http://localhost:8000/api/reminders/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`
         }

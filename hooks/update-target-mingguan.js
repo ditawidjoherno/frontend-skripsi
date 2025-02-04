@@ -1,19 +1,20 @@
-"use client"
+"use client";
+
 import { getCookie } from "@/lib/cookieFunction";
 import axios from "axios";
 import { useState } from "react";
-import { create } from "zustand";
 import useUserStore from "./use-data-user";
 
 const updateTargetMingguan = () => {
-    const [loading, setLoading] = useState(false)
-    const [error, setError] = useState(null)
-    const [data, setData] = useState(null)
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
+    const [data, setData] = useState(null);
     const cookie = process.env.NEXT_PUBLIC_COOKIE_NAME;
-    const token = getCookie(cookie)
-    const { user, setUser, clearUser } = useUserStore();
+    const token = getCookie(cookie);
+    const { user } = useUserStore();
 
-    const bearerToken = `Bearer ${token}`
+    const bearerToken = `Bearer ${token}`;
+
     const storeTargetMingguan = async (nip, body) => {
         setLoading(true);
         setError(null);
@@ -21,27 +22,27 @@ const updateTargetMingguan = () => {
 
         try {
             const response = await axios.put(
-                `https://back-btn-boost.vercel.app/target-mingguan/${nip}`,
+                `http://localhost:8000/api/update-target-mingguan/${nip}`,
                 body,
                 { headers: { Authorization: bearerToken } }
             );
 
-            if (response.status !== 200) {
-                throw new Error(response.data.message || "Gagal Mengirim Target Tahunan");
+            if (response.status === 200) {
+                setData(response.data); // Simpan response data ke state
+                return { success: true, message: response.data.message };
+            } else {
+                throw new Error(response.data.message || "Gagal Memperbarui Target Mingguan");
             }
-
-            return (response.data.message);
-            setData(response.data.message);
         } catch (error) {
-            setError(error.response.data.message);
-            alert(error.response.data.message);
+            const errorMessage = error.response?.data?.message || error.message;
+            setError(errorMessage); // Simpan pesan error ke state
+            return { success: false, message: errorMessage };
         } finally {
             setLoading(false);
         }
     };
 
+    return { loading, error, data, storeTargetMingguan };
+};
 
-    return { loading, error, data, storeTargetMingguan }
-}
-
-export default updateTargetMingguan
+export default updateTargetMingguan;

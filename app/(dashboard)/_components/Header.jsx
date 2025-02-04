@@ -11,8 +11,7 @@ const Header = ({ setIsCollapse, isCollapse }) => {
   const [loading, setLoading] = useState(false);
 
   const handleLogout = () => {
-      setLoading(true); // Aktifkan status loading saat tombol ditekan
-      // Lakukan proses logout atau navigasi ke halaman logout
+      setLoading(true);
   };
   return (
     <header className={`bg-white md:px-6 w-full fixed top-0 z-10 shadow-md transition-all duration-700 md:py-2`} >
@@ -24,7 +23,7 @@ const Header = ({ setIsCollapse, isCollapse }) => {
           <ProfileButton />
           <Link href="/">
           <button onClick={handleLogout} className="flex items-center sm:ml-6 ml-2 my-2 sm:text-lg text-sm transition-colors duration-300 hover:text-gray-400 focus:text-gray-400 cursor-pointer">
-                    {loading ? ( // Tampilkan ikon spinner jika loading aktif
+                    {loading ? ( 
                         <FaSpinner className="animate-spin mr-2" />
                     ) : (
                         <IoExitOutline className="sm:w-10 sm:h-10  w-5 h-5" />

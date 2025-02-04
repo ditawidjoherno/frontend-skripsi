@@ -16,30 +16,30 @@ const TableKpiMonitoring = () => {
     getTargetTahunan();
   }, []);
 
-  
+
   useEffect(() => {
     if (dataTargetTahunan && dataTargetTahunan.length > 0 && selectedStaff !== "") {
       const capitalizeFirstLetter = (string) => {
         return string.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
       };
-      
-      const foundStaffData = dataTargetTahunan.find(staff => staff.nip_staff === selectedStaff);
-      if (foundStaffData && foundStaffData.aktivitas_kpi) {
-        const tableRows = foundStaffData.aktivitas_kpi.map((kpi, index) => ({
+
+      const foundStaffData = dataTargetTahunan.find(staff => staff.user_id === selectedStaff);
+      if (foundStaffData && foundStaffData.target_kpi) {
+        const tableRows = foundStaffData.target_kpi.map((kpi, index) => ({
           No: index + 1,
           KPI: capitalizeFirstLetter(kpi.nama_kpi),
-          TargetJan: kpi.target.januari,
-          TargetFeb: kpi.target.februari,
-          TargetMar: kpi.target.maret,
-          TargetApr: kpi.target.april,
-          TargetMei: kpi.target.mei,
-          TargetJun: kpi.target.juni,
-          TargetJul: kpi.target.juli,
-          TargetAgu: kpi.target.agustus,
-          TargetSep: kpi.target.september,
-          TargetOkt: kpi.target.oktober,
-          TargetNov: kpi.target.november,
-          TargetDes: kpi.target.desember,
+          TargetJan: kpi.target.Januari,
+          TargetFeb: kpi.target.Februari,
+          TargetMar: kpi.target.Maret,
+          TargetApr: kpi.target.April,
+          TargetMei: kpi.target.Mei,
+          TargetJun: kpi.target.Juni,
+          TargetJul: kpi.target.Juli,
+          TargetAgu: kpi.target.Agustus,
+          TargetSep: kpi.target.September,
+          TargetOkt: kpi.target.Oktober,
+          TargetNov: kpi.target.November,
+          TargetDes: kpi.target.Desember,
         }));
         setTableData(tableRows);
         setFoundStaffData(foundStaffData);
@@ -55,16 +55,17 @@ const TableKpiMonitoring = () => {
     setSelectedStaff(selectedStaff);
   };
 
-  
+
   return (
     <div>
+      <h2 className="sm:text-[30px] text-[21px] font-semibold mb-3">Target Tahunan Staff</h2>
       <div className='w-full'>
         {dataStaff && (
           <Dropdown
             value={selectedStaff}
             onChange={handleChange}
             options={dataStaff.map((staff) => ({
-              value: staff.nip,
+              value: staff.user_id,
               label: staff.nama
             }))}
             placeholder={"Pilih Nama Staff"}

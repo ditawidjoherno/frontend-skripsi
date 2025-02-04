@@ -21,7 +21,7 @@ const useStaff = () => {
 
 
         try {
-            const response = await axios.get(`https://back-btn-boost.vercel.app/nama-staff`, {
+            const response = await axios.get(`http://localhost:8000/api/nama-staff`, {
                 headers: {
                     Authorization: bearerToken
                 }

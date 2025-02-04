@@ -39,7 +39,7 @@ const Page = () => {
     item.nama_aktivitas.toLowerCase().includes(searchTerm.toLowerCase()) ||
     item.nama_nasabah.toLowerCase().includes(searchTerm.toLowerCase()) ||
     item.prospek.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    item.aktivitas_sales.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    // item.aktivitas_sales.toLowerCase().includes(searchTerm.toLowerCase()) ||
     item.keterangan_aktivitas.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
@@ -70,8 +70,10 @@ const Page = () => {
   }
 
   const capitalizeFirstLetter = (string) => {
+    if (!string) return "";
     return string.charAt(0).toUpperCase() + string.slice(1);
   };
+  
 
   const handleGoBack = () => {
     router.back();
@@ -125,8 +127,8 @@ const Page = () => {
                 <th className="sm:px-10 px-6 sm:text-lg text-sm  sm:py-[5px] py-[2px]">Tanggal Prospek</th>
                 <th className="sm:px-10 px-6 sm:text-lg text-sm  sm:py-[5px] py-[2px]">Aktivitas</th>
                 <th className="sm:px-10 px-6 sm:text-lg text-sm  sm:py-[5px] py-[2px]">Nama Nasabah</th>
-                <th className="sm:px-10 px-6 sm:text-lg text-sm  sm:py-[5px] py-[2px]">Aktivitas Sales</th>
-                <th className="sm:px-10 px-6 sm:text-lg text-sm  sm:py-[5px] py-[2px]">Prospek</th>
+                {/* <th className="sm:px-10 px-6 sm:text-lg text-sm  sm:py-[5px] py-[2px]">Aktivitas Sales</th> */}
+                {/* <th className="sm:px-10 px-6 sm:text-lg text-sm  sm:py-[5px] py-[2px]">Prospek</th> */}
               </tr>
             </thead>
             <tbody>
@@ -142,8 +144,8 @@ const Page = () => {
                         <div className="text-blue-500 hover:text-blue-700 cursor-pointer">{capitalizeFirstLetter(item.nama_nasabah)}</div>
                       </Link>
                     </td>
-                    <td>{capitalizeFirstLetter(item.aktivitas_sales)}</td>
-                    <td>{capitalizeFirstLetter(item.prospek)}</td>
+                    {/* <td>{capitalizeFirstLetter(item.aktivitas_sales)}</td> */}
+                    {/* <td>{capitalizeFirstLetter(item.prospek)}</td> */}
 
                   </tr>
                 ))

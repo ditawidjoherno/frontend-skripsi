@@ -18,7 +18,7 @@ const useGetTarget = () => {
     setData(null);
 
     try {
-      const response = await axios.get(`https://back-btn-boost.vercel.app/target-tahunan?nip=${nip}`, {
+      const response = await axios.get(`http://localhost:8000/api/target-tahunan-staff?nip=${nip}`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -29,7 +29,7 @@ const useGetTarget = () => {
       }
 
       setData(response.data.data);
-      console.log(response.data.data);
+      console.log(response.data);
     } catch (error) {
       setError(error.message);
     } finally {

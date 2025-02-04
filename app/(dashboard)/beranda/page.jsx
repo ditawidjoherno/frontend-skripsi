@@ -10,7 +10,12 @@ import Calendar from "./_components/Calendar";
 import RecentData from "./_components/RecentData";
 import useAktivitasDitunda from "@/hooks/use-aktivitas-ditunda";
 import TargetHarian from "./_components/target";
+import KPIProgress from "./_components/progressDiagram";
+import DashboardKPI from "./_components/progressKpi";
 import { FaSpinner } from 'react-icons/fa';
+import Link from "next/link";
+import { HiOutlineClock } from "react-icons/hi2";
+import TotalAktivitas from "./_components/totalAktivitas";
 
 const Page = () => {
   const { loading, data: userData, getUserData: getUser } = useUser();
@@ -49,11 +54,11 @@ const Page = () => {
 
   if (loading) {
     return (
-        <div className="fixed inset-0 flex items-center justify-center">
-            <FaSpinner className="animate-spin mr-2" /> Loading
-        </div>
+      <div className="fixed inset-0 flex items-center justify-center">
+        <FaSpinner className="animate-spin mr-2" /> Loading
+      </div>
     );
-}
+  }
 
 
 
@@ -62,35 +67,65 @@ const Page = () => {
       <h2 className="sm:text-[40px] text-[24px] sm:pt-[79px] pt-[50px] sm:ml-16 ml-8 font-semibold">
         Dashboard
       </h2>
-      {userData && userData.jabatan === 'staff' && (
-        <p className="sm:text-[25px] text-[24px] bg-[#92b5fb] text-white text- mr-4 -mb-4 rounded-md font-normal sm:ml-16 ml-8 pl-4 py-2">
-          Selamat Datang BTN Boost {userData.nama}!
-        </p>
-      )
-      }
+      {userData && (
+        <div className="sm:ml-16 ml-8 mt-4 sm:mr-5 mr-0 mb-5 bg-white rounded-md shadow-lg p-6 flex items-center justify-between">
+          <div className="flex items-center">
+            <div className="bg-gradient-to-r p-3 rounded-full">
+              <img
+                src="/img/btn_boost.png"
+                alt="Welcome Icon"
+                className="w-20 h-16 animate-bounce"
+              />
+            </div>
+            <div className="ml-4">
+              <h3 className="text-[18px] sm:text-[24px] font-bold text-gray-800">Selamat Datang di BTN Boost!</h3>
+              <p className="text-[14px] sm:text-[16px] text-gray-600">
+                Hai <span className="text-[#4A90E2] font-semibold">{userData.nama}</span>,
+                selamat bekerja!
+              </p>
+            </div>
+          </div>
+          {userData && userData.jabatan === 'staff' && (
+            <Link href="/aktivitas-ditunda">
+              <div className="hidden sm:block">
+                <button className="bg-[#F76B03] hover:bg-[#f08e42] text-white font-medium px-4 py-2 rounded-md transition">
+                  Lihat Aktivitas Ditunda
+                </button>
+              </div>
+            </Link>
+          )}
+        </div>
+      )}
+
 
       <div className="flex md:flex-row flex-col md:justify-evenly justify-start lg:gap-0 gap-5 lg:items-start items-center px-8">
         {userData && userData.jabatan !== 'unit_head' && userData.jabatan !== 'staff' && (
           <button onClick={handleSelesaiClick}>
             <Box
-              bgColor={"bg-[#6EE014]"}
+              bgColor={"bg-white"}
+              text={"Aktivitas Selesai"}
               icon={
-                <IoCheckmarkDoneCircleOutline className="text-white ml-9 mt-7" />
+                <div className="bg-[#c7ff9c] rounded-md flex items-center justify-center">
+                  <IoCheckmarkDoneCircleOutline className="text-[#4b871d]" />
+                </div>
               }
-              text={"Selesai"}
               number={jumlahSelesaiData}
-              className={"hover:bg-[#63ec39] transition duration-300"}
-              />
+              className={"hover:bg-[#b5ff9f] transition duration-300"}
+            />
           </button>
         )}
         {userData && userData.jabatan !== 'unit_head' && userData.jabatan !== 'staff' && (
           <button onClick={handleDitundaClick}>
             <Box
-              bgColor={"bg-[#F76B03]"}
-              icon={<IoTimeSharp className="text-white ml-9 mt-7" />}
-              text={"Ditunda"}
+              bgColor={"bg-white"}
+              text={"Aktivitas Ditunda"}
+              icon={
+                <div className="bg-[#ffd5b5] rounded-md flex items-center justify-center">
+                  <HiOutlineClock className="text-[#F76B03]" />
+                </div>
+              }
               number={jumlahDitundaData}
-              className={"hover:bg-[#f08e42] transition duration-300"}
+              className={"hover:bg-[#ffa25b] transition duration-300"}
             />
           </button>
 
@@ -98,15 +133,21 @@ const Page = () => {
       </div>
       <div className="flex  flex-col lg:flex-row ml-5 justfiy-center">
         <div className="sm:w-1/2">
-          {userData && userData.jabatan === 'manager' && <RecentData />}
-          {userData && userData.jabatan === 'admin' && <RecentData />}
+          {userData && userData.jabatan !== 'staff' && <TotalAktivitas />}
+          {userData && userData.jabatan !== 'staff' && <RecentData />}
+          {/* {userData && userData.jabatan === 'admin' && <RecentData />} */}
           {userData && userData.jabatan === 'staff' && <TargetHarian />}
-          
-          <TodoList />
+          <div className="ml-5">
+            {userData && userData.jabatan === 'staff' && <TodoList />}
+          </div>
         </div>
 
         <div className="sm:w-1/2">
-          <Calendar />
+          {userData && userData.jabatan === 'staff' && <KPIProgress />}
+          {userData && userData.jabatan !== 'staff' && <DashboardKPI />}
+          {userData && userData.jabatan !== 'staff' && <TodoList />}
+
+          {/* <Calendar /> */}
         </div>
       </div>
     </div>

@@ -20,7 +20,7 @@ const useNilaiKpi = () => {
 
     try {
       const response = await axios.get(
-        `https://back-btn-boost.vercel.app/nilai-kpi/${nip}`,
+        `http://localhost:8000/api/nilai-kpi/${nip}`,
         {
           headers: {
             Authorization: bearerToken,

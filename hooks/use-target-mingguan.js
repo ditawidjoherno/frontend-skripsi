@@ -21,7 +21,7 @@ const useTargetMingguanStaff = () => {
 
 
         try {
-            const response = await axios.get(`https://back-btn-boost.vercel.app/target-mingguan`, {
+            const response = await axios.get(`http://localhost:8000/api/target-mingguan`, {
                 headers: {
                     Authorization: bearerToken
                 }

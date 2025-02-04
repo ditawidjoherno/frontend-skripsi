@@ -14,14 +14,14 @@ const useTargetTahunan = () => {
     const { user, setUser, clearUser } = useUserStore();
 
     const bearerToken = `Bearer ${token}`
-    const storeTargetTahunan = async (nip, body) => {
+    const storeTargetTahunan = async (user_id, body) => {
         setLoading(true);
         setError(null);
         setData(null);
 
         try {
             const response = await axios.post(
-                `https://back-btn-boost.vercel.app/target-tahunan/${nip}`,
+                `http://localhost:8000/api/add-target-tahunan/${user_id}`,
                 body,
                 { headers: { Authorization: bearerToken } }
             );

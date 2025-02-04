@@ -22,7 +22,7 @@ const useAddNasabah = () => {
         console.log(body)
 
         try {
-            const response = await axios.post(`https://back-btn-boost.vercel.app/nasabah`, body, {
+            const response = await axios.post(`http://localhost:8000/api/input-nasabah`, body, {
                 headers: {
                     Authorization: bearerToken
                 }

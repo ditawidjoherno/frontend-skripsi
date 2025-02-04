@@ -1,33 +1,32 @@
 "use client";
 
-import { useState, useEffect } from 'react';
-import axios from 'axios';
-import updateTargetHarian from '@/hooks/update-target-harian';
-import { getCookie } from '@/lib/cookieFunction';
-import Link from "next/link";
+import { useState, useEffect } from "react";
+import axios from "axios";
+import updateTargetHarian from "@/hooks/update-target-harian";
+import { getCookie } from "@/lib/cookieFunction";
+import { useRouter } from "next/navigation";
 import { IoIosArrowDropleftCircle } from "react-icons/io";
-
-import { useRouter } from 'next/navigation';
-
 
 const TargetHarian = () => {
     const router = useRouter();
     const cookie = process.env.NEXT_PUBLIC_COOKIE_NAME;
-    const token = getCookie(cookie)
-    const bearerToken = `Bearer ${token}`
-    const [inputTargetHarian, setInputTargetHarian] = useState('');
-    const [selectedStaff, setSelectedStaff] = useState('');
+    const token = getCookie(cookie);
+    const bearerToken = `Bearer ${token}`;
+    const [inputTargetHarian, setInputTargetHarian] = useState("");
+    const [selectedStaff, setSelectedStaff] = useState("");
     const [namaStaff, setNamaStaff] = useState([]);
     const [targets, setTargets] = useState([]);
-    const { loading, error, data, storeTargetHarian } = updateTargetHarian();
+    const [modalMessage, setModalMessage] = useState("");
+    const [modalType, setModalType] = useState(""); 
+    const [showModal, setShowModal] = useState(false);
+
+    const { storeTargetHarian } = updateTargetHarian();
 
     useEffect(() => {
         const fetchNamaStaff = async () => {
             try {
-                const response = await axios.get(`https://back-btn-boost.vercel.app/nama-staff`, {
-                    headers: {
-                        Authorization: bearerToken
-                    }
+                const response = await axios.get(`http://localhost:8000/api/nama-staff`, {
+                    headers: { Authorization: bearerToken },
                 });
                 setNamaStaff(response.data.data);
             } catch (error) {
@@ -36,52 +35,73 @@ const TargetHarian = () => {
         };
 
         fetchNamaStaff();
-    }, [bearerToken, selectedStaff]);
+    }, [bearerToken]);
 
     const handleSubmitTarget = () => {
-        if (inputTargetHarian.trim() !== '') {
+        if (inputTargetHarian.trim() !== "") {
             setTargets([...targets, inputTargetHarian.trim()]);
-            setInputTargetHarian('');
+            setInputTargetHarian("");
         }
+    };
+
+    const handleDeleteTarget = (index) => {
+        const updatedTargets = targets.filter((_, i) => i !== index);
+        setTargets(updatedTargets);
     };
 
     const handleSubmitHarian = async () => {
+        if (!selectedStaff) {
+            setModalMessage("Silakan pilih nama staff terlebih dahulu.");
+            setModalType("error");
+            setShowModal(true);
+            return;
+        }
+
+        if (targets.length === 0) {
+            setModalMessage("Silakan tambahkan target harian terlebih dahulu.");
+            setModalType("error");
+            setShowModal(true);
+            return;
+        }
+
         try {
-            await storeTargetHarian(selectedStaff, { target_harian: targets });
-            alert("Data target harian berhasil disimpan");
+            const result = await storeTargetHarian(selectedStaff, { target_harian: targets });
+            if (result.success) {
+                setModalMessage(result.message || "Data target harian berhasil disimpan.");
+                setModalType("success");
+                setTargets([]);
+            } else {
+                setModalMessage(result.message || "Gagal menyimpan data target harian.");
+                setModalType("error");
+            }
         } catch (error) {
             console.error("Error: ", error);
-            alert("Gagal menyimpan data target harian");
+            setModalMessage("Terjadi kesalahan saat menyimpan data.");
+            setModalType("error");
+        } finally {
+            setShowModal(true);
         }
     };
 
-    const capitalizeFirstLetter = (string) => {
-        return string.charAt(0).toUpperCase() + string.slice(1);
-    };
+    const capitalizeFirstLetter = (string) => string.charAt(0).toUpperCase() + string.slice(1);
 
     const handleGoBack = () => {
         router.back();
     };
 
     return (
-        <div className={`bg-[#EAEAEA] h-screen flex flex-col items-center sm:pt-[75px] pt-[55px] sm:pr-4 pr-3 sm:ml-20 ml-10`}>
+        <div className="bg-[#EAEAEA] h-screen flex flex-col items-center sm:pt-[75px] pt-[55px] sm:pr-4 pr-3 sm:ml-20 ml-10">
             <div className="flex items-center w-full">
-                <h2 className="sm:text-[40px] text-[24px] sm:ml-5 ml-4 font-semibold">
-                    Ubah Target Staff
-                </h2>
-                <div>
-                    <IoIosArrowDropleftCircle
-                        className="sm:h-10 sm:w-10 h-5 w-5 sm:ml-3 ml-0 transition-colors duration-300 hover:text-gray-400 focus:text-gray-400 cursor-pointer"
-                        onClick={handleGoBack}
-                    />
-                </div>
+                <h2 className="sm:text-[40px] text-[24px] sm:ml-5 ml-4 font-semibold">Ubah Target Staff</h2>
+                <IoIosArrowDropleftCircle
+                    className="sm:h-10 sm:w-10 h-5 w-5 sm:ml-3 ml-0 transition-colors duration-300 hover:text-gray-400 focus:text-gray-400 cursor-pointer"
+                    onClick={handleGoBack}
+                />
             </div>
             <div className="bg-white rounded-2xl h-auto mb-16 sm:ml-5 ml-3 w-full sm:pt-4 pt-6 mt-3">
-                <div className='sm:mx-9 mx-3'>
-                    <h2 className="sm:text-[30px] text-[20px] font-semibold">
-                        Ubah Target Harian
-                    </h2>
-                    <div className=''>
+                <div className="sm:mx-9 mx-3">
+                    <h2 className="sm:text-[30px] text-[20px] font-semibold">Ubah Target Harian</h2>
+                    <div>
                         <label htmlFor="staffSelect" className="block mb-2 sm:text-[17px] text-[14px]">Nama Staff:</label>
                         <select
                             id="staffSelect"
@@ -89,7 +109,7 @@ const TargetHarian = () => {
                             value={selectedStaff}
                             onChange={(e) => setSelectedStaff(e.target.value)}
                         >
-                            <option value="">Select Nama Staff</option>
+                            <option value="">Pilih Nama Staff</option>
                             {namaStaff.map((staff, index) => (
                                 <option key={index} value={staff.nip}>{staff.nama}</option>
                             ))}
@@ -106,7 +126,7 @@ const TargetHarian = () => {
                                 onChange={(e) => setInputTargetHarian(e.target.value)}
                             />
                             <button
-                                className="bg-blue-500 hover:bg-blue-600 text-white px-4 sm:py-2 py-0 sm:h-[45px] h-[30px] rounded-r-md sm:text-[17px] text-[12px]"
+                                className="bg-blue-500 hover:bg-blue-600 text-white px-4 sm:py-2 py-0 sm:h-[45px] h-[30px] sm:text-[17px] text-[12px] rounded-r-md"
                                 onClick={handleSubmitTarget}
                             >
                                 Tambah
@@ -117,6 +137,7 @@ const TargetHarian = () => {
                                 <tr>
                                     <th className="border border-gray-500 p-1 sm:text-[17px] text-[12px]">No</th>
                                     <th className="border border-gray-500 p-2 sm:text-[17px] text-[12px]">Target Harian</th>
+                                    <th className="border border-gray-500 p-2 sm:text-[17px] text-[12px]">Aksi</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -124,12 +145,20 @@ const TargetHarian = () => {
                                     <tr key={index}>
                                         <td className="border border-gray-500 p-1 text-center sm:text-[17px] text-[12px]">{index + 1}</td>
                                         <td className="border border-gray-500 p-2 sm:text-[17px] text-[12px]">{capitalizeFirstLetter(target)}</td>
+                                        <td className="border border-gray-500 p-2 text-center">
+                                            <button
+                                                className="bg-red-500 hover:bg-red-600 text-white px-2 py-1 rounded sm:text-[14px] text-[10px]"
+                                                onClick={() => handleDeleteTarget(index)}
+                                            >
+                                                Hapus
+                                            </button>
+                                        </td>
                                     </tr>
                                 ))}
                             </tbody>
                         </table>
                     </div>
-                    <div className='justify-end mt-5 flex'>
+                    <div className="justify-end mt-5 flex">
                         <button
                             className="bg-blue-500 hover:bg-blue-600 text-white sm:px-4 px-3 sm:py-2 py-2 mb-10 sm:text-[17px] text-[12px] rounded-md"
                             onClick={handleSubmitHarian}
@@ -139,13 +168,26 @@ const TargetHarian = () => {
                     </div>
                 </div>
             </div>
+
+            {/* Modal */}
+            {showModal && (
+                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+                    <div className="bg-white p-5 rounded-md shadow-lg">
+                        <h3 className={`text-lg font-bold ${modalType === "success" ? "text-green-600" : "text-red-600"}`}>
+                            {modalType === "success" ? "Berhasil" : "Gagal"}
+                        </h3>
+                        <p className="mt-2">{modalMessage}</p>
+                        <button
+                            className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 mt-4 rounded-md"
+                            onClick={() => setShowModal(false)}
+                        >
+                            Tutup
+                        </button>
+                    </div>
+                </div>
+            )}
         </div>
     );
 };
 
 export default TargetHarian;
-
-
-
-
-

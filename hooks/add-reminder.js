@@ -21,7 +21,7 @@ const tambahReminder = () => {
         };
 
         try {
-            const response = await axios.post("https://back-btn-boost.vercel.app/reminder", body, {
+            const response = await axios.post("http://localhost:8000/api/reminders", body, {
                 headers: {
                     Authorization: bearerToken
                 }

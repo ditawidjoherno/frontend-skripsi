@@ -1,22 +1,19 @@
 "use client"
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { IoPodiumSharp } from "react-icons/io5";
 import Box from './_components/Box';
 import BoxProfil from './_components/BoxProfil';
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
 import { IoIosArrowDropleftCircle } from "react-icons/io";
 import useAktivitasHarian from "@/hooks/use-aktivitas-harian";
 import useAktivitasBulanan from '@/hooks/use-aktivitas-bulanan';
 import useStaff from '@/hooks/use-staff';
-import { useParams, useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import useAllBulanan from '@/hooks/use-all-bulanan';
 import useTotalMingguan from '@/hooks/use-monitoring-mingguan';
 import { FaSpinner } from 'react-icons/fa';
 
-
 const Page = () => {
-
   const [jumlahHarianData, setJumlahHarianData] = useState(0);
   const { loading, data: HarianData, getUserData: getHarianData } = useAktivitasHarian();
   const [jumlahBulananData, setJumlahBulananData] = useState(0);
@@ -24,8 +21,7 @@ const Page = () => {
   const { data: MingguanData, getTotalMingguan } = useTotalMingguan();
   const [jumlahMingguanData, setJumlahMingguanData] = useState(0);
   const { data: Staff, getUserData: getStaff } = useStaff();
-  const router = useRouter()
-
+  const router = useRouter();
 
   useEffect(() => {
     getHarianData();
@@ -42,7 +38,7 @@ const Page = () => {
 
   useEffect(() => {
     if (BulananData) {
-      setJumlahBulananData(BulananData.length);
+      setJumlahBulananData(BulananData.total_aktivitas_bulan_ini || 0);
     }
   }, [BulananData]);
 
@@ -50,33 +46,17 @@ const Page = () => {
     const getJumlahMingguIni = () => {
       const currentDate = new Date();
       const currentWeekNumber = Math.ceil(currentDate.getDate() / 7);
-      const monthNames = ["januari", "februari", "maret", "april", "mei", "juni", "juli", "agustus", "september", "oktober", "november", "desember"];
+      const monthNames = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
       const currentMonth = monthNames[currentDate.getMonth()];
-      const currentWeekData = MingguanData?.[currentMonth]?.[`minggu_${currentWeekNumber}`];
+      const currentWeekData = MingguanData?.[currentMonth]?.[`minggu ${currentWeekNumber}`];
       const jumlahMingguIni = currentWeekData ? currentWeekData.jumlah : 0;
       setJumlahMingguanData(jumlahMingguIni);
     };
 
-    getJumlahMingguIni();
+    if (MingguanData) {
+      getJumlahMingguIni();
+    }
   }, [MingguanData]);
-
-
-
-  const handleHarianClick = () => {
-    window.location.href = '/data-harian';
-  };
-
-  const handleMingguanClick = () => {
-    window.location.href = '/monitoring-mingguan';
-  };
-
-  const handleBulananClick = () => {
-    window.location.href = '/monitoring-bulanan';
-  };
-
-  const handleSalesClick = () => {
-    window.location.href = '/monitoring-sales';
-  };
 
   if (loading) {
     return (
@@ -84,7 +64,7 @@ const Page = () => {
         <FaSpinner className="animate-spin mr-2" /> Loading
       </div>
     );
-  };
+  }
 
   const handleGoBack = () => {
     router.back();
@@ -99,7 +79,6 @@ const Page = () => {
       return string;
     }
   };
-
 
   return (
     <div className={`bg-[#EAEAEA] h-auto flex flex-col items-center sm:pt-[75px] pt-[60px] sm:pr-4 pr-3 sm:ml-20 ml-10`}>
@@ -130,7 +109,6 @@ const Page = () => {
           number={jumlahMingguanData}
           onClick={() => router.push("/monitoring-mingguan")}
           className={"hover:bg-[#1c5b82] transition duration-300"}
-
         />
         <Box
           bgColor={"bg-[#1D2B53]"}
@@ -140,7 +118,6 @@ const Page = () => {
           onClick={() => router.push("/monitoring-bulanan")}
           className={"hover:bg-[#1a425b] transition duration-300"}
         />
-
       </div>
       <div className="h-50 flex sm:w-full w-4/4 sm:mx-7 mx-4 flex-wrap justify-start sm:gap-5 gap-3 lg:items-start sm:pl-7 pl-1 pr-1 sm:mt-7 mt-5 px-4 sm:pt-0 mb-3">
         <h2 className="sm:text-[28px] text-[24px] sm:ml-5 ml-4 font-semibold">
@@ -175,7 +152,6 @@ const Page = () => {
               ))}
             </div>
           </div>
-
         </div>
       </div>
     </div>
