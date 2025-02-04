@@ -4,7 +4,7 @@ import { IoIosArrowDropleftCircle } from "react-icons/io";
 import InputPopup from './_components/popup';
 import TableKpi from './_components/tabelnilaikpi';
 import Dropdown from './_components/dropdown';
-import TabelKpiBulan from './_components/tabelkpibulan';
+import TabelKpiBulan from './_components/TabelKpiBulan';
 import useUser from '@/hooks/use-user';
 import TableKpiMonitoring from './_components/tabelnilaikpimonitoring';
 import AllTarget from './_components/TargetHarian';
