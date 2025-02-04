@@ -26,7 +26,7 @@ const Page = () => {
   useEffect(() => {
     const fetchNamaStaff = async () => {
       try {
-        const response = await axios.get("http://localhost:8000/api/nama-staff", {
+        const response = await axios.get("https://backend-monitoring-btn-production.up.railway.app/api/nama-staff", {
           headers: { Authorization: bearerToken },
         });
         setNamaStaff(response.data.data);
@@ -78,7 +78,7 @@ const Page = () => {
       const encodedKpi = encodeURIComponent(selectedKpi);
 
       const response = await axios.patch(
-        `http://localhost:8000/api/update-target-tahunan/${selectedStaff}/${encodedKpi}`,
+        `https://backend-monitoring-btn-production.up.railway.app/api/update-target-tahunan/${selectedStaff}/${encodedKpi}`,
         requestBody,
         {
           headers: {

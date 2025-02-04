@@ -19,7 +19,7 @@ const TargetHarian = () => {
     useEffect(() => {
         const fetchNamaStaff = async () => {
             try {
-                const response = await axios.get(`http://localhost:8000/api/nama-staff`, {
+                const response = await axios.get(`https://backend-monitoring-btn-production.up.railway.app/api/nama-staff`, {
                     headers: {
                         Authorization: bearerToken
                     }

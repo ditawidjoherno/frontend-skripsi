@@ -17,17 +17,17 @@ const DashboardKPI = () => {
   const token = getCookie(cookie);
   const bearerToken = `Bearer ${token}`;
 
-  const [selectedStaff, setSelectedStaff] = useState(""); // Selected staff
-  const [kpiData, setKpiData] = useState(null); // KPI data
-  const [isLoading, setIsLoading] = useState(false); // Loading state
-  const [error, setError] = useState(""); // Error state
-  const [namaStaff, setNamaStaff] = useState([]); // List of staff
+  const [selectedStaff, setSelectedStaff] = useState("");
+  const [kpiData, setKpiData] = useState(null);
+  const [isLoading, setIsLoading] = useState(false); 
+  const [error, setError] = useState(""); 
+  const [namaStaff, setNamaStaff] = useState([]); 
 
-  // Fetch staff list on component mount
+
   useEffect(() => {
     const fetchNamaStaff = async () => {
       try {
-        const response = await axios.get(`http://localhost:8000/api/nama-staff`, {
+        const response = await axios.get(`https://backend-monitoring-btn-production.up.railway.app/api/nama-staff`, {
           headers: {
             Authorization: bearerToken,
           },
@@ -42,16 +42,15 @@ const DashboardKPI = () => {
     fetchNamaStaff();
   }, [bearerToken]);
 
-  // Fetch KPI data when a staff is selected
   useEffect(() => {
     if (selectedStaff) {
       setIsLoading(true);
-      setError(""); // Clear any previous errors
-      setKpiData(null); // Reset kpiData before fetching new data
+      setError(""); 
+      setKpiData(null); 
 
       const fetchKPIData = async () => {
         try {
-          const response = await axios.get(`http://localhost:8000/api/nilai-kpi/${selectedStaff}`, {
+          const response = await axios.get(`https://backend-monitoring-btn-production.up.railway.app/api/nilai-kpi/${selectedStaff}`, {
             headers: {
               Authorization: bearerToken,
             },
@@ -59,9 +58,9 @@ const DashboardKPI = () => {
           const data = response.data.data;
 
           if (data && data.rata_rata_kpi) {
-            setKpiData(data); // Set the fetched data if KPI data is found
+            setKpiData(data); 
           } else {
-            setKpiData(null); // Clear kpiData if no KPI data found for the selected staff
+            setKpiData(null); 
           }
         } catch (err) {
           console.error("Error fetching KPI data:", err);
@@ -73,21 +72,19 @@ const DashboardKPI = () => {
 
       fetchKPIData();
     } else {
-      setKpiData(null); // Reset kpiData if no staff is selected
+      setKpiData(null);
     }
   }, [selectedStaff, bearerToken]);
 
-  // Determine color based on percentage
   const getColor = (percentage) => {
-    if (percentage >= 130) return "#6EE014"; // Green for Istimewa Plus
-    if (percentage >= 110) return "#6EE014"; // Green for Istimewa
-    if (percentage >= 100) return "#2196F3"; // Blue for Sangat Baik
-    if (percentage >= 95) return "#FFEB3B"; // Yellow for Baik
-    if (percentage >= 85) return "#FF9800"; // Orange for Cukup
-    return "#F44336"; // Red for below 85%
+    if (percentage >= 130) return "#6EE014"; 
+    if (percentage >= 110) return "#6EE014"; 
+    if (percentage >= 100) return "#2196F3"; 
+    if (percentage >= 95) return "#FFEB3B"; 
+    if (percentage >= 85) return "#FF9800"; 
+    return "#F44336"; 
   };
 
-  // Chart data for Pie Chart
   const pieChartData = {
     labels: ["Nilai KPI", "Sisa Target"],
     datasets: [

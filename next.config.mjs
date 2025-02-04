@@ -3,8 +3,8 @@ const nextConfig = {
     async rewrites() {
         return [
             {
-                source: '/storage/:path*', // Setiap permintaan yang dimulai dengan /storage/
-                destination: 'http://localhost:8000/storage/:path*', // Diteruskan ke backend Laravel di port 8000
+                source: '/storage/:path*',
+                destination: 'https://backend-monitoring-btn-production.up.railway.app/storage/:path*',
             },
         ];
     },

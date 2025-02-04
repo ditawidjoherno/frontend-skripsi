@@ -22,7 +22,7 @@ const useAddNasabah = () => {
         console.log(body)
 
         try {
-            const response = await axios.post(`http://localhost:8000/api/input-nasabah`, body, {
+            const response = await axios.post(`https://backend-monitoring-btn-production.up.railway.app/api/input-nasabah`, body, {
                 headers: {
                     Authorization: bearerToken
                 }

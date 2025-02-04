@@ -21,20 +21,20 @@ const updateTargetHarian = () => {
 
         try {
             const response = await axios.put(
-                `http://localhost:8000/api/update-target-harian/${nip}`,
+                `https://backend-monitoring-btn-production.up.railway.app/api/update-target-harian/${nip}`,
                 body,
                 { headers: { Authorization: bearerToken } }
             );
 
             if (response.status === 200) {
-                setData(response.data); // Menyimpan data yang berhasil
+                setData(response.data);
                 return { success: true, message: response.data.message };
             } else {
                 throw new Error(response.data.message || "Gagal Memperbarui Target Harian");
             }
         } catch (error) {
             const errorMessage = error.response?.data?.message || error.message;
-            setError(errorMessage); // Menyimpan pesan error
+            setError(errorMessage); 
             return { success: false, message: errorMessage };
         } finally {
             setLoading(false);

@@ -20,7 +20,7 @@ const useNilaiKpi = () => {
 
     try {
       const response = await axios.get(
-        `http://localhost:8000/api/nilai-kpi/${nip}`,
+        `https://backend-monitoring-btn-production.up.railway.app/api/nilai-kpi/${nip}`,
         {
           headers: {
             Authorization: bearerToken,

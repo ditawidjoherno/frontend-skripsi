@@ -22,7 +22,7 @@ const useAktivitasMingguan = () => {
     setData(null);
 
     try {
-      const response = await axios.get(`http://localhost:8000/api/aktivitas-mingguan?bulan=${bulan}&minggu=${minggu}&tahun=${tahun}`, {
+      const response = await axios.get(`https://backend-monitoring-btn-production.up.railway.app/api/aktivitas-mingguan?bulan=${bulan}&minggu=${minggu}&tahun=${tahun}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

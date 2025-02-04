@@ -19,7 +19,7 @@ const Page = () => {
 
   useEffect(() => {
     const fetchTahunTersedia = async () => {
-      const response = await fetch('http://localhost:8000/api/aktivitas/tahun-per-bulan?tahun=2025'); // Contoh untuk mengambil data tahun 2025 pertama kali
+      const response = await fetch('https://backend-monitoring-btn-production.up.railway.app/api/aktivitas/tahun-per-bulan?tahun=2025'); // Contoh untuk mengambil data tahun 2025 pertama kali
       const result = await response.json();
       const updatedTahunTersedia = result.data.tahun_tersedia.includes(currentYear)
         ? result.data.tahun_tersedia
@@ -34,7 +34,7 @@ const Page = () => {
   useEffect(() => {
     const fetchAktivitasData = async () => {
       const yearToFetch = selectedYear || currentYear; 
-      const response = await fetch(`http://localhost:8000/api/aktivitas/tahun-per-bulan?tahun=${yearToFetch}`);
+      const response = await fetch(`https://backend-monitoring-btn-production.up.railway.app/api/aktivitas/tahun-per-bulan?tahun=${yearToFetch}`);
       const result = await response.json();
       setAktivitasData(result.data.aktivitas_per_bulan); 
     };

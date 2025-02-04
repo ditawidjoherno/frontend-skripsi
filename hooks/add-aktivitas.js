@@ -30,7 +30,7 @@ const AddAktivitas = () => {
         }
 
         try {
-            const response = await axios.post("http://localhost:8000/api/aktivitas", formData, {
+            const response = await axios.post("https://backend-monitoring-btn-production.up.railway.app/api/aktivitas", formData, {
                 headers: {
                     "Content-Type": "multipart/form-data",
                     Authorization: bearerToken

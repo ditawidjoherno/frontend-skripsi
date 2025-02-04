@@ -21,7 +21,7 @@ const useTargetStaff = () => {
 
 
         try {
-            const response = await axios.get(`http://localhost:8000/api/target-tahunan`, {
+            const response = await axios.get(`https://backend-monitoring-btn-production.up.railway.app/api/target-tahunan`, {
                 headers: {
                     Authorization: bearerToken
                 }

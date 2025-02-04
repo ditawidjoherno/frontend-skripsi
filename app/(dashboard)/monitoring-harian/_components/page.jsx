@@ -9,7 +9,6 @@ const Page = () => {
   const [searchResults, setSearchResults] = useState([]);
 
   const handleSearch = (query) => {
-    // Lakukan pencarian dengan query dan atur hasil pencarian ke state searchResults
     console.log('Searching for:', query);
   };
 

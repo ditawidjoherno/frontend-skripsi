@@ -26,10 +26,9 @@ const detailBulanan = () => {
                 throw new Error(response.data.message || "Gagal Mendapat User");
             }
 
-            // Filter the data based on id and tanggal
             const filteredData = response.data.data.filter(item => item.id === id && item.tanggal_aktivitas === tanggal_aktivitas);
 
-            setData(filteredData.length > 0 ? filteredData[0] : null); // Set the filtered data or null if not found
+            setData(filteredData.length > 0 ? filteredData[0] : null); 
             console.log(response);
         } catch (error) {
             setError(error.message);

@@ -21,7 +21,7 @@ const useTargetTahunan = () => {
 
         try {
             const response = await axios.post(
-                `http://localhost:8000/api/add-target-tahunan/${user_id}`,
+                `https://backend-monitoring-btn-production.up.railway.app/api/add-target-tahunan/${user_id}`,
                 body,
                 { headers: { Authorization: bearerToken } }
             );

@@ -19,7 +19,7 @@ const useDeleteNasabah = () => {
         throw new Error("Token is null or invalid");
       }
 
-      const response = await axios.delete(`http://localhost:8000/api/hapus-nasabah/${id}`, {
+      const response = await axios.delete(`https://backend-monitoring-btn-production.up.railway.app/api/hapus-nasabah/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`
         }

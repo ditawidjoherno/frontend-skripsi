@@ -20,7 +20,7 @@ const useAktivitasDitunda = () => {
         setData(null)
 
         try {
-            const response = await axios.get("http://localhost:8000/api/aktivitas-ditunda", {
+            const response = await axios.get("https://backend-monitoring-btn-production.up.railway.app/api/aktivitas-ditunda", {
                 headers: {
                     Authorization: bearerToken
                 }

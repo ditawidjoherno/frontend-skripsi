@@ -16,7 +16,7 @@ const TotalAktivitas = () => {
       setIsLoading(true);
       setError("");
       try {
-        const response = await axios.get("http://localhost:8000/api/total-aktivitas");
+        const response = await axios.get("https://backend-monitoring-btn-production.up.railway.app/api/total-aktivitas");
         setAktivitasData(response.data.data);
       } catch (err) {
         console.error("Error fetching aktivitas data:", err);

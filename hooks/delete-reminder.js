@@ -19,7 +19,7 @@ const useDeleteReminder = () => {
         throw new Error("Token is null or invalid");
       }
 
-      const response = await axios.delete(`http://localhost:8000/api/reminders/${id}`, {
+      const response = await axios.delete(`https://backend-monitoring-btn-production.up.railway.app/api/reminders/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`
         }

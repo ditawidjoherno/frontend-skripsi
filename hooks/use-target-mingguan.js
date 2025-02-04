@@ -21,7 +21,7 @@ const useTargetMingguanStaff = () => {
 
 
         try {
-            const response = await axios.get(`http://localhost:8000/api/target-mingguan`, {
+            const response = await axios.get(`https://backend-monitoring-btn-production.up.railway.app/api/target-mingguan`, {
                 headers: {
                     Authorization: bearerToken
                 }

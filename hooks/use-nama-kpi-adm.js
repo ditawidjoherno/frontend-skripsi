@@ -11,15 +11,14 @@ const useNamaKpiAdm = () => {
 
   const bearerToken = `Bearer ${token}`;
 
-  // Mendapatkan KPI untuk user yang dipilih
   const getNamaKpi = async (userId) => {
-    setLoading(true); // Set loading to true sebelum API call
-    setError(null);    // Reset error state
-    setData(null);     // Reset data state
+    setLoading(true); 
+    setError(null);  
+    setData(null);   
 
     try {
       const response = await axios.get(
-        `http://localhost:8000/api/admin/target-kpi/${userId}`,
+        `https://backend-monitoring-btn-production.up.railway.app/api/admin/target-kpi/${userId}`,
         {
           headers: { Authorization: bearerToken },
         }
@@ -29,11 +28,11 @@ const useNamaKpiAdm = () => {
         throw new Error(response.data.message || "Failed to get KPIs.");
       }
 
-      setData(response.data.data); // Set data dengan response.data.data
+      setData(response.data.data); 
     } catch (error) {
       setError(error.message || "An error occurred while fetching KPIs.");
     } finally {
-      setLoading(false); // Set loading to false setelah API call selesai
+      setLoading(false); 
     }
   };
 

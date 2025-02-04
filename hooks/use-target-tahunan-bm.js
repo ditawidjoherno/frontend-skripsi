@@ -19,7 +19,7 @@ const useTargetTahunanBM = () => {
         setError(null);
         try {
             console.log()
-            const response = await axios.get(`http://localhost:8000/api/target-tahunan`, {
+            const response = await axios.get(`https://backend-monitoring-btn-production.up.railway.app/api/target-tahunan`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },

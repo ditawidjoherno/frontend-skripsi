@@ -19,7 +19,7 @@ const useTotalMingguan = () => {
         setData(null)
 
         try {
-            const response = await axios.get(`http://localhost:8000/api/total-aktivitas-mingguan`, {
+            const response = await axios.get(`https://backend-monitoring-btn-production.up.railway.app/api/total-aktivitas-mingguan`, {
                 headers: {
                     Authorization: bearerToken
                 }

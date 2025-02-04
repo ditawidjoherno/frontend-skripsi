@@ -26,7 +26,7 @@ const KPIProgress = () => {
     const fetchKpiData = async () => {
       try {
         setLoading(true);
-        const response = await axios.get('http://localhost:8000/api/rata-rata-kpi', {
+        const response = await axios.get('https://backend-monitoring-btn-production.up.railway.app/api/rata-rata-kpi', {
           headers: {
             Authorization: bearerToken,
           },

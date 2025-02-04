@@ -20,7 +20,7 @@ const useNamaNasabah = () => {
         setData(null)
 
         try {
-            const response = await axios.get("http://localhost:8000/api/nama-nasabah", {
+            const response = await axios.get("https://backend-monitoring-btn-production.up.railway.app/api/nama-nasabah", {
                 headers: {
                     Authorization: bearerToken
                 }

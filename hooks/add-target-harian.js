@@ -21,7 +21,7 @@ const addTargetHarian = () => {
     
         try {
             const response = await axios.post(
-                `http://localhost:8000/api/add-target-harian/${nip}`,
+                `https://backend-monitoring-btn-production.up.railway.app/api/add-target-harian/${nip}`,
                 body,
                 { headers: { Authorization: bearerToken } }
             );

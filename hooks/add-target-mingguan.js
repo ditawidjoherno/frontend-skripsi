@@ -21,7 +21,7 @@ const addTargetMingguan = () => {
 
         try {
             const response = await axios.post(
-                `http://localhost:8000/api/add-target-mingguan/${nip}`,
+                `https://backend-monitoring-btn-production.up.railway.app/api/add-target-mingguan/${nip}`,
                 body,
                 { headers: { Authorization: bearerToken } }
             );

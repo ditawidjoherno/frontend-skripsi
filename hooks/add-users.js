@@ -18,7 +18,7 @@ const AddStaff = () => {
         setData(null);
 
         try {
-            const response = await axios.post("http://localhost:8000/api/addUser", body, {
+            const response = await axios.post("https://backend-monitoring-btn-production.up.railway.app/api/addUser", body, {
                 headers: {
                     Authorization: bearerToken,
                 },

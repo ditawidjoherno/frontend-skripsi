@@ -22,20 +22,20 @@ const updateTargetMingguan = () => {
 
         try {
             const response = await axios.put(
-                `http://localhost:8000/api/update-target-mingguan/${nip}`,
+                `https://backend-monitoring-btn-production.up.railway.app/api/update-target-mingguan/${nip}`,
                 body,
                 { headers: { Authorization: bearerToken } }
             );
 
             if (response.status === 200) {
-                setData(response.data); // Simpan response data ke state
+                setData(response.data); 
                 return { success: true, message: response.data.message };
             } else {
                 throw new Error(response.data.message || "Gagal Memperbarui Target Mingguan");
             }
         } catch (error) {
             const errorMessage = error.response?.data?.message || error.message;
-            setError(errorMessage); // Simpan pesan error ke state
+            setError(errorMessage); 
             return { success: false, message: errorMessage };
         } finally {
             setLoading(false);

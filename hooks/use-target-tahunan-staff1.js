@@ -18,7 +18,7 @@ const useGetTarget = () => {
     setData(null);
 
     try {
-      const response = await axios.get(`http://localhost:8000/api/target-tahunan-staff?nip=${nip}`, {
+      const response = await axios.get(`https://backend-monitoring-btn-production.up.railway.app/api/target-tahunan-staff?nip=${nip}`, {
         headers: {
           Authorization: `Bearer ${token}`
         }

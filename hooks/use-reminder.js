@@ -20,7 +20,7 @@ const useReminder = () => {
         setData(null)
 
         try {
-            const response = await axios.get("http://localhost:8000/api/reminders", {
+            const response = await axios.get("https://backend-monitoring-btn-production.up.railway.app/api/reminders", {
                 headers: {
                     Authorization: bearerToken
                 }

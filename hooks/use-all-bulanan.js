@@ -19,7 +19,7 @@ const useAllBulanan = () => {
     setData(null);
 
     try {
-      const response = await axios.get(`http://localhost:8000/api/total-aktivitas-bulan-ini`, {
+      const response = await axios.get(`https://backend-monitoring-btn-production.up.railway.app/api/total-aktivitas-bulan-ini`, {
         headers: {
           Authorization: `Bearer ${token}`
         }

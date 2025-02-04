@@ -21,7 +21,7 @@ const useDetailAktivitas = (id) => {
         console.log(id)
 
         try {
-            const response = await axios.get(`http://localhost:8000/api/detail-aktivitas/${id}`, {
+            const response = await axios.get(`https://backend-monitoring-btn-production.up.railway.app/api/detail-aktivitas/${id}`, {
                 headers: {
                     Authorization: bearerToken
                 }

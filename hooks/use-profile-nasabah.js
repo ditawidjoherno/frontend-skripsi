@@ -23,7 +23,7 @@ const useProfileNasabah = (id) => {
         setData(null);
 
         try {
-            const response = await axios.get(`http://localhost:8000/api/nasabah/${id}`, {
+            const response = await axios.get(`https://backend-monitoring-btn-production.up.railway.app/api/nasabah/${id}`, {
                 headers: {
                     Authorization: bearerToken,
                 },

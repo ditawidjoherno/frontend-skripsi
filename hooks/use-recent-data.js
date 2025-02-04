@@ -20,7 +20,7 @@ const useRecentData = () => {
         setData(null)
 
         try {
-            const response = await axios.get("http://localhost:8000/api/recent-data", {
+            const response = await axios.get("https://backend-monitoring-btn-production.up.railway.app/api/recent-data", {
                 headers: {
                     Authorization: bearerToken
                 }

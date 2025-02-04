@@ -16,7 +16,7 @@ const UpdateProfile = () => {
         setData(null);
 
         try {
-            const response = await axios.put("http://localhost:8000/api/profile/update", body, {
+            const response = await axios.put("https://backend-monitoring-btn-production.up.railway.app/api/profile/update", body, {
                 headers: {
                     Authorization: bearerToken
                 }
@@ -41,7 +41,7 @@ const UpdateProfile = () => {
         setData(null);
 
         try {
-            const response = await axios.put("http://localhost:8000/api/password/change", body, {
+            const response = await axios.put("https://backend-monitoring-btn-production.up.railway.app/api/password/change", body, {
                 headers: {
                     Authorization: bearerToken
                 }
@@ -69,7 +69,7 @@ const UpdateProfile = () => {
             const formData = new FormData();
             formData.append('foto_profil', imageFile);
     
-            const response = await axios.post("http://localhost:8000/api/update-profile-image", formData, {
+            const response = await axios.post("https://backend-monitoring-btn-production.up.railway.app/api/update-profile-image", formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                     Authorization: bearerToken

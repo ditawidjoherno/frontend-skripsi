@@ -20,7 +20,7 @@ const useAktivitasSelesai = () => {
         setData(null)
 
         try {
-            const response = await axios.get("http://localhost:8000/api/aktivitas-selesai", {
+            const response = await axios.get("https://backend-monitoring-btn-production.up.railway.app/api/aktivitas-selesai", {
                 headers: {
                     Authorization: bearerToken
                 }

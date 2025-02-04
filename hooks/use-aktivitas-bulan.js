@@ -18,7 +18,7 @@ const useAktivitasBulanan = () => {
     setData(null);
 
     try {
-      const response = await axios.get(`http://localhost:8000/api/aktivitas`, {
+      const response = await axios.get(`https://backend-monitoring-btn-production.up.railway.app/api/aktivitas`, {
         headers: {
           Authorization: `Bearer ${token}`
         }

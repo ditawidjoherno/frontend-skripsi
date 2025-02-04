@@ -21,7 +21,7 @@ const useDataNasabah = (nasabah) => {
         console.log(nasabah)
 
         try {
-            const response = await axios.get(`http://localhost:8000/api/nasabah`, {
+            const response = await axios.get(`https://backend-monitoring-btn-production.up.railway.app/api/nasabah`, {
                 headers: {
                     Authorization: `Bearer ${token}`
                   }

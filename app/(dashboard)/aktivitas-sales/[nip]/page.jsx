@@ -28,7 +28,7 @@ const page = () => {
 
     useEffect(() => {
         const fetchNamaStaff = async () => {
-            const response = await axios.get(`http://localhost:8000/api/nama-staff-nip?nip=${nip}`, {
+            const response = await axios.get(`https://backend-monitoring-btn-production.up.railway.app/api/nama-staff-nip?nip=${nip}`, {
                 headers: {
                     Authorization: bearerToken
                 }

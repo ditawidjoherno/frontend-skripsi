@@ -22,7 +22,7 @@ const useAktivitas = () => {
             }
 
             const response = await axios.put(
-                `http://localhost:8000/api/update-aktivitas/${aktivitasId}`,
+                `https://backend-monitoring-btn-production.up.railway.app/api/update-aktivitas/${aktivitasId}`,
                 body,
                 {
                     headers: {
@@ -43,7 +43,7 @@ const useAktivitas = () => {
 
     const tambahDokumentasi = async (id, formData) => {
         try {
-            const response = await fetch(`http://localhost:8000/api/aktivitas/${id}/dokumentasi`, {
+            const response = await fetch(`https://backend-monitoring-btn-production.up.railway.app/api/aktivitas/${id}/dokumentasi`, {
                 method: 'POST',
                 body: formData,
             });
@@ -54,13 +54,11 @@ const useAktivitas = () => {
     
             const data = await response.json();
             
-            // Debugging: lihat response yang diterima
             console.log("Response dari API:", data);
     
-            // Memastikan data yang diterima valid
             if (data && data.data && Array.isArray(data.data) && data.data.length > 0) {
-                const dokumentasiUrl = data.data[0];  // Ambil path file pertama dari array
-                return dokumentasiUrl; // Mengembalikan path file sebagai dokumentasi_url
+                const dokumentasiUrl = data.data[0]; 
+                return dokumentasiUrl; 
             } else {
                 throw new Error('Dokumentasi URL tidak ditemukan');
             }
@@ -72,7 +70,6 @@ const useAktivitas = () => {
     
     
 
-    // Fungsi untuk menghapus dokumentasi
     const hapusDokumentasi = async (aktivitasId, documentId) => {
         setLoading(true);
         setError(null);
@@ -87,7 +84,7 @@ const useAktivitas = () => {
             }
 
             const response = await axios.delete(
-                `http://localhost:8000/api/aktivitas/${aktivitasId}/dokumentasi/${documentId}`,
+                `https://backend-monitoring-btn-production.up.railway.app/api/aktivitas/${aktivitasId}/dokumentasi/${documentId}`,
                 {
                     headers: {
                         Authorization: `Bearer ${token}`,

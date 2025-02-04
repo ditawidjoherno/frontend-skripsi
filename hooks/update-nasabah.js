@@ -21,16 +21,16 @@ const useUpdateNasabah = () => {
             }
 
             const response = await axios.put(
-                `http://localhost:8000/api/update-nasabah/${id}`, // Sesuaikan endpoint dengan ID nasabah
+                `https://backend-monitoring-btn-production.up.railway.app/api/update-nasabah/${id}`, 
                 body,
                 {
                     headers: {
-                        Authorization: `Bearer ${token}`, // Menambahkan token dalam header untuk otentikasi
+                        Authorization: `Bearer ${token}`, 
                     },
                 }
             );
 
-            setData(response.data); // Menyimpan data dari respons server
+            setData(response.data);
             console.log("Nasabah berhasil diperbarui:", response.data);
         } catch (err) {
             setError(

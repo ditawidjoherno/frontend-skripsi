@@ -21,7 +21,7 @@ const tambahReminder = () => {
         };
 
         try {
-            const response = await axios.post("http://localhost:8000/api/reminders", body, {
+            const response = await axios.post("https://backend-monitoring-btn-production.up.railway.app/api/reminders", body, {
                 headers: {
                     Authorization: bearerToken
                 }
