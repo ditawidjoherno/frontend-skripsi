@@ -133,7 +133,7 @@ const Page = () => {
     };
 
     return (
-        <div className={'bg-[#EAEAEA] h-full flex flex-col items-center sm:pt-[75px] pt-[60px] sm:pr-4 pr-3 sm:ml-20 ml-10}'}>
+        <div className={'bg-[#EAEAEA] h-full flex flex-col items-center sm:pt-[75px] pt-[50px] sm:pr-4 pr-3 sm:ml-20 ml-10'}>
             <div className="flex items-center w-full">
                 <h2 className="sm:text-3xl text-[24px] sm:ml-5 ml-2 font-bold sm:mt-3 sm:mb-3 mb-1">
                     Input Data Harian
@@ -146,9 +146,9 @@ const Page = () => {
                 </div>
             </div>
             <div className="bg-white rounded-2xl h-auto mb-6 sm:ml-5 ml-3 w-full sm:pt-5 pt-4">
-                <div className='sm:flex sm:ml-0 ml-1 sm:mr-0 mr-2'>
+                <div className='sm:flex sm:ml-0 ml-3 sm:mr-0 mr-2'>
                     <div className='sm:w-1/2 w-full'>
-                        <label htmlFor="dropdown" className="text-black  text-[20px] font-medium mb-1 sm:px-10 pt-3 sm:gap-0 gap-6">
+                        <label htmlFor="dropdown" className="text-black sm:text-[20px] text-[14px] font-medium sm:mb-1 mb-0 sm:px-10 pt-3 sm:gap-0 gap-6">
                             Nama Nasabah
                         </label>
                         {data && (
@@ -187,7 +187,7 @@ const Page = () => {
                             placeholder={"Masukkan Nomor Telepon"}
                             type="number"
                         /> */}
-                        <label htmlFor="dropdown" className="text-black text-[20px] font-medium mb-1 sm:px-10 pt-3 sm:gap-0 gap-6">
+                        <label htmlFor="dropdown" className="text-black sm:text-[20px] text-[14px] font-medium mb-1 sm:px-10 pt-3 sm:gap-0 gap-6">
                             Aktivitas Sales
                         </label>
                         <Dropdown
@@ -204,7 +204,7 @@ const Page = () => {
                             placeholder="Pilih Aktivitas"
                         />
 
-                        <label htmlFor="dropdown" className="text-black  text-[20px] font-medium mb-1 sm:px-10 pt-3 sm:gap-0 gap-6">
+                        <label htmlFor="dropdown" className="text-black sm:text-[20px] text-[14px] font-medium mb-1 sm:px-10 pt-3 sm:gap-0 gap-6">
                             Tipe Nasabah
                         </label>
                         <Dropdown
@@ -217,7 +217,7 @@ const Page = () => {
                             placeholder="Tipe Nasabah"
                         />
                         <div className="mb-3 flex flex-col ">
-                            <label htmlFor="dokumentasi" className="text-black text-[20px] font-medium mb-1 sm:px-10 pt-3 sm:gap-0 gap-6">
+                            <label htmlFor="dokumentasi" className="text-black sm:text-[20px] text-[14px] font-medium mb-1 sm:px-10 pt-3 sm:gap-0 gap-6">
                                 Dokumentasi
                             </label>
                             <input
@@ -278,7 +278,7 @@ const Page = () => {
                             placeholder={"Masukkan Closing"}
                             type="number"
                         />
-                        <label htmlFor="dropdown" className="text-black  text-[20px] font-medium mb-1 sm:px-10 pt-3 sm:gap-0 gap-6">
+                        <label htmlFor="dropdown" className="text-black sm:text-[20px] text-[14px] font-medium mb-1 sm:px-10 pt-3 sm:gap-0 gap-6">
                             Status Aktivitas
                         </label>
                         <Dropdown
@@ -290,7 +290,7 @@ const Page = () => {
                             ]}
                             placeholder="Pilih  Status Aktivitas"
                         />
-                        <label htmlFor="dropdown" className="text-black  text-[20px] font-medium mb-1 sm:mx-10 pt-3 sm:gap-0 gap-6">
+                        <label htmlFor="dropdown" className="text-black sm:text-[20px] text-[14px] font-medium mb-1 sm:mx-10 pt-3 sm:gap-0 gap-6">
                             Keterangan Aktivitas
                         </label>
                         <Dropdown
@@ -320,7 +320,7 @@ const Page = () => {
                 <div className='flex gap-3 sm:justify-end justify-center mt-8 sm:mr-5'>
                     <button onClick={handleSubmit} disabled={loading}>
                         <div className="sm:mt-10 mt-1 mb-6 flex justify-center">
-                            <div className="cursor-pointer hover:bg-[#467bac] bg-[#5293CE] items-center justify-center w-[170px] h-[40px] flex rounded-lg">
+                            <div className="cursor-pointer hover:bg-[#467bac] bg-[#5293CE] items-center justify-center sm:w-[170px] w-[140px] h-[40px] flex rounded-lg sm:text-[20px] text-[14px] ">
                                 <p className="font-medium text-white text-semibold">{loading ? "Loading..." : "Tambah"}</p>
                             </div>
                         </div>

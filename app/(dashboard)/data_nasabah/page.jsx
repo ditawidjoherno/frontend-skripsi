@@ -160,7 +160,7 @@ const Page = () => {
             </button>
           )}
         </div>
-        <div className="bg-white rounded-b-2xl sm:h-[530px] h-[370px] sm:overflow-hidden overflow-x-scroll">
+        <div className="bg-white rounded-b-2xl sm:h-[530px] h-[470px] sm:overflow-hidden overflow-x-scroll">
           <table className="table-auto border-collapse w-full text-center">
             <thead>
               <tr>
@@ -244,26 +244,27 @@ const Page = () => {
         </div>
       </div>
       {showDeleteConfirm && (
-        <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white p-6 rounded-lg shadow-lg w-1/3">
-            <h3 className="text-lg font-bold mb-4">Apakah Anda Yakin Untuk Menghapus Data Nasabah ini?</h3>
-            <div className="flex justify-end gap-3">
-              <button
-                onClick={cancelDelete}
-                className="px-4 py-2 bg-gray-300 text-black rounded-md hover:bg-gray-400"
-              >
-                Batal
-              </button>
-              <button
-                onClick={confirmDelete}
-                className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700"
-              >
-                Ya
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+  <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center z-50">
+    <div className="bg-white p-6 rounded-lg sm:ml-0 ml-12 sm:mr-0 mr-3 shadow-lg w-11/12 sm:w-1/3">
+      <h3 className="text-lg font-bold mb-4">Apakah Anda Yakin Untuk Menghapus Data Nasabah ini?</h3>
+      <div className="flex justify-end gap-3">
+        <button
+          onClick={cancelDelete}
+          className="px-4 py-2 bg-gray-300 text-black rounded-md hover:bg-gray-400"
+        >
+          Batal
+        </button>
+        <button
+          onClick={confirmDelete}
+          className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700"
+        >
+          Ya
+        </button>
+      </div>
+    </div>
+  </div>
+)}
+
     </div>
   );
 }

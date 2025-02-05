@@ -68,27 +68,27 @@ const Page = () => {
         Dashboard
       </h2>
       {userData && (
-        <div className="sm:ml-16 ml-8 mt-4 sm:mr-5 mr-0 mb-5 bg-white rounded-md shadow-lg p-6 flex items-center justify-between">
+        <div className="sm:ml-16 ml-8 mt-4 sm:mr-5 mr-3 mb-5 bg-white rounded-md shadow-lg sm:p-6 p-3 flex sm:flex-row flex-col items-center justify-between">
           <div className="flex items-center">
             <div className="bg-gradient-to-r p-3 rounded-full">
               <img
                 src="/img/btn_boost.png"
                 alt="Welcome Icon"
-                className="w-20 h-16 animate-bounce"
+                className="sm:w-20 w-10 sm:h-16 h-8 animate-bounce"
               />
             </div>
             <div className="ml-4">
-              <h3 className="text-[18px] sm:text-[24px] font-bold text-gray-800">Selamat Datang di BTN Boost!</h3>
-              <p className="text-[14px] sm:text-[16px] text-gray-600">
-                Hai <span className="text-[#4A90E2] font-semibold">{userData.nama}</span>,
+              <h3 className="text-[15px] sm:text-[24px] font-bold text-gray-800">Selamat Datang di BTN Boost!</h3>
+              <p className="text-[13px] sm:text-[16px] text-gray-600">
+                Hai <span className="text-[#4A90E2] font-semibold">{userData.nama}, </span>
                 selamat bekerja!
               </p>
             </div>
           </div>
           {userData && userData.jabatan === 'staff' && (
             <Link href="/aktivitas-ditunda">
-              <div className="hidden sm:block">
-                <button className="bg-[#F76B03] hover:bg-[#f08e42] text-white font-medium px-4 py-2 rounded-md transition">
+              <div className="w-full sm:w-auto mt-4 sm:mt-0">
+                <button className="bg-[#F76B03] hover:bg-[#f08e42] text-white font-medium px-4 py-2 rounded-md transition sm:text-base text-xs">
                   Lihat Aktivitas Ditunda
                 </button>
               </div>
@@ -98,7 +98,8 @@ const Page = () => {
       )}
 
 
-      <div className="flex md:flex-row flex-col md:justify-evenly justify-start lg:gap-0 gap-5 lg:items-start items-center px-8">
+
+      <div className="flex md:flex-row flex-col md:justify-evenly justify-start sm:gap-5 gap-2 lg:items-start items-center sm:px-8  sm:mr-5 mr-0 ">
         {userData && userData.jabatan !== 'unit_head' && userData.jabatan !== 'staff' && (
           <button onClick={handleSelesaiClick}>
             <Box

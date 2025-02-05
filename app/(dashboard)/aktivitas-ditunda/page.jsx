@@ -51,7 +51,7 @@ const Page = () => {
         );
     }
 
-    
+
     const filteredData = tableData.filter(item =>
         item.nama_user.toLowerCase().includes(searchTerm.toLowerCase()) ||
         item.aktivitas.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -60,19 +60,19 @@ const Page = () => {
         // item.aktivitas_sales.toLowerCase().includes(searchTerm.toLowerCase()) ||
         item.keterangan_aktivitas.toLowerCase().includes(searchTerm.toLowerCase())
     );
-    
+
     const itemsPerPage = 10;
     const offset = (currentPage - 1) * itemsPerPage;
     const indexOfLastItem = offset + itemsPerPage;
     const indexOfFirstItem = offset + 1;
     const currentItems = filteredData.slice(offset, indexOfLastItem);
-    
+
     const nextPage = () => {
         if (currentPage < Math.ceil(filteredData.length / 10)) {
             setCurrentPage(currentPage + 1);
         }
     };
-    
+
     const prevPage = () => {
         if (currentPage > 1) {
             setCurrentPage(currentPage - 1);
@@ -82,11 +82,11 @@ const Page = () => {
     const maxPages = 5;
     let startPage = Math.max(1, currentPage - Math.floor(maxPages / 2));
     let endPage = Math.min(startPage + maxPages - 1, Math.ceil(filteredData.length / 10));
-    
+
     if (endPage - startPage + 1 < maxPages) {
         startPage = Math.max(1, endPage - maxPages + 1);
     }
-    
+
     const capitalizeFirstLetter = (string) => {
         if (string && typeof string === 'string' && string.length > 0) {
             return string.charAt(0).toUpperCase() + string.slice(1);
@@ -102,32 +102,32 @@ const Page = () => {
     return (
         <div className={`bg-[#EAEAEA] h-full flex flex-col items-center sm:pt-[75px] pt-[53px] sm:pr-4 pr-3 sm:ml-20 ml-10`}>
             <div className="sm:flex items-center w-full sm:justify-between sm:mt-3 mt-0">
-      <div className="sm:ml-5 ml-3 sm:mt-3 mt-0 flex items-center sm:gap-3 gap-1 ">
-          <h2 className="sm:text-4xl text-[24px] font-bold">
-            Aktivitas Sales
-          </h2>
-            <IoIosArrowDropleftCircle
-              className="sm:h-10 sm:w-10 h-5 w-5 sm:ml-3 ml-0 transition-colors duration-300 hover:text-gray-400 focus:text-gray-400 cursor-pointer"
-              onClick={handleGoBack}
-            />
-        </div>
-        <div>
-            <div className='flex justify-center gap-1 sm:mr-5 sm:mt-2'>
-              <div className="flex items-center">
-                <input
-                  type="text"
-                  placeholder="Search..."
-                  value={searchTerm}
-                  onChange={handleSearch}
-                  className="border-2 border-gray-300 px-4 py-2 sm:rounded-l-2xl rounded-l-lg focus:outline-none focus:border-blue-500 sm:w-[270px] w-full sm:h-[40px] h-[30px]"
-                />
-                <button type="submit" className="bg-[#FFE500] text-black border-black px-1 py-1 sm:rounded-r-2xl rounded-r-lg hover:bg-[#f6f0ba] sm:w-[40px] w-[30px] sm:h-[40px] h-[30px] focus:outline-none">
-                  <IoSearchOutline className="sm:w-6 w-4 sm:h-6 h-4" />
-                </button>
-              </div>
+                <div className="sm:ml-5 ml-3 sm:mt-3 mt-0 flex items-center sm:gap-3 gap-1 ">
+                    <h2 className="sm:text-4xl text-[24px] font-bold">
+                        Aktivitas Sales
+                    </h2>
+                    <IoIosArrowDropleftCircle
+                        className="sm:h-10 sm:w-10 h-5 w-5 sm:ml-3 ml-0 transition-colors duration-300 hover:text-gray-400 focus:text-gray-400 cursor-pointer"
+                        onClick={handleGoBack}
+                    />
+                </div>
+                <div>
+                    <div className='flex justify-center gap-1 sm:mr-5 sm:mt-2'>
+                        <div className="flex items-center">
+                            <input
+                                type="text"
+                                placeholder="Search..."
+                                value={searchTerm}
+                                onChange={handleSearch}
+                                className="border-2 border-gray-300 px-4 py-2 sm:rounded-l-2xl rounded-l-lg focus:outline-none focus:border-blue-500 sm:w-[270px] w-full sm:h-[40px] h-[30px]"
+                            />
+                            <button type="submit" className="bg-[#FFE500] text-black border-black px-1 py-1 sm:rounded-r-2xl rounded-r-lg hover:bg-[#f6f0ba] sm:w-[40px] w-[30px] sm:h-[40px] h-[30px] focus:outline-none">
+                                <IoSearchOutline className="sm:w-6 w-4 sm:h-6 h-4" />
+                            </button>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>
-      </div>
             <div className='sm:ml-5 ml-3 w-full gap-9 mt-4 '>
                 <div className="bg-white rounded-t-2xl sm:h-[80px] h-[72px] pt-3">
                     <div className='flex justify-between'>
@@ -138,7 +138,7 @@ const Page = () => {
                     </div>
                     <hr className="border-t-2 border-black my-3 mx-6" />
                 </div>
-                <div className="bg-white rounded-b-2xl sm:h-[500px] h-[370px] overflow-x-scroll">
+                <div className="bg-white rounded-b-2xl sm:h-[500px] h-[300px] overflow-x-scroll">
                     <table className="table-auto border-collapse w-full text-center overflow-x-scroll" style={{ whiteSpace: 'nowrap', overflow: 'hidden' }}>
                         <thead>
                             <tr>

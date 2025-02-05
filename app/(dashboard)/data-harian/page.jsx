@@ -127,14 +127,14 @@ const Page = () => {
 
 
     return (
-      <div className="relative mr-5">
+      <div className="relative sm:mr-5 mr-2">
         <button
-          className="bg-blue-500 text-white px-5 py-2 mt-3 rounded-md hover:bg-blue-600"
+          className="bg-blue-500 text-white sm:px-5 px-2 sm:py-2 py-1 sm:mt-3 mt-2 rounded-md hover:bg-blue-600"
           onClick={() => setIsDropdownOpen(!isDropdownOpen)}
         >
-          <div className="flex">
-            <IoMdPrint className="mr-2" size={24} />
-            Cetak
+          <div className="flex ">
+            <IoMdPrint className="mr-2 sm:text-[24px] text-[18px]" />
+            <p className="sm:text-[18px] text-[12px]">Cetak</p>
           </div>
         </button>
 
@@ -223,12 +223,12 @@ const Page = () => {
       </div>
       <div className="sm:ml-5 ml-3 w-full gap-9 mt-5">
         <div className="bg-[#059BC7] rounded-t-2xl sm:h-[65px] h-[45px] flex justify-between">
-          <h1 className="font-bold mr-4 text-white sm:text-3xl text-[18px] pl-5 sm:pt-4 pt-3">Jumlah Aktivitas: {tableData.length} </h1>
+          <h1 className="font-bold sm:mr-9 mr-3 text-white sm:text-3xl text-[14px] pl-5 sm:pt-4 pt-3">Jumlah Aktivitas: {tableData.length} </h1>
           <PrintButton currentItems={currentItems} offset={offset} />
         </div>
         <div className="bg-white rounded-b-2xl sm:h-[520px] h-[400px] sm:overflow-hidden overflow-x-scroll">
           <table className="table-auto border-collapse w-full text-center overflow-x-acroll" style={{ whiteSpace: 'nowrap', overflow: 'hidden' }}>
-            <thead>
+            <thead className="text-xs sm:text-base text-[#1D2B53] font-semibold">
               <tr>
                 <th className="sm:px-5 sm:text-lg text-sm px-3 sm:py-4 py-2">No</th>
                 <th className="sm:px-10 px-6 sm:text-lg text-sm  sm:py-4 py-2">Tanggal Prospek</th>
@@ -243,7 +243,7 @@ const Page = () => {
                 <th className="sm:px-8 px-6 sm:text-lg text-sm  sm:py-4 py-2">Detail</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody className="text-xs sm:text-base">
               {currentItems.length > 0 ? (
                 currentItems.map((item, index) => (
                   <tr key={index} className={index % 2 === 0 ? 'bg-gray-200' : 'bg-white'}>

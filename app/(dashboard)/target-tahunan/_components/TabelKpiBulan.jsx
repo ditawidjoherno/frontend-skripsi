@@ -52,7 +52,7 @@ const TabelKpiBulan = ({ selectedStaffData }) => {
   ];
 
   return (
-    <div className="mt-5">
+    <div className="mt-5 sm:text-base text-xs">
       <Dropdown
         id="dropdown-bulan"
         value={selectedBulan}
@@ -62,7 +62,7 @@ const TabelKpiBulan = ({ selectedStaffData }) => {
         placeholder={"Pilih Nama Bulan"}
       />
       <div className="overflow-x-auto">
-        <table className="table-auto mx- mt-5 mb-5">
+        <table className="table-auto mx- mt-5 mb-5 sm:text-base text-xs">
           <thead>
             <tr>
               <th className="border border-gray-400 px-1 py-2 bg-gray-200 " >No</th>

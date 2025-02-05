@@ -134,8 +134,8 @@ const Page = () => {
         </div>
       </div>
 
-      <div className="bg-white rounded-2xl h-auto mb-6 sm:ml-5 ml-3 w-full sm:pt-5 pt-4">
-        <div className="sm:flex sm:ml-0 ml-1 sm:mr-0 mr-2">
+      <div className="bg-white rounded-2xl h-auto mb-6 sm:ml-5 ml-3 w-full sm:pt-5 pt-2">
+        <div className="sm:flex sm:ml-0 ml-2 sm:mr-0 mr-2">
           <div className="sm:w-1/2 w-full">
             <Input
               text="Nama Nasabah"
@@ -198,7 +198,7 @@ const Page = () => {
         <div className='flex gap-3 sm:justify-end justify-center mt-8 sm:mr-5'>
           <button onClick={handleSubmit} disabled={loading}>
             <div className="sm:mt-10 mt-1 mb-6 flex justify-center">
-              <div className="cursor-pointer hover:bg-[#467bac] bg-[#5293CE] items-center justify-center w-[170px] h-[40px] flex rounded-lg">
+              <div className="cursor-pointer hover:bg-[#467bac] bg-[#5293CE] items-center justify-center sm:w-[170px] w-[130px] h-[40px] flex rounded-lg sm:text-base text-xs">
                 <p className="font-medium text-white text-semibold">{loading ? "Loading..." : "Simpan"}</p>
               </div>
             </div>

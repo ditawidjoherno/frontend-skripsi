@@ -136,7 +136,7 @@ const Page = () => {
                     </div>
                     <hr className="border-t-2 border-black my-3 mx-6" />
                 </div>
-                <div className="bg-white rounded-b-2xl sm:h-[500px] h-[370px] overflow-x-scroll">
+                <div className="bg-white rounded-b-2xl sm:h-[500px] h-[450px] overflow-x-scroll">
                     <table className="table-auto border-collapse w-full text-center overflow-x-scroll" style={{ whiteSpace: 'nowrap', overflow: 'hidden' }}>
                         <thead>
                             <tr>

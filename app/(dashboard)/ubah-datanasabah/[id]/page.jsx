@@ -9,7 +9,6 @@ import { useParams } from 'next/navigation';
 import useProfileNasabah from '@/hooks/use-profile-nasabah';
 
 
-
 const Page = () => {
     const [maritalStatus, setMaritalStatus] = useState("");
     const [hasChildren, setHasChildren] = useState(false);

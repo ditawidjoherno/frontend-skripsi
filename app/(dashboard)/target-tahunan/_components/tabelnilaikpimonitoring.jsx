@@ -59,7 +59,7 @@ const TableKpiMonitoring = () => {
   return (
     <div>
       <h2 className="sm:text-[30px] text-[21px] font-semibold mb-3">Target Tahunan Staff</h2>
-      <div className='w-full'>
+      <div className='w-full sm:text-base text-xs'>
         {dataStaff && (
           <Dropdown
             value={selectedStaff}

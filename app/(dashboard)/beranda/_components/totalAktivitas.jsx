@@ -44,6 +44,7 @@ const TotalAktivitas = () => {
 
   const options = {
     responsive: true,
+    maintainAspectRatio: false,
     scales: {
       x: {
         beginAtZero: true,
@@ -67,25 +68,24 @@ const TotalAktivitas = () => {
   };
 
   return (
-    <div className="md:flex-row flex-col sm:ml-11 sm:mx-0 mx-5 sm:mt-7 mt-4 p-6 sm:h-[400px] h-[220px] bg-white rounded-lg shadow-md">
-      <div className="flex sm:mx-6 items-center mx-5 justify-between ">
-        <div className="flex gap-2 items-center transition-colors duration-300">
-          <GiProgression className="sm:text-3xl text-2xl" />
-          <p className="sm:text-[22px] text-[16px] font-semibold ">
-            Total Aktivitas            </p>
+    <div className="bg-white md:flex-row flex-col sm:ml-11 sm:mx-0 mx-5 sm:mt-7 mt-4 rounded-lg sm:h-[420px] h-[330px] sm:w-auto w-auto p-3">
+      <div className="flex items-center justify-between sm:mx-6 mx-5">
+        <div className="flex gap-2 items-center sm:mt-5">
+          <GiProgression className="text-2xl sm:text-3xl" />
+          <p className="text-[16px] sm:text-[22px]  font-semibold">Total Aktivitas</p>
         </div>
       </div>
-      <hr className="border-t border-black my-3 mx-6 " />
+      <hr className="border-t border-black my-3 mx-6" />
       {isLoading ? (
         <p className="text-center">Loading data...</p>
       ) : error ? (
-        <p>{error}</p>
+        <p className="text-center text-red-500">{error}</p>
       ) : aktivitasData.length > 0 ? (
-        <div className="flex justify-center items-center h-[300px]">
+        <div className="flex justify-center items-center w-full  h-[250px] md:h-[400px] lg:h-[300px]">
           <Bar data={chartData} options={options} />
         </div>
       ) : (
-        <p>Tidak ada data aktivitas yang ditemukan.</p>
+        <p className="text-center">Tidak ada data aktivitas yang ditemukan.</p>
       )}
     </div>
   );

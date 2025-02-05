@@ -50,7 +50,7 @@ const TodoList = () => {
   };
 
   return (
-    <div className="bg-white md:flex-row flex-col sm:ml-6 mx-5 sm:mt-5 mt-4 rounded-lg sm:h-[350px] h-[220px] sm:w-auto w-auto sm:mb-5 mb-0 sm:-mr-1">
+    <div className="bg-white md:flex-row flex-col sm:ml-6 ml-0 mx-5 sm:mt-5 mt-4 rounded-lg sm:h-[350px] h-[220px] sm:w-auto w-auto sm:mb-5 mb-0 sm:-mr-1">
       <div className="flex sm:mx-9 mx-5 pt-4 justify-between">
         <div className="flex gap-2">
           <IoReceipt className="sm:text-4xl text-2xl" />
@@ -65,19 +65,19 @@ const TodoList = () => {
       <hr className="border-t border-black my-2 mx-6" />
       <div className="bg-white rounded-b-2xl sm:h-[200px] h-[160px] overflow-y-scroll">
         {tasks && tasks.length > 0 ? (
-          <ul className="space-y-2 px-8 py-3 sm:text-base text-xs">
+          <ul className="sm:space-y-2 space-y-1 px-8 sm:py-3 py-[2px] sm:text-base text-xs ">
             {tasks.filter(item => !isDone.includes(item.id)).map((item) => (
               <li
                 key={item.id}
-                className={`flex items-center pl-4 h-12 transition-all rounded-xl duration-1000 ${isDone.includes(item.id) ? "bg-green-600" : "bg-red-600"
+                className={`flex items-center pl-4 sm:h-12 h-8 transition-all sm:rounded-xl rounded-lg duration-1000 ${isDone.includes(item.id) ? "bg-green-600" : "bg-red-600"
                   } ${isDone.includes(item.id) ? "opacity-0" : "opacity-100"}`}
               >
-                <div className="w-full h-full bg-gray-200 flex px-2 gap-3 rounded-r-xl items-center">
+                <div className="w-full h-full bg-gray-200 flex px-2 gap-3 sm:rounded-r-xl rounded-r-lg items-center">
                   <FaRegCheckCircle
                     onClick={() => handleSetIsDone(item.id)}
-                    className="w-6 h-6 hover:text-gray-400 cursor-pointer"
+                    className="am:w-6 w-4 sm:h-6 h-4 hover:text-gray-400 cursor-pointer"
                   />
-                  <div>
+                  <div className="sm:mt-0 mt-2">
                     <p className={item.done ? "line-through" : ""}>
                       {item.task}
                     </p>

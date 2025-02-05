@@ -161,7 +161,7 @@ const Page = () => {
             </button>
           )}
         </div>
-        <div className="bg-white rounded-b-2xl sm:h-[520px] h-[370px] mb-6 sm:overflow-hidden overflow-x-auto">
+        <div className="bg-white rounded-b-2xl sm:h-[480px] h-[400px] mb-6 sm:overflow-hidden overflow-x-auto">
           <table className="table-auto border-collapse w-full text-center " >
             <thead>
               <tr>
@@ -184,7 +184,7 @@ const Page = () => {
                     <td>{capitalizeFirstLetter(item.tipe_nasabah)}</td>
                     <td className="sm:text-lg text-sm">{capitalizeFirstLetter(item.aktivitas)}</td>
                     <td>
-                      <div className={`py-1 rounded-md sm:mx-6 mx-2 my-1 text-white font-semibold ${item.status_aktivitas === 'selesai' ? 'bg-green-500 ' : item.status_aktivitas === 'ditunda' ? 'bg-orange-500' : ''}`}>
+                      <div className={`py-1 sm:text-base text-xs rounded-md sm:mx-6 mx-2 my-1 text-white font-semibold ${item.status_aktivitas === 'selesai' ? 'bg-green-500 ' : item.status_aktivitas === 'ditunda' ? 'bg-orange-500' : ''}`}>
                         {capitalizeFirstLetter(item.status_aktivitas)}
                       </div>
                     </td>
@@ -236,8 +236,8 @@ const Page = () => {
       </div>
       {showDeleteConfirm && (
         <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white p-6 rounded-lg shadow-lg w-1/3">
-            <h3 className="text-lg font-bold mb-4">Apakah Anda Yakin Untuk Menghapus Data Aktivitas ini?</h3>
+          <div className="bg-white p-6 rounded-lg shadow-lg sm:ml-0 ml-12 sm:mr-0 mr-3 w-11/12 sm:w-1/3">
+            <h3 className="sm:text[20px] text-[14px] font-bold mb-4">Apakah Anda Yakin Untuk Menghapus Data Aktivitas ini?</h3>
             <div className="flex justify-end gap-3">
               <button
                 onClick={cancelDelete}
@@ -255,6 +255,7 @@ const Page = () => {
           </div>
         </div>
       )}
+
     </div>
   );
 };

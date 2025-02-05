@@ -32,7 +32,7 @@ const TargetHarian = () => {
   };
 
   return (
-    <div className="bg-white md:flex-row flex-col sm:ml-11 sm:mt-5 mt-4 rounded-lg sm:h-[250px] h-[220px] sm:w-auto w-[300px]">
+    <div className="bg-white md:flex-row flex-col sm:ml-11 ml-5 sm:mt-5 mt-4 rounded-lg sm:h-[250px] h-[220px] sm:w-auto w-[310px]">
       <div className="flex sm:mx-9 items-center mx-5 pt-4 justify-between">
         <div className="flex gap-2 items-center">
           <IoNewspaperSharp className="sm:text-3xl text-2xl" />

@@ -16,7 +16,7 @@ const KPIProgress = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [monthlyKpi, setMonthlyKpi] = useState([]);
-  const [kpiValue, setKpiValue] = useState(0); // Tambahkan state baru
+  const [kpiValue, setKpiValue] = useState(0);
 
   const cookie = process.env.NEXT_PUBLIC_COOKIE_NAME;
   const token = getCookie(cookie);
@@ -39,10 +39,10 @@ const KPIProgress = () => {
           if (data.rata_rata_kpi) {
             const percentage = (data.rata_rata_kpi / 130) * 100;
             setPercentage(percentage);
-            setKpiValue(data.rata_rata_kpi); // Simpan nilai rata-rata KPI
+            setKpiValue(data.rata_rata_kpi);
           } else {
             setPercentage(0);
-            setKpiValue(0); // Set nilai ke 0 jika tidak ada data
+            setKpiValue(0);
           }
           if (data.total_nilai_kpi && Array.isArray(data.total_nilai_kpi)) {
             setMonthlyKpi(data.total_nilai_kpi);
@@ -82,10 +82,7 @@ const KPIProgress = () => {
         display: true,
         position: 'top',
       },
-      title: {
-        display: true,
-        text: 'Total KPI per Bulan',
-      },
+
     },
     scales: {
       y: {
@@ -99,7 +96,7 @@ const KPIProgress = () => {
   };
 
   return (
-    <div className="bg-white sm:ml-6 sm:mt-5 sm:mr-5 mt-4 rounded-lg sm:h-[620px] h-[350px] sm:w-auto w-[400px]">
+    <div className="bg-white sm:ml-6 ml-4 sm:mt-5 sm:mr-5 mr-4 mt-4 rounded-lg sm:h-[620px] h-[430px] sm:w-auto w-auto mb-3">
       <div className="flex sm:mx-9 items-center mx-5 pt-4 justify-between">
         <div className="flex gap-2 items-center">
           <IoAnalyticsSharp className="sm:text-3xl text-2xl" />
@@ -115,10 +112,10 @@ const KPIProgress = () => {
         ) : (
           <div className="w-full h-full">
             <div className="justify-between space-x-8">
-              <div className="ml-5 mt-8">
-                <h3 className="text-[12px] mt-2 font-semibold text-center mb-3">Nilai KPI per Tahun</h3>
+              <div className="ml-5 sm:mt-8 mt-2">
+                <h3 className="text-[12px] sm:mt-2 mt-0 font-semibold text-center mb-3">Nilai KPI per Tahun</h3>
                 <div className="flex justify-center items-center">
-                  <div className="w-40 h-40">
+                  <div className="sm:w-40 w-24 sm:h-40 h-24">
                     <CircularProgressbar
                       value={percentage}
                       text={`${kpiValue}%`}
@@ -133,8 +130,13 @@ const KPIProgress = () => {
                   </div>
                 </div>
               </div>
-              <div className="w-[480px] h-[300px] mt-8">
-                <Bar data={barData} options={barOptions} />
+              <div className="mt-8 text-center">
+                <h3 className="text-[14px] font-semibold">Total KPI per Bulan</h3>
+              </div>
+              <div className="w-full overflow-x-auto">
+                <div className="w-[400px] mr-5 h-[200px]">
+                  <Bar data={barData} options={barOptions} />
+                </div>
               </div>
             </div>
           </div>

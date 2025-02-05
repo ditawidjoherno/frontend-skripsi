@@ -181,7 +181,7 @@ const Page = ({ }) => {
               <Input text={"Nama Nasabah"} value={updatedNama} onChange={(e) => setUpdatedNama(e.target.value)} placeholder={"Masukkan Nama Nasabah"} disabled />
               {/* <Input text={"Alamat"} value={updatedAlamat} onChange={(e) => setUpdatedAlamat(e.target.value)} placeholder={"Masukkan Alamat"} />
               <Input text={"Nomor Telepon"} value={updatedNomorHP} onChange={(e) => setUpdatedNomorHP(e.target.value)} placeholder={"Masukkan Nomor Telepon"} /> */}
-              <label htmlFor="dropdown" className="text-black text-[20px] font-medium mb-1 sm:px-10 pt-3 sm:gap-0 gap-6">Aktivitas Sales</label>
+              <label htmlFor="dropdown" className="text-black sm:text-[20px] text-[14px] font-medium mb-1 sm:px-10 pt-3 sm:gap-0 gap-6">Aktivitas Sales</label>
               {dataKpi && Array.isArray(dataKpi) && dataKpi.length > 0 && (
                 <Dropdown
                   value={updatedAktivitas}
@@ -203,7 +203,7 @@ const Page = ({ }) => {
               <div className="mb-3 flex flex-col">
           <label
             htmlFor="dokumentasi"
-            className="text-black text-[20px] font-medium mb-1 sm:px-10 pt-3 sm:gap-0 gap-6"
+            className="text-black sm:text-[20px] text-[14px] font-medium mb-1 sm:px-10 pt-3 sm:gap-0 gap-6"
           >
             Upload Dokumentasi
           </label>
@@ -292,7 +292,7 @@ const Page = ({ }) => {
           </button>
         </div>
         <div className="sm:ml-5 ml-3 flex flex-col mt-6 mb-5">
-          <h3 className="font-bold text-lg mb-3">Dokumentasi yang Diupload:</h3>
+          <h3 className=" sm:text-[20px] text-[14px] font-medium mb-3">Dokumentasi yang Diupload:</h3>
           <div className="grid grid-cols-3 gap-4">
             {updatedDokumentasi && updatedDokumentasi.length > 0 ? (
               updatedDokumentasi.map((doc, index) => (

@@ -223,9 +223,9 @@ const Page = () => {
                             </div> */}
                             <div className='flex gap-3 sm:justify-end justify-center mt-1 sm:mr-5'>
                                 <button onClick={handleSubmit} disabled={loading}>
-                                    <div className="sm:mt-10 mt-1 sm:mb-6 mb-5 flex justify-center">
-                                        <div className="cursor-pointer hover:bg-[#467bac] bg-[#5293CE] items-center justify-center sm:w-[170px] w-[150px] sm:h-[40px] h-[35px] flex rounded-lg">
-                                            <p className="font-medium text-white text-semibold sm:text-[16px] text-[18px]">{loading ? "Loading..." : "Tambah"}</p>
+                                    <div className="sm:mt-10 mt-5 sm:mb-6 mb-5 flex justify-center">
+                                        <div className="cursor-pointer hover:bg-[#467bac] bg-[#5293CE] items-center justify-center sm:w-[170px] w-[100px] sm:h-[40px] h-[35px] flex rounded-lg">
+                                            <p className="font-medium text-white text-semibold sm:text-[16px] text-[12px]">{loading ? "Loading..." : "Tambah"}</p>
                                         </div>
                                     </div>
                                 </button>

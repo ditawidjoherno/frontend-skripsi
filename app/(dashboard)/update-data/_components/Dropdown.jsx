@@ -12,7 +12,7 @@ const Dropdown = ({ text, options, onChange, value, placeholder }) => {
 
   return (
     <div className="flex flex-col">
-      <label htmlFor="dropdown" className="text-black sm:text-[20px] text-2xl font-medium mb-1 sm:px-10 pt-">
+      <label htmlFor="dropdown" className="text-black sm:text-[20px] text-[14px] font-medium font-medium mb-1 sm:px-10 pt-">
         {text}
       </label>
       <div className='sm:px-10 pt'>

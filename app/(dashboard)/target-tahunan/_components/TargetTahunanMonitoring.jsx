@@ -75,7 +75,7 @@ const TableKpiMonitoring = () => {
         }
 
       </div>
-      <div className='w-full'>
+      <div className='w-full sm:text-base text-xs'>
         {dataStaff && (
           <Dropdown
             value={selectedStaff}
@@ -89,7 +89,7 @@ const TableKpiMonitoring = () => {
         )}
       </div>
       <div className="overflow-x-auto">
-        <table className="table-auto mr-9 mt-5 mb-5">
+        <table className="table-auto mr-9 mt-5 mb-5 sm:text-base text-xs">
           <thead>
             <tr>
               <th className="border border-gray-400 px-1 py-2 bg-gray-200">No</th>
