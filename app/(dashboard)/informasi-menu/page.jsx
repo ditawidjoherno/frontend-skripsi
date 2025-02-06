@@ -29,19 +29,19 @@ const Page = () => {
                 <div className="container mx-auto py-3">
                     <MenuItem
                         title="Beranda"
-                        description="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam ut neque vitae diam maximus interdum. Aenean ultrices eget neque eget pharetra. Suspendisse ullamcorper massa tincidunt nulla dictum, a dapibus ex hendrerit. Vivamus efficitur nulla at nibh eleifend consequat. Aliquam sodales lectus vitae lacus ultrices, non porttitor turpis facilisis."
+                        description="Menu Beranda menampilkan informasi kinerja, seperti jumlah total aktivitas, data terbaru, target harian, serta daftar tugas yang perlu diselesaikan. Terdapat juga grafik KPI yang membantu pengguna dalam memantau pencapaian target mereka."
                     />
                     <MenuItem
                         title="Monitoring"
-                        description="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam ut neque vitae diam maximus interdum. Aenean ultrices eget neque eget pharetra. Suspendisse ullamcorper massa tincidunt nulla dictum, a dapibus ex hendrerit. Vivamus efficitur nulla at nibh eleifend consequat. Aliquam sodales lectus vitae lacus ultrices, non porttitor turpis facilisis."
+                        description="Menu Monitoring ini menyediakan tiga kategori utama, yaitu Harian, Mingguan, dan Bulanan. Pada kategori Harian, pengguna dapat melihat jumlah aktivitas yang telah dilakukan dalam satu hari, sementara kategori Mingguan menampilkan total aktivitas dalam satu minggu untuk membantu dalam evaluasi target mingguan. Sedangkan kategori Bulanan memberikan gambaran menyeluruh mengenai produktivitas dalam jangka waktu lebih panjang. Selain itu, terdapat fitur Monitoring Staff yang memungkinkan pengguna melihat daftar staff beserta informasi dasar mereka."
                     />
                     <MenuItem
                         title="Input Data"
-                        description="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam ut neque vitae diam maximus interdum. Aenean ultrices eget neque eget pharetra. Suspendisse ullamcorper massa tincidunt nulla dictum, a dapibus ex hendrerit. Vivamus efficitur nulla at nibh eleifend consequat. Aliquam sodales lectus vitae lacus ultrices, non porttitor turpis facilisis."
+                        description="Menu Input Data pada halaman ini digunakan untuk mencatat aktivitas sales secara harian, mingguan, dan bulanan. Setiap aktivitas yang dimasukkan akan diperbarui dalam sistem dan ditampilkan dalam bentuk jumlah total pada masing-masing kategori. Dengan adanya menu ini, pengguna dapat memantau kinerja sales berdasarkan periode waktu tertentu."
                     />
                     <MenuItem
                         title="Target Tahunan"
-                        description="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam ut neque vitae diam maximus interdum. Aenean ultrices eget neque eget pharetra. Suspendisse ullamcorper massa tincidunt nulla dictum, a dapibus ex hendrerit. Vivamus efficitur nulla at nibh eleifend consequat. Aliquam sodales lectus vitae lacus ultrices, non porttitor turpis facilisis."
+                        description="Menu Target Tahunan dirancang untuk membantu memantau dan mengelola pencapaian target tahunan bagi setiap staf dalam perusahaan. Di dalam menu ini, pengguna dapat melihat berbagai KPI (Key Performance Indicators) yang telah ditetapkan untuk setiap staff, dengan rincian pencapaian bulanan dari Januari hingga Desember. Setiap KPI yang tertera, seperti Tabungan, Depo Ritel, QRIS, dan lainnya, mencerminkan tujuan spesifik yang harus dicapai oleh staff. Tabel ini juga menampilkan kolom yang mencatat pencapaian setiap bulan, memberikan gambaran yang jelas tentang kinerja staf sepanjang tahun"
                     />
                 </div>
             </div>
