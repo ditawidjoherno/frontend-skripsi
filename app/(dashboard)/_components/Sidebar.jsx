@@ -112,7 +112,7 @@ const Sidebar = ({ isCollapse, setIsCollapse }) => {
                         (item.visible === undefined || item.visible) && (
                             <Link href={item.route} key={index}>
                                 <button
-                                    className={`bg-[#00000] flex ${isCollapse ? "md:justify-center justify-start" : "md:justify-start justify-center"} items-center sidebar-transition hover:bg-[#FFE500]  w-full h-[35px] rounded-xl px-5 ${activePage === item.text ? "bg-[#FFE500]" : ""}`}
+                                    className={`bg-[#00000] flex ${isCollapse ? "md:justify-center justify-start" : "md:justify-start justify-center"} items-center sidebar-transition hover:bg-[#f6e97a]  w-full h-[35px] rounded-xl px-5 ${activePage === item.text ? "bg-[#FFE500]" : ""}`}
                                     onClick={() => handleItemClick(item.text)}
 
                                 >
