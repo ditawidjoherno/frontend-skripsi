@@ -26,7 +26,7 @@ const LoginPage = () => {
         className="sm:w-[150px] w-[100px] rounded-[0px] mr-2 absolute top-0 left-2 mt-7"
       />
       <div className="w-full h-full flex justify-center items-center">
-        <div className="bg-white xl:w-[300px] xl:h-[350px] w-[300px] h-[350px] md:w-[500px] md:h-[550px] rounded-2xl px-4 pt-1 flex flex-col">
+        <div className="bg-white sm:w-[300px] sm:h-[350px] w-[300px] h-[350px]  rounded-2xl px-4 pt-1 flex flex-col">
           <img
             src={"/img/btn_boost.png"}
             alt="logo1"

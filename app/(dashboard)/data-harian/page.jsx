@@ -235,11 +235,6 @@ const Page = () => {
                 <th className="sm:px-10 px-6 sm:text-lg text-sm  sm:py-4 py-2">Nama Staff</th>
                 <th className="sm:px-10 px-6 sm:text-lg text-sm  sm:py-4 py-2">Aktivitas</th>
                 <th className="sm:px-10 px-6 sm:text-lg text-sm  sm:py-4 py-2">Nama Nasabah</th>
-                {/* <th className="sm:px-10 px-6 sm:text-lg text-sm  sm:py-4 py-2">Tipe Nasabah</th>
-                <th className="sm:px-10 px-6 sm:text-lg text-sm  sm:py-4 py-2">Prospek</th>
-                <th className="sm:px-10 px-6 sm:text-lg text-sm  sm:py-4 py-2">Nominal Prospek</th> */}
-                {/* <th className="sm:px-10 px-6 sm:text-lg text-sm  sm:py-4 py-2">Aktivitas Sales</th> */}
-                {/* <th className="sm:px-10 px-6 sm:text-lg text-sm  sm:py-4 py-2">Closing</th> */}
                 <th className="sm:px-8 px-6 sm:text-lg text-sm  sm:py-4 py-2">Detail</th>
               </tr>
             </thead>
