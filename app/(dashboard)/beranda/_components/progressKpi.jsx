@@ -154,7 +154,7 @@ const DashboardKPI = () => {
           <p>Loading KPI data...</p>
         ) : kpiData ? (
           <div className="flex justify-center items-center">
-            <div className="w-[150px] h-[150px] sm:w-[250px] sm:h-[250px] md:w-[300px] md:h-[300px] lg:w-[350px] lg:h-[350px]">
+            <div className="w-[150px] h-[150px] sm:w-[280px] sm:h-[280px]">
               <Pie data={pieChartData} options={{ ...options, maintainAspectRatio: false }} />
             </div>
           </div>
